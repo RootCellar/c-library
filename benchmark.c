@@ -67,6 +67,24 @@ float float_divide(float f) {
   return f / 5.5;
 }
 
+// double benchmarks
+
+double double_add(double f) {
+  return f + 5.5;
+}
+
+double double_subtract(double f) {
+  return f - 5.5;
+}
+
+double double_multiply(double f) {
+  return f * 5.5;
+}
+
+double double_divide(double f) {
+  return f / 5.5;
+}
+
 // int benchmarks
 
 int int_add(int i) {
@@ -86,6 +104,28 @@ int int_divide(int i) {
 }
 
 int int_mod(int i) {
+  return i % 7;
+}
+
+// long benchmarks
+
+long long_add(long i) {
+  return i + 7;
+}
+
+long long_subtract(long i) {
+  return i - 7;
+}
+
+long long_multiply(long i) {
+  return i * 7;
+}
+
+long long_divide(long i) {
+  return i / 7;
+}
+
+long long_mod(long i) {
   return i % 7;
 }
 
@@ -166,6 +206,29 @@ int main() {
   TIMES( BENCHMARK_LOOPS( int_multiply(9), "int_multiply", int_times ), BENCHMARK_TIMES);
   TIMES( BENCHMARK_LOOPS( int_divide(9), "int_divide", int_times ), BENCHMARK_TIMES);
   TIMES( BENCHMARK_LOOPS( int_mod(9), "int_mod", int_times ), BENCHMARK_TIMES);
+
+  // double benchmarks
+
+  printf("\n Double benchmarks  \n\n");
+
+  int double_times = 100000000;
+
+  TIMES( BENCHMARK_LOOPS( double_add(9.0), "double_add", double_times ), BENCHMARK_TIMES);
+  TIMES( BENCHMARK_LOOPS( double_subtract(9.0), "double_subtract", double_times ), BENCHMARK_TIMES);
+  TIMES( BENCHMARK_LOOPS( double_multiply(9.0), "double_multiply", double_times ), BENCHMARK_TIMES);
+  TIMES( BENCHMARK_LOOPS( double_divide(9.0), "double_divide", double_times ), BENCHMARK_TIMES);
+
+  // long benchmarks
+
+  printf("\n Long benchmarks  \n\n");
+
+  long long_times = 100000000;
+
+  TIMES( BENCHMARK_LOOPS( long_add(9), "long_add", long_times ), BENCHMARK_TIMES);
+  TIMES( BENCHMARK_LOOPS( long_subtract(9), "long_subtract", long_times ), BENCHMARK_TIMES);
+  TIMES( BENCHMARK_LOOPS( long_multiply(9), "long_multiply", long_times ), BENCHMARK_TIMES);
+  TIMES( BENCHMARK_LOOPS( long_divide(9), "long_divide", long_times ), BENCHMARK_TIMES);
+  TIMES( BENCHMARK_LOOPS( long_mod(9), "long_mod", long_times ), BENCHMARK_TIMES);
 
   // logic benchmarks
 
