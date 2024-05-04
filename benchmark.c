@@ -102,7 +102,7 @@ int main() {
 
   // clock
 
-  TIMES( BENCHMARK_LOOPS( clock(), "clock", 1000000 ), BENCHMARK_TIMES);
+  TIMES( BENCHMARK_LOOPS( clock(), "clock", 100000 ), BENCHMARK_TIMES);
 
   // float benchmarks
 
