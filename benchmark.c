@@ -74,6 +74,10 @@ int main() {
 
   benchmark_setupLocale();
 
+  // System benchmarks
+
+  printf("\n\n System benchmarks  \n\n");
+
   // rand
 
   TIMES( BENCHMARK_LOOPS( rand(), "rand", 1000000 ), BENCHMARK_TIMES);
@@ -84,6 +88,8 @@ int main() {
 
   // float benchmarks
 
+  printf("\n Float benchmarks  \n\n");
+
   int float_times = 100000000;
 
   TIMES( BENCHMARK_LOOPS( float_add(9.0), "float_add", float_times ), BENCHMARK_TIMES);
@@ -93,6 +99,8 @@ int main() {
 
   // int benchmarks
 
+  printf("\n Integer benchmarks  \n\n");
+
   int int_times = 100000000;
 
   TIMES( BENCHMARK_LOOPS( int_add(9), "int_add", int_times ), BENCHMARK_TIMES);
@@ -100,6 +108,10 @@ int main() {
   TIMES( BENCHMARK_LOOPS( int_multiply(9), "int_multiply", int_times ), BENCHMARK_TIMES);
   TIMES( BENCHMARK_LOOPS( int_divide(9), "int_divide", int_times ), BENCHMARK_TIMES);
   TIMES( BENCHMARK_LOOPS( int_mod(9), "int_mod", int_times ), BENCHMARK_TIMES);
+
+  // real work benchmarks
+
+  printf("\n Real world benchmarks  \n\n");
 
   // Hit
 
