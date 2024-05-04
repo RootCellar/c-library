@@ -11,7 +11,7 @@ OBJECTS = $(patsubst %.cpp,%.o,$(SOURCES))
 all: benchmark
 
 clean:
-	$(RM) server client
+	$(RM) benchmark
 
 benchmark: benchmark.c $(HEADERS)
 	$(CXX) -o $@ benchmark.c
