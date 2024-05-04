@@ -29,6 +29,11 @@ void malloc_and_free() {
   free(ptr);
 }
 
+int recursive_fibonacci(int i) {
+  if(i == 0 || i == 1) return 1;
+  return recursive_fibonacci(i - 1) + recursive_fibonacci(i - 2);
+}
+
 // float benchmarks
 
 float float_add(float f) {
@@ -150,5 +155,13 @@ int main() {
   // malloc_and_free
 
   TIMES( BENCHMARK_LOOPS( malloc_and_free(), "malloc_and_free", 1000000 ), BENCHMARK_TIMES);
+
+  // recursive_fibonacci
+
+  TIMES( BENCHMARK_LOOPS( recursive_fibonacci(3), "recursive_fibonacci(3)", 5000 ), BENCHMARK_TIMES);
+  TIMES( BENCHMARK_LOOPS( recursive_fibonacci(5), "recursive_fibonacci(5)", 5000 ), BENCHMARK_TIMES);
+  TIMES( BENCHMARK_LOOPS( recursive_fibonacci(10), "recursive_fibonacci(10)", 5000 ), BENCHMARK_TIMES);
+  TIMES( BENCHMARK_LOOPS( recursive_fibonacci(15), "recursive_fibonacci(15)", 5000 ), BENCHMARK_TIMES);
+  TIMES( BENCHMARK_LOOPS( recursive_fibonacci(20), "recursive_fibonacci(20)", 5000 ), BENCHMARK_TIMES);
   
 }
