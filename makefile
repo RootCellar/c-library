@@ -1,4 +1,4 @@
-CXX = gcc
+CC = gcc
 CXXFLAGS = -g -Wall
 LDFLAGS =
 
@@ -14,4 +14,4 @@ clean:
 	$(RM) benchmark
 
 benchmark: benchmark.c $(HEADERS)
-	$(CXX) -o $@ benchmark.c
+	$(CC) -o $@ benchmark.c
