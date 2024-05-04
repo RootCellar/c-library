@@ -15,6 +15,7 @@
 #define MEMORY_H
 
 #include <stdint.h>
+#include <string.h>
 
 #include "debug.h"
 
