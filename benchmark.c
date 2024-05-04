@@ -69,6 +69,24 @@ int int_mod(int i) {
   return i % 7;
 }
 
+// logic operations
+
+int left_shift(int i) {
+  return i << 3;
+}
+
+int right_shift(int i) {
+  return i >> 3;
+}
+
+int logic_and(int i) {
+  return i & 2915;
+}
+
+int logic_or(int i) {
+  return i | 2915;
+}
+
 int main() {
   srand(time(NULL));
 
@@ -108,6 +126,17 @@ int main() {
   TIMES( BENCHMARK_LOOPS( int_multiply(9), "int_multiply", int_times ), BENCHMARK_TIMES);
   TIMES( BENCHMARK_LOOPS( int_divide(9), "int_divide", int_times ), BENCHMARK_TIMES);
   TIMES( BENCHMARK_LOOPS( int_mod(9), "int_mod", int_times ), BENCHMARK_TIMES);
+
+  // logic benchmarks
+
+  printf("\n Logic benchmarks  \n\n");
+
+  int logic_times = 100000000;
+
+  TIMES( BENCHMARK_LOOPS( left_shift(9), "left_shift", logic_times ), BENCHMARK_TIMES);
+  TIMES( BENCHMARK_LOOPS( right_shift(9), "right_shift", logic_times ), BENCHMARK_TIMES);
+  TIMES( BENCHMARK_LOOPS( logic_and(1180), "logic_and", logic_times ), BENCHMARK_TIMES);
+  TIMES( BENCHMARK_LOOPS( logic_or(1180), "logic_or", logic_times ), BENCHMARK_TIMES);
 
   // real work benchmarks
 
