@@ -34,6 +34,21 @@ int recursive_fibonacci(int i) {
   return recursive_fibonacci(i - 1) + recursive_fibonacci(i - 2);
 }
 
+void bubblesort(int* nums, size_t size) {
+
+  int temp;
+
+  for(size_t i = 0; i < size; i++) {
+    for(size_t j = 0; j < size-1; j++) {
+      if(nums[j+1] < nums[j]) {
+        temp = nums[j+1];
+        nums[j+1] = nums[j];
+        nums[j] = temp;
+      }
+    }
+  }
+}
+
 // float benchmarks
 
 float float_add(float f) {
@@ -90,6 +105,26 @@ int logic_and(int i) {
 
 int logic_or(int i) {
   return i | 2915;
+}
+
+// benchmark helper functions
+
+void test_bubblesort(size_t size) {
+  int* nums = malloc(sizeof(int) * size);
+
+  for(size_t i = 0; i < size; i++) {
+    nums[i] = size - i;
+    // debug_printf("%d ", nums[i]);
+  }
+  // debug_print("\n ");
+  
+
+  bubblesort(nums, size);
+
+  // for(size_t i = 0; i < size; i++) {
+  //   debug_printf("%d ", nums[i]);
+  // }
+  // debug_print("\n ");
 }
 
 int main() {
@@ -163,5 +198,13 @@ int main() {
   TIMES( BENCHMARK_LOOPS( recursive_fibonacci(10), "recursive_fibonacci(10)", 5000 ), BENCHMARK_TIMES);
   TIMES( BENCHMARK_LOOPS( recursive_fibonacci(15), "recursive_fibonacci(15)", 5000 ), BENCHMARK_TIMES);
   TIMES( BENCHMARK_LOOPS( recursive_fibonacci(20), "recursive_fibonacci(20)", 5000 ), BENCHMARK_TIMES);
+
+  // test_bubblesort
+
+  // test_bubblesort(10);
+  TIMES( BENCHMARK_LOOPS( test_bubblesort(20), "test_bubblesort(20)", 100000 ), BENCHMARK_TIMES);
+  TIMES( BENCHMARK_LOOPS( test_bubblesort(100), "test_bubblesort(100)", 1000 ), BENCHMARK_TIMES);
+  TIMES( BENCHMARK_LOOPS( test_bubblesort(1000), "test_bubblesort(1,000)", 100 ), BENCHMARK_TIMES);
+  TIMES( BENCHMARK_LOOPS( test_bubblesort(4000), "test_bubblesort(10,000)", 1 ), BENCHMARK_TIMES);
   
 }
