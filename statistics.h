@@ -10,6 +10,28 @@ float statistics_float_abs(float value) {
   else return value;
 }
 
+float statistics_max(float* values, size_t count) {
+  if(count < 1) return 0.0;
+
+  float max = values[0];
+  for(size_t i = 1; i < count; i++) {
+    if(values[i] > max) max = values[i];
+  }
+
+  return max;
+}
+
+float statistics_min(float* values, size_t count) {
+  if(count < 1) return 0.0;
+
+  float min = values[0];
+  for(size_t i = 1; i < count; i++) {
+    if(values[i] < min) min = values[i];
+  }
+
+  return min;
+}
+
 float statistics_average(float* values, size_t count) {
 
   float sum = 0;

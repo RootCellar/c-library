@@ -37,7 +37,6 @@ float float_abs(float value) {
 
 int floats_equal(float one, float two) {
   debug_printf(" %f == %f ? ", one, two);
-  debug_printf( " %f ", float_abs( one - two ) );
   return float_abs( one - two ) < FLOAT_DIFFERENCE_TOLERANCE;
 }
 
