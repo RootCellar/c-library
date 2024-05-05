@@ -1,3 +1,5 @@
 #!/bin/bash
 
-clear && make && echo && time ./test
+clear && make && echo
+time ./test
+time ./test_statistics
