@@ -3,6 +3,9 @@
 
 #define DEBUG 0
 
+#include <stdlib.h>
+#include <stdio.h>
+
 /*
  * Useful debug function define I found online
 */
