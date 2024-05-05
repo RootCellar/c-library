@@ -241,7 +241,7 @@ int main() {
   TIMES( BENCHMARK_LOOPS( logic_and(1180), "logic_and", logic_times ), BENCHMARK_TIMES);
   TIMES( BENCHMARK_LOOPS( logic_or(1180), "logic_or", logic_times ), BENCHMARK_TIMES);
 
-  // real work benchmarks
+  // real world benchmarks
 
   printf("\n Real world benchmarks  \n\n");
 
