@@ -2,8 +2,11 @@
 #define BENCHMARK_H
 
 #include <locale.h>
+#include <time.h>
 
 #include "terminal_color.h"
+
+#define SHOW_ALL 0
 
 #define BENCHMARK_TIME(x, name, time) do { int runCount = 0; clock_t start_time = clock(); clock_t time_now;\
     while( ( time_now = clock() ) - start_time < CLOCKS_PER_SEC * time) { x; ++runCount; }\
@@ -18,7 +21,7 @@
 #define BENCHMARK_LOOPS_CODE(x, var, loops) do { clock_t start_time = clock();\
     for( int i = 0; i < loops; i++ ) { x; }\
     float seconds = (float) (clock() - start_time) / CLOCKS_PER_SEC; float runs_per_second = ((float)loops/seconds); \
-    printf(ANSI_COLOR_CYAN #x ": %'d over %'f seconds ( %'f per second ) " ANSI_COLOR_RESET "\n", loops, seconds, runs_per_second); var = runs_per_second; } while(0)
+    if(SHOW_ALL) printf(ANSI_COLOR_CYAN #x ": %'d over %'f seconds ( %'f per second ) " ANSI_COLOR_RESET "\n", loops, seconds, runs_per_second); var = runs_per_second; } while(0)
 
 // Do whatever x is the given number of times
 #define TIMES(x, times) do { for(int i = 0; i < times; i++) x; } while(0)
