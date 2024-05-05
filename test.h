@@ -29,8 +29,15 @@ do { \
 printf("\n\n  " ANSI_COLOR_BRIGHT_YELLOW "** " name " ** " ANSI_COLOR_RESET "\n\n\n");\
 } while(0)
 
+float float_abs(float value) {
+  if(value < 0.0) return value * -1.0;
+  else return value;
+}
+
 int floats_equal(float one, float two) {
-  return abs( one - two ) < FLOAT_DIFFERENCE_TOLERANCE;
+  debug_printf(" %f == %f ? ", one, two);
+  debug_printf( " %f ", float_abs( one - two ) );
+  return float_abs( one - two ) < FLOAT_DIFFERENCE_TOLERANCE;
 }
 
 #endif
