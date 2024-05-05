@@ -18,6 +18,11 @@
         do { if (DEBUG) fprintf(stderr, "%s:%d:%s(): " fmt "\n", __FILE__, \
                                 __LINE__, __func__); } while (0)
 
+#define run_and_print(expr) \
+do {\
+printf(#expr " \n");\
+expr;\
+} while(0)
 
 /*
  * Useful for debugging why an exit happened by printing where it happened
