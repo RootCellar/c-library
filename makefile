@@ -8,10 +8,13 @@ OBJECTS = $(patsubst %.cpp,%.o,$(SOURCES))
 
 .PHONY: all clean
 
-all: benchmark
+all: benchmark test
 
 clean:
-	$(RM) benchmark
+	$(RM) benchmark test
 
 benchmark: benchmark.c $(HEADERS)
 	$(CC) -o $@ benchmark.c
+
+test: test.c $(HEADERS)
+	$(CC) -o $@ test.c
