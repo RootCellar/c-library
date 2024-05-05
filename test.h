@@ -22,7 +22,7 @@ else { FAIL_TEST(expr, name); SHOW_LOCATION(); if(FAIL_FAST) exit(EXIT_FAILURE);
 
 #define SECTION(name) \
 do { \
-printf(" \n\n ** " name " ** \n\n\n ");\
+printf("\n\n ** " name " ** \n\n\n");\
 } while(0)
 
 #endif
