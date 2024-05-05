@@ -67,7 +67,7 @@ long int tGetTotalAllocs() {
 
   for(long int i = 0; i < POINTER_LIST_SIZE; i++) {
     if(is_valid_ptr(POINTER_LIST[i].ptr)) {
-      debug_printf("Found pointer in slot %lu", i);
+      debug_printf("Found pointer in slot %ld", i);
       count += 1;
     }
   }
@@ -83,7 +83,7 @@ unsigned long int tGetTotalAllocSize() {
 
   for(long int i = 0; i < POINTER_LIST_SIZE; i++) {
     if(POINTER_LIST[i].ptr > 0) {
-      debug_printf("Found pointer in slot %lu", i);
+      debug_printf("Found pointer in slot %ld", i);
       sum += POINTER_LIST[i].size;
     }
   }
@@ -105,7 +105,7 @@ long int tFindSpot(void* ptr) {
   debug_printf("Finding pointer %p", ptr);
   for(long int i = 0; i < POINTER_LIST_SIZE; i++) {
     if(POINTER_LIST[i].ptr == ptr) {
-      debug_printf("Found pointer in slot %lu", i);
+      debug_printf("Found pointer in slot %ld", i);
       return i;
     }
   }
@@ -144,7 +144,7 @@ void tCondense() {
       POINTER_LIST[i].ptr = NULL;
       POINTER_LIST[i].size = 0;
 
-      debug_printf(" %lu -> %lu ", i, new_spot);
+      debug_printf(" %ld -> %ld ", i, new_spot);
       new_spot = tFindSpot(0);
     }
   }
@@ -164,7 +164,7 @@ int tResize(long int len) {
   }
 
   long int allocs = tGetTotalAllocs();
-  debug_printf("Attempting to resize pointer list... %lu -> %lu", POINTER_LIST_SIZE, len);
+  debug_printf("Attempting to resize pointer list... %ld -> %ld", POINTER_LIST_SIZE, len);
   if(len < allocs) {
     debug_print("Refusing to allocate pointer list to be smaller than current number of allocations");
     return 1;
