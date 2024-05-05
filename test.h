@@ -8,6 +8,8 @@
 
 #define FAIL_FAST 0
 
+#define FLOAT_DIFFERENCE_TOLERANCE (0.00001)
+
 #define SHOW_LOCATION() \
         do { fprintf(stderr, "%s: %s() line %d \n\n", __FILE__, \
                                  __func__, __LINE__); } while (0)
@@ -26,5 +28,9 @@ else { FAIL_TEST(expr, name); SHOW_LOCATION(); if(FAIL_FAST) exit(EXIT_FAILURE);
 do { \
 printf("\n\n  " ANSI_COLOR_BRIGHT_YELLOW "** " name " ** " ANSI_COLOR_RESET "\n\n\n");\
 } while(0)
+
+int floats_equal(float one, float two) {
+  return abs( one - two ) < FLOAT_DIFFERENCE_TOLERANCE;
+}
 
 #endif
