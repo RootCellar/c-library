@@ -20,4 +20,4 @@ test: test.c $(HEADERS)
 	$(CC) -o $@ test.c
 
 test_statistics: test_statistics.c $(HEADERS)
-	$(CC) -o $@ test_statistics.c
+	$(CC) -o $@ test_statistics.c -lm
