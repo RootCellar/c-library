@@ -22,7 +22,7 @@
 
 #define run_and_print(expr) \
 do {\
-printf(#expr " \n");\
+printf(ANSI_COLOR_MAGENTA #expr ANSI_COLOR_RESET " \n");\
 expr;\
 } while(0)
 
