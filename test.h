@@ -20,4 +20,9 @@ if(expr == 1) { PASS_TEST(expr, name); } \
 else { FAIL_TEST(expr, name); SHOW_LOCATION(); if(FAIL_FAST) exit(EXIT_FAILURE); }\
  } while(0)
 
+#define SECTION(name) \
+do { \
+printf(" \n\n ** " name " ** \n\n\n ");\
+} while(0)
+
 #endif
