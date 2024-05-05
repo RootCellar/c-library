@@ -41,6 +41,8 @@ void main() {
   TEST( tGetTotalAllocs() == 0, "tGetTotalAllocs() after tFree()");
   TEST( tGetTotalAllocSize() == 0, "tGetTotalAllocSize() after tFree()");
 
+  // Pointer list size is exactly 1
+
   ptr = tMalloc(alloc_bytes);
   TEST( tMalloc(alloc_bytes) == NULL, "pointer list too small");
   TEST( tFree(ptr) == 0, "tFree() the pointer");
@@ -50,6 +52,36 @@ void main() {
 
   ptr = tMalloc(alloc_bytes);
   TEST( tMalloc(alloc_bytes) == NULL, "tMalloc() pointer list too small");
+  TEST( tOwnsAddress(ptr) == 1, "tOwnsAddress() on pointer");
   TEST( tFree(ptr) == 0, "tFree() the pointer");
+  TEST( tGetTotalAllocs() == 0, "tGetTotalAllocs() after tFree()");
+  TEST( tGetTotalAllocSize() == 0, "tGetTotalAllocSize() after tFree()");
+  TEST( tOwnsAddress(ptr) == 0, "tOwnsAddress() on pointer after free");
+  TEST( tFree(ptr) == 1, "tFree() the pointer again");
+
+  TEST( tFindSpot(ptr) == -1, "find a pointer that is not in the list");
+
+  // Pointer List expanded to 10 items
+
+  size_t ptr_array_size = 10;
+  int* ptr_array[ptr_array_size];
   
+  TEST( tResize(10) == 0, "expand pointer list");
+  for(size_t i = 0; i < ptr_array_size; i++) {
+    ptr_array[i] = tMalloc(alloc_bytes);
+    TEST( ptr_array[i] != NULL, "can allocate multiple pointers");
+  }
+  
+  TEST( tMalloc(alloc_bytes) == NULL, "can't allocate another pointer");
+  TEST( tGetTotalAllocs() == 10, "tGetTotalAllocs() is correct");  
+  TEST( tGetTotalAllocSize() == ptr_array_size * alloc_bytes, "tGetTotalAllocSize() is correct");
+
+  for(int i = 0; i < ptr_array_size; i++) {
+    TEST( tFree(ptr_array[i]) == 0, "can free multiple pointers");
+  }
+
+  // Pointer list is empty at end of test
+
+  TEST( tGetTotalAllocs() == 0, "Pointer list is empty at end of test");
+  TEST( tGetTotalAllocSize() == 0, "Pointer list is empty at end of test");
 }
