@@ -93,7 +93,7 @@ unsigned long int tGetTotalAllocSize() {
 
 void tPrintStatus() {
   debug_printf("There are %lu bytes allocated, amongst %lu pointers.", tGetTotalAllocSize(), tGetTotalAllocs());
-  debug_printf("The pointer list uses %lu bytes, for %lu pointers.", POINTER_LIST_SIZE * sizeof(struct ptr_data), POINTER_LIST_SIZE);
+  debug_printf("The pointer list is %lu bytes, to hold %lu pointers.", POINTER_LIST_SIZE * sizeof(struct ptr_data), POINTER_LIST_SIZE);
 }
 
 // Find the given pointer.
