@@ -120,8 +120,9 @@ void main() {
   }
 
   int freed = 0;
+  int spread = 2;
   
-  for(int i = 0; i < ptr_array_size; i += 3) {
+  for(int i = 0; i < ptr_array_size; i += spread) {
     TEST( tFree(ptr_array[i]) == 0, "can free any pointer at any spot");
     TEST( tFindSpot(ptr_array[i]) == -1, "free'd pointer is no longer in the list");
 
@@ -134,7 +135,7 @@ void main() {
   TEST( tGetTotalAllocSize() == (ptr_array_size - freed) * alloc_bytes, "Pointer list has correct size");
 
   for(int i = 0; i < ptr_array_size; i++) {
-    if(i % 3 == 0) continue;
+    if(i % spread == 0) continue;
     TEST( tFree(ptr_array[i]) == 0, "can free multiple pointers");
     TEST( tFindSpot(ptr_array[i]) == -1, "free'd pointer is no longer in the list");
   }
