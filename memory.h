@@ -158,15 +158,15 @@ void tCondense() {
 */
 int tResize(long int len) {
 
+  if(len <= 0) {
+    debug_print("Refusing size smaller than one...");
+    return 1;
+  }
+
   long int allocs = tGetTotalAllocs();
   debug_printf("Attempting to resize pointer list... %lu -> %lu", POINTER_LIST_SIZE, len);
   if(len < allocs) {
     debug_print("Refusing to allocate pointer list to be smaller than current number of allocations");
-    return 1;
-  }
-
-  if(len <= 0) {
-    debug_print("Refusing size smaller than one...");
     return 1;
   }
 
