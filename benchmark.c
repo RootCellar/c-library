@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include <time.h>
 
 #include "debug.h"
@@ -194,6 +195,10 @@ int main() {
   TIMES( BENCHMARK_LOOPS( float_subtract(9.0), "float_subtract", float_times ), BENCHMARK_TIMES);
   TIMES( BENCHMARK_LOOPS( float_multiply(9.0), "float_multiply", float_times ), BENCHMARK_TIMES);
   TIMES( BENCHMARK_LOOPS( float_divide(9.0), "float_divide", float_times ), BENCHMARK_TIMES);
+
+  TIMES( BENCHMARK_LOOPS( cosf(1.42), "float_cosine", float_times ), BENCHMARK_TIMES);
+  TIMES( BENCHMARK_LOOPS( sinf(1.42), "float_sine", float_times ), BENCHMARK_TIMES);
+  TIMES( BENCHMARK_LOOPS( tanf(1.42), "float_tangent", float_times ), BENCHMARK_TIMES);
 
   // int benchmarks
 
