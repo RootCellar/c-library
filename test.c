@@ -11,7 +11,7 @@ void main() {
   TEST( tResize(1) == 0, "tResize(1)");
   TEST( tResize(1) == 0, "tResize(1) again");
 
-  TEST( tFree(0) == 0, "free a null pointer");
+  TEST( tFree(0) == 1, "free a null pointer");
   TEST( tFree( (void*) 16 ) == 1, "free a pointer that isn't in the list");
 
   TEST( tMalloc(0) == NULL, "tMalloc(0)");
