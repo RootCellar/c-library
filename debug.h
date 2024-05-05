@@ -26,6 +26,12 @@ printf(ANSI_COLOR_MAGENTA #expr ANSI_COLOR_RESET " \n");\
 expr;\
 } while(0)
 
+#define run_and_debug_print(expr) \
+do {\
+debug_print(#expr);\
+expr;\
+} while(0)
+
 /*
  * Useful for debugging why an exit happened by printing where it happened
  * and potentially some explanation as to why with perror()
