@@ -10,8 +10,8 @@
         do { fprintf(stderr, "%s: %s() line %d \n\n", __FILE__, \
                                  __func__, __LINE__); } while (0)
 
-#define PASS_TEST(expr, name) do { printf(" Test: " name " -- Passed \n"); } while(0)
-#define FAIL_TEST(expr, name) do { printf("\n Test: " name " -- FAILED \n"); printf("** TEST FAILED ** \n"); } while(0)
+#define PASS_TEST(expr, name) do { printf(" Test: " name  " -- " #expr " -- Passed \n"); } while(0)
+#define FAIL_TEST(expr, name) do { printf("\n Test: " name " -- " #expr " -- FAILED \n"); printf("** TEST FAILED ** \n"); } while(0)
 
 // Test that the given expression is true
 #define TEST(expr, name) \
