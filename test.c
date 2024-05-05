@@ -3,7 +3,7 @@
 
 void main() {
 
-  // Basic checks
+  SECTION("Basic checks");
 
   TEST( tResize(-1) == 1, "tResize(-1)");
   TEST( tResize(0) == 1, "tResize(0)");
@@ -19,7 +19,11 @@ void main() {
   TEST( tGetTotalAllocs() == 0, "tGetTotalAllocs() with nothing allocated");
   TEST( tGetTotalAllocSize() == 0, "tGetTotalAllocSize() with nothing allocated");
 
-  // Using the memory allocator
+
+
+  SECTION("Using the memory allocator");
+
+
 
   size_t alloc_size = 10;
   size_t alloc_bytes = alloc_size * sizeof(int);
@@ -41,7 +45,11 @@ void main() {
   TEST( tGetTotalAllocs() == 0, "tGetTotalAllocs() after tFree()");
   TEST( tGetTotalAllocSize() == 0, "tGetTotalAllocSize() after tFree()");
 
-  // Pointer list size is exactly 1
+
+
+  SECTION("Pointer list size is exactly 1");
+
+
 
   ptr = tMalloc(alloc_bytes);
   TEST( tMalloc(alloc_bytes) == NULL, "pointer list too small");
@@ -61,11 +69,19 @@ void main() {
 
   TEST( tFindSpot(ptr) == -1, "find a pointer that is not in the list");
 
-  // Pointer List expanded to 10 items
 
+
+  SECTION("Pointer List expanded to 10 items");
+
+
+  
   TEST( tResize(10) == 0, "expand pointer list");
 
-  // Allocate and free many pointers
+
+
+  SECTION("Allocate and free many pointers");
+
+
 
   size_t ptr_array_size = 10;
   int* ptr_array[ptr_array_size];
@@ -89,7 +105,11 @@ void main() {
   TEST( tGetTotalAllocs() == 0, "Pointer list is empty at end of test");
   TEST( tGetTotalAllocSize() == 0, "Pointer list is empty at end of test");
 
-  // Allocate pointers, free some, shrink pointer list
+
+
+  SECTION("Allocate pointers, free some, shrink pointer list");
+
+
 
   for(size_t i = 0; i < ptr_array_size; i++) { ptr_array[i] = 0; }
 
@@ -119,8 +139,13 @@ void main() {
     TEST( tFindSpot(ptr_array[i]) == -1, "free'd pointer is no longer in the list");
   }
 
-  // Pointer list is empty at end of test
+
+
+  SECTION("Pointer list is empty at end of test");
+
+  
 
   TEST( tGetTotalAllocs() == 0, "Pointer list is empty at end of test");
   TEST( tGetTotalAllocSize() == 0, "Pointer list is empty at end of test");
+  
 }
