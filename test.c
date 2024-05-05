@@ -63,6 +63,10 @@ void main() {
 
   // Pointer List expanded to 10 items
 
+  TEST( tResize(10) == 0, "expand pointer list");
+
+  // Allocate and free many pointers
+
   size_t ptr_array_size = 10;
   int* ptr_array[ptr_array_size];
   
@@ -70,6 +74,7 @@ void main() {
   for(size_t i = 0; i < ptr_array_size; i++) {
     ptr_array[i] = tMalloc(alloc_bytes);
     TEST( ptr_array[i] != NULL, "can allocate multiple pointers");
+    TEST( tFindSpot(ptr_array[i]) >= 0, "find a pointer that is in the list");
   }
   
   TEST( tMalloc(alloc_bytes) == NULL, "can't allocate another pointer");
@@ -78,6 +83,40 @@ void main() {
 
   for(int i = 0; i < ptr_array_size; i++) {
     TEST( tFree(ptr_array[i]) == 0, "can free multiple pointers");
+    TEST( tFindSpot(ptr_array[i]) == -1, "free'd pointer is no longer in the list");
+  }
+
+  TEST( tGetTotalAllocs() == 0, "Pointer list is empty at end of test");
+  TEST( tGetTotalAllocSize() == 0, "Pointer list is empty at end of test");
+
+  // Allocate pointers, free some, shrink pointer list
+
+  for(size_t i = 0; i < ptr_array_size; i++) { ptr_array[i] = 0; }
+
+  for(size_t i = 0; i < ptr_array_size; i++) {
+    ptr_array[i] = tMalloc(alloc_bytes);
+    TEST( ptr_array[i] != NULL, "can allocate multiple pointers");
+    TEST( tFindSpot(ptr_array[i]) >= 0, "find a pointer that is in the list");
+  }
+
+  int freed = 0;
+  
+  for(int i = 0; i < ptr_array_size; i += 3) {
+    TEST( tFree(ptr_array[i]) == 0, "can free any pointer at any spot");
+    TEST( tFindSpot(ptr_array[i]) == -1, "free'd pointer is no longer in the list");
+
+    ++freed;
+  }
+
+  TEST( tResize(ptr_array_size - freed) == 0, "shrink pointer list");
+
+  TEST( tGetTotalAllocs() == ptr_array_size - freed, "Pointer list has correct number of elements");
+  TEST( tGetTotalAllocSize() == (ptr_array_size - freed) * alloc_bytes, "Pointer list has correct size");
+
+  for(int i = 0; i < ptr_array_size; i++) {
+    if(i % 3 == 0) continue;
+    TEST( tFree(ptr_array[i]) == 0, "can free multiple pointers");
+    TEST( tFindSpot(ptr_array[i]) == -1, "free'd pointer is no longer in the list");
   }
 
   // Pointer list is empty at end of test
