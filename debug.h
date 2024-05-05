@@ -6,16 +6,18 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "terminal_color.h"
+
 /*
  * Useful debug function define I found online
 */
 
 #define debug_printf(fmt, ...) \
-        do { if (DEBUG) fprintf(stderr, "%s:%d:%s(): " fmt "\n", __FILE__, \
+        do { if (DEBUG) fprintf(stderr, ANSI_COLOR_GRAY "%s:%d:%s(): " fmt ANSI_COLOR_RESET "\n", __FILE__, \
                                 __LINE__, __func__, __VA_ARGS__); } while (0)
 
 #define debug_print(fmt) \
-        do { if (DEBUG) fprintf(stderr, "%s:%d:%s(): " fmt "\n", __FILE__, \
+        do { if (DEBUG) fprintf(stderr, ANSI_COLOR_GRAY "%s:%d:%s(): " fmt ANSI_COLOR_RESET "\n", __FILE__, \
                                 __LINE__, __func__); } while (0)
 
 #define run_and_print(expr) \
