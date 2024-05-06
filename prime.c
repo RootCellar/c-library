@@ -1,4 +1,6 @@
 #include <math.h>
+#include <float.h>
+#include <time.h>
 
 #include "benchmark.h"
 #include "test.h"
@@ -46,6 +48,7 @@ TEST( function(1000) == 0, "1000 is not prime");\
 void main() {
 
   benchmark_setupLocale();
+  srand(time(NULL));
 
   SECTION("Normal isPrime()");
 
@@ -57,11 +60,23 @@ void main() {
 
   printf("\n\n");
 
-  size_t test_reach = 50000;
+  int test_reach = 50000;
+  int benchmark_loops = 1000;
+  int random;
+
+  debug_printf("Float max: %f", FLT_MAX);
+  debug_printf("CLOCKS_PER_SEC: %d", CLOCKS_PER_SEC);
 
   float* results = malloc( sizeof(float) * test_reach );
   for(int i = 0; i < test_reach; i++) {
-    BENCHMARK_LOOPS_CODE(isPrime(i+1), results[i], 1000);
+    random = rand() % 1000000;
+    do {
+      BENCHMARK_LOOPS_CODE(isPrime(random), results[i], benchmark_loops);
+    } while(results[i] > FLT_MAX);
+    
+    if(results[i] > FLT_MAX) {
+      debug_printf("%d came up with inf", random);
+    }
   }
   float average = statistics_average(results, test_reach);
   float max = statistics_max(results, test_reach);
@@ -76,7 +91,14 @@ void main() {
   printf("\n\n");
 
   for(int i = 0; i < test_reach; i++) {
-    BENCHMARK_LOOPS_CODE(isPrime_new(i+1), results[i], 1000);
+    random = rand() % 1000000;
+    do {
+      BENCHMARK_LOOPS_CODE(isPrime_new(random), results[i], benchmark_loops);
+    } while(results[i] > FLT_MAX);
+    
+    if(results[i] > FLT_MAX) {
+      debug_printf("%d came up with inf", random);
+    }
   }
   average = statistics_average(results, test_reach);
   max = statistics_max(results, test_reach);
