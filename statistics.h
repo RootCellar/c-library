@@ -33,6 +33,7 @@ float statistics_min(float* values, size_t count) {
 }
 
 float statistics_average(float* values, size_t count) {
+  if(count < 1) return 0.0;
 
   float sum = 0;
   for(size_t i = 0; i < count; i++) {
@@ -43,6 +44,7 @@ float statistics_average(float* values, size_t count) {
 }
 
 float statistics_average_deviation(float* values, size_t count) {
+  if(count < 1) return 0.0;
 
   float average = statistics_average(values, count);
 
@@ -55,6 +57,8 @@ float statistics_average_deviation(float* values, size_t count) {
 }
 
 float statistics_standard_deviation(float* values, size_t count) {
+  if(count < 1) return 0.0;
+  
   float average = statistics_average(values, count);
 
   float deviation_sum = 0;
