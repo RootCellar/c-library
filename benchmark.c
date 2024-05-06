@@ -68,6 +68,19 @@ float float_divide(float f) {
   return f / 5.5;
 }
 
+float float_many(float f) {
+  float v = f + 5.5;
+  v += 8.7;
+  v *= 6.54;
+  v *= 32.17;
+  v -= 7.65897;
+  v -= 1.67891;
+  v /= 17.19;
+  v /= 41.23423;
+
+  return v;
+}
+
 // double benchmarks
 
 double double_add(double f) {
@@ -148,6 +161,12 @@ int logic_or(int i) {
   return i | 2915;
 }
 
+// other
+
+void empty_function() {
+
+}
+
 // benchmark helper functions
 
 void test_bubblesort(size_t size) {
@@ -177,6 +196,10 @@ int main() {
 
   printf("\n\n System benchmarks  \n\n");
 
+  // empty function
+
+  TIMES( BENCHMARK_LOOPS( empty_function(), "empty_function", 10000000 ), BENCHMARK_TIMES);
+
   // rand
 
   TIMES( BENCHMARK_LOOPS( rand(), "rand", 1000000 ), BENCHMARK_TIMES);
@@ -195,6 +218,8 @@ int main() {
   TIMES( BENCHMARK_LOOPS( float_subtract(9.0), "float_subtract", float_times ), BENCHMARK_TIMES);
   TIMES( BENCHMARK_LOOPS( float_multiply(9.0), "float_multiply", float_times ), BENCHMARK_TIMES);
   TIMES( BENCHMARK_LOOPS( float_divide(9.0), "float_divide", float_times ), BENCHMARK_TIMES);
+
+  TIMES( BENCHMARK_LOOPS( float_many(9.0), "float_many", float_times / 10 ), BENCHMARK_TIMES);
 
   TIMES( BENCHMARK_LOOPS( cosf(1.42), "float_cosine", float_times ), BENCHMARK_TIMES);
   TIMES( BENCHMARK_LOOPS( sinf(1.42), "float_sine", float_times ), BENCHMARK_TIMES);
