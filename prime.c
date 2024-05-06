@@ -57,7 +57,7 @@ void main() {
 
   printf("\n\n");
 
-  size_t test_reach = 20000;
+  size_t test_reach = 50000;
 
   float* results = malloc( sizeof(float) * test_reach );
   for(int i = 0; i < test_reach; i++) {
