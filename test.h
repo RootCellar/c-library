@@ -15,8 +15,8 @@
         do { fprintf(stderr, "%s: %s() line %d \n\n", __FILE__, \
                                  __func__, __LINE__); } while (0)
 
-#define PASS_TEST(expr, name) do { printf(""   ANSI_COLOR_GREEN   "Test: " name " -- " #expr " -- PASS   "  ANSI_COLOR_RESET "\n"); } while(0)
-#define FAIL_TEST(expr, name) do { printf("\n" ANSI_COLOR_RED     "Test: " name " -- " #expr " -- FAILED "  ANSI_COLOR_RESET "\n"); printf("** TEST FAILED ** \n"); } while(0)
+#define PASS_TEST(expr, name) do { printf(""   ANSI_COLOR_BRIGHT_GREEN   "Test: " name " -- " #expr " -- PASS   "  ANSI_COLOR_RESET "\n"); } while(0)
+#define FAIL_TEST(expr, name) do { printf("\n" ANSI_COLOR_BRIGHT_RED     "Test: " name " -- " #expr " -- FAILED "  ANSI_COLOR_RESET "\n"); printf(ANSI_COLOR_BRIGHT_RED "** TEST FAILED ** " ANSI_COLOR_RESET "\n"); } while(0)
 
 // Test that the given expression is true
 #define TEST(expr, name) \
