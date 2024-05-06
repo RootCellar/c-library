@@ -9,14 +9,17 @@
 
 #define FAIL_FAST 0
 
+#define TEST_PASS_OUTPUT_COLOR ANSI_COLOR_BRIGHT_GREEN
+#define TEST_FAIL_OUTPUT_COLOR ANSI_COLOR_BRIGHT_RED
+
 #define FLOAT_DIFFERENCE_TOLERANCE (0.00001)
 
 #define SHOW_LOCATION() \
         do { fprintf(stderr, "%s: %s() line %d \n\n", __FILE__, \
                                  __func__, __LINE__); } while (0)
 
-#define PASS_TEST(expr, name) do { printf(""   ANSI_COLOR_BRIGHT_GREEN   "Test: " name " -- " #expr " -- PASS   "  ANSI_COLOR_RESET "\n"); } while(0)
-#define FAIL_TEST(expr, name) do { printf("\n" ANSI_COLOR_BRIGHT_RED     "Test: " name " -- " #expr " -- FAILED "  ANSI_COLOR_RESET "\n"); printf(ANSI_COLOR_BRIGHT_RED "** TEST FAILED ** " ANSI_COLOR_RESET "\n"); } while(0)
+#define PASS_TEST(expr, name) do { printf(""   TEST_PASS_OUTPUT_COLOR   "Test: " name " -- " #expr " -- PASS   "  ANSI_COLOR_RESET "\n"); } while(0)
+#define FAIL_TEST(expr, name) do { printf("\n" TEST_FAIL_OUTPUT_COLOR   "Test: " name " -- " #expr " -- FAILED "  ANSI_COLOR_RESET "\n"); printf(TEST_FAIL_OUTPUT_COLOR "** TEST FAILED ** " ANSI_COLOR_RESET "\n"); } while(0)
 
 // Test that the given expression is true
 #define TEST(expr, name) \
