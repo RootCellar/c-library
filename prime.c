@@ -7,7 +7,8 @@
 #include "statistics.h"
 
 int isPrime(int num) {
-  if(num == 1 || num == 2) return 1;
+  if(num <= 1) return 0;
+  if(num == 2) return 1;
 
   int stop = (int) sqrt(num);
   for(int i = 2; i <= stop; i++) {
@@ -17,7 +18,8 @@ int isPrime(int num) {
 }
 
 int isPrime_new(int num) {
-  if(num == 1 || num == 2 || num == 3) return 1;
+  if(num <= 1) return 0;
+  if(num == 2 || num == 3) return 1;
   
   int remainder = num % 6;
   if(remainder != 5 && remainder != 1) return 0;
@@ -32,12 +34,12 @@ int isPrime_new(int num) {
 }
 
 #define TEST_PRIME_FUNCTION(function) \
-TEST( function(1) == 1, "1 is prime");\
 TEST( function(2) == 1, "2 is prime");\
 TEST( function(3) == 1, "3 is prime");\
 TEST( function(5) == 1, "5 is prime");\
 TEST( function(37) == 1, "37 is prime");\
 \
+TEST( function(1) == 0, "1 is not prime");\
 TEST( function(4) == 0, "4 is not prime");\
 TEST( function(10) == 0, "10 is not prime");\
 TEST( function(25) == 0, "25 is not prime");\
