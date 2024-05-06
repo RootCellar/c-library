@@ -24,10 +24,9 @@ int isPrime_new(int num) {
   int remainder = num % 6;
   if(remainder != 5 && remainder != 1) return 0;
 
-  int stop = (int) sqrt(num) + 1;
-  for(int i = 6; i <= stop; i+=6) {
-    if(num % ( i + 1 ) == 0) return 0;
-    if(num % ( i - 1 ) == 0) return 0;
+  for(int i = 5; i * i <= num + 1; i+=6) {
+    if(num % ( i + 2 ) == 0) return 0;
+    if(num % i == 0) return 0;
   }
 
   return 1;
