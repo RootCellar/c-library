@@ -35,6 +35,7 @@ TEST( function(2) == 1, "2 is prime");\
 TEST( function(3) == 1, "3 is prime");\
 TEST( function(5) == 1, "5 is prime");\
 TEST( function(37) == 1, "37 is prime");\
+\
 TEST( function(4) == 0, "4 is not prime");\
 TEST( function(10) == 0, "10 is not prime");\
 TEST( function(25) == 0, "25 is not prime");\
