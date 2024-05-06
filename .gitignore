@@ -1,6 +1,7 @@
 /benchmark
 /test
 /test_statistics
+/test_prime
 
 # ---> C
 # Prerequisites
