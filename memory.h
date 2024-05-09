@@ -181,16 +181,14 @@ int tResize(long int len) {
     return 1;
   }
 
+  memset(new_pointer_list, 0, len * sizeof(struct ptr_data));
+
   if(is_valid_ptr(POINTER_LIST)) {
     debug_print("Replacing old pointer list...");
     tCondense();
     long int copy_length = len < POINTER_LIST_SIZE ? len : POINTER_LIST_SIZE;
     memcpy(new_pointer_list, POINTER_LIST, copy_length * sizeof(struct ptr_data));
     free(POINTER_LIST);
-  }
-  else {
-    // List is being created for the first time - fill with zeros
-    memset(new_pointer_list, 0, len * sizeof(struct ptr_data));
   }
 
   debug_print("Success");
