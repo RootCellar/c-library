@@ -117,16 +117,17 @@ int create_connection(char* host, int port) {
     return -1;
   }
 
+  setup_socket_flags(sock);
+
   debug_printf("Connecting to host %s port %d...", host, port);
 
   int result = -1;
   result = connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
-  if( result < 0 ) {
+  if( result < 0 && errno != EINPROGRESS) {
     debug_printf("Failed connecting to host %s:%d!", host, port);
+    perror("connect");
     return -1;
   }
-
-  setup_socket_flags(sock);
 
   return sock;
 
