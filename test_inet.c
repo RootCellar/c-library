@@ -7,9 +7,10 @@ void main() {
   int result = 0;
 
   int client_socket = create_connection("localhost", 40000);
+  TEST( client_socket >= 0, "client socket can be created" );
   time_t start = clock();
   time_t now = start;
-  while(now - start < CLOCKS_PER_SEC && result >= 0) {
+  while(now - start < CLOCKS_PER_SEC && result == 0) {
     result = is_connected(client_socket);
     now = clock();
   }
@@ -23,7 +24,17 @@ void main() {
   TEST( accept_connection(server_socket) == -1, "accept_connection while no clients are connecting");
 
   client_socket = create_connection("localhost", 40000);
-  TEST( client_socket >= 0, "server can be connected to" );
+  TEST( client_socket >= 0, "client socket can be created" );
+  result = 0;
+  start = clock();
+  now = start;
+  while(now - start < CLOCKS_PER_SEC && result == 0) {
+    result = is_connected(client_socket);
+    now = clock();
+  }
+
+  debug_printf("connect result: %d", result);
+  TEST( result == 1, "server can be connected to" );
 
   int server_fd_to_client = -1;
   start = clock();
