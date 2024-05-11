@@ -101,7 +101,7 @@ int accept_connection(int fd) {
 }
 
 int has_flag(short value, short flag) {
-  return value & flag > 0;
+  return value & flag;
 }
 
 int is_connected(int fd) {
