@@ -85,8 +85,11 @@ int send_string(int fd, char* data) {
 
 int accept_connection(int fd) {
   errno = 0;
+
+  struct sockaddr address;
+  socklen_t addrlen = sizeof(address);
   
-  int new_socket = accept(fd, NULL, NULL);
+  int new_socket = accept(fd, &address, &addrlen);
   if(errno == EAGAIN || errno == EWOULDBLOCK) {
     return -1;
   }
