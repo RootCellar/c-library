@@ -25,9 +25,11 @@ void main() {
   client_socket = create_connection("localhost", 40000);
   TEST( client_socket >= 0, "server can be connected to" );
 
-  int server_fd_to_client;
-  server_fd_to_client = accept_connection(server_socket);
-  TEST( accept_connection(server_socket) >= 0, "accept_connection accepted a connection");
+  int server_fd_to_client = -1;
+  while(server_fd_to_client == -1) {
+    server_fd_to_client = accept_connection(server_socket);
+  }
+  TEST( server_fd_to_client >= 0, "accept_connection accepted a connection");
 
   char* to_write = "hello from the client!";
   TEST( send_string(client_socket, to_write) == 0, "client successfully sends a string to the server");
