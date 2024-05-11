@@ -64,6 +64,23 @@ int send_string(int fd, char* data) {
   return send_buffer(fd, data, strlen(data));
 }
 
+int accept_connection(int fd) {
+  errno = 0;
+  
+  int new_socket = accept(fd, NULL, NULL);
+  if(errno == EAGAIN || errno == EWOULDBLOCK) {
+    return -1;
+  }
+  else if(errno != 0) {
+    perror("accept");
+    return -2;
+  }
+
+  debug_printf("Accepted a connection to fd %d", new_socket);
+
+  return new_socket;
+}
+
 int create_connection(char* host, int port) {
   int sock = -1;
   sock = socket(AF_INET, SOCK_STREAM, 0);
