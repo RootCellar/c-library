@@ -26,8 +26,11 @@ void main() {
   TEST( client_socket >= 0, "server can be connected to" );
 
   int server_fd_to_client = -1;
-  while(server_fd_to_client == -1) {
+  start = clock();
+  now = start;
+  while(now - start < CLOCKS_PER_SEC && server_fd_to_client == -1) {
     server_fd_to_client = accept_connection(server_socket);
+    now = clock();
   }
   TEST( server_fd_to_client >= 0, "accept_connection accepted a connection");
 
