@@ -42,23 +42,26 @@ int setup_socket_flags(int fd) {
   return 1;
 }
 
-void send_buffer(int fd, char* data, int count) {
-  int j;
-  int sent = 0;
-  while (sent < count) {
-    j = write(fd, data + sent, count - sent);
+int send_buffer(int fd, char* data, int count) {
+  int sent;
+  int total_sent = 0;
+  
+  while (total_sent < count) {
+    sent = write(fd, data + total_sent, count - total_sent);
 
-    if(j >= 0) sent += j;
+    if(sent >= 0) total_sent += sent;
 
-    if(j < 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
-      perror("send loop");
-      break;
+    if(sent < 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
+      perror("send_buffer");
+      return 1;
     }
   }
+
+  return 0;
 }
 
-void send_string(int fd, char* data) {
-  send_buffer(fd, data, strlen(data));
+int send_string(int fd, char* data) {
+  return send_buffer(fd, data, strlen(data));
 }
 
 int create_connection(char* host, int port) {
