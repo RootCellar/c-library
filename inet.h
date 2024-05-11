@@ -21,6 +21,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <signal.h>
+#include <poll.h>
 
 // Local libraries
 
@@ -97,6 +98,42 @@ int accept_connection(int fd) {
   debug_printf("Accepted a connection to fd %d", new_socket);
 
   return new_socket;
+}
+
+int has_flag(short value, short flag) {
+  return value & flag > 0;
+}
+
+int is_connected(int fd) {
+  errno = 0;
+
+  struct pollfd {
+    int   fd;         /* file descriptor */
+    short events;     /* requested events */
+    short revents;    /* returned events */
+  };
+
+  struct pollfd poll_data;
+  poll_data.fd = fd;
+  poll_data.events = ~0;
+  int result = poll(&poll_data, 1, 1);
+
+  if(result == 0) {
+    // Timed out
+    return 0;
+  }
+  else if(result < 0) {
+    // Error
+    perror("is_connected");
+    return -1;
+  }
+  else if(has_flag(poll_data.revents, POLLERR)) {
+    // Socket error
+    return -1;
+  }
+
+  return 1;
+  
 }
 
 int create_connection(char* host, int port) {
