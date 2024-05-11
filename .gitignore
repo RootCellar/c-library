@@ -2,6 +2,7 @@
 /test
 /test_statistics
 /test_prime
+/test_inet
 
 # ---> C
 # Prerequisites
