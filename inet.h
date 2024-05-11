@@ -107,12 +107,6 @@ int has_flag(short value, short flag) {
 int is_connected(int fd) {
   errno = 0;
 
-  struct pollfd {
-    int   fd;         /* file descriptor */
-    short events;     /* requested events */
-    short revents;    /* returned events */
-  };
-
   struct pollfd poll_data;
   poll_data.fd = fd;
   poll_data.events = ~0;
