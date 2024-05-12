@@ -63,13 +63,17 @@ struct receiving_buffer make_receive_buffer(int size) {
   buffer.buffer_size = 0;
   
   if(size < 8) {
+    debug_printf("Refusing to make buffer with size %d: too small!", size);
     return buffer;
   }
 
   int actual_size = size + sizeof(int);
   
   void* ptr = tMalloc(actual_size);
-  if(ptr == NULL) return buffer;
+  if(ptr == NULL) {
+    debug_print("Could not allocate space for buffer!");
+    return buffer;
+  }
 
   buffer.actual_buffer = ptr;
   buffer.actual_size = actual_size;
@@ -81,6 +85,8 @@ struct receiving_buffer make_receive_buffer(int size) {
 
   buffer.buffer = ptr + sizeof(int);
   buffer.buffer_size = size;
+
+  debug_printf("Created buffer with size %d (Actual: %d, %d for size)", size, actual_size, sizeof(int));
   
   return buffer;
 }
@@ -187,6 +193,8 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
       // Clear out buffer read data
       buffer->received = 0;
       buffer->message_size = 0;
+
+      debug_printf("Finished reading message of size %d", size);
 
       return size;
     }
