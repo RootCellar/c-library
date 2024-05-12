@@ -27,6 +27,55 @@
 
 #include "memory.h"
 
+// Struct(s)
+
+struct receiving_buffer {
+
+  // Used by user and implementation
+
+  void* buffer;
+  int buffer_size;
+
+  // Used by implementation
+  char* actual_buffer;
+  int actual_size;
+  
+  int message_size;
+  int message_size_received;
+  
+  int received;
+};
+
+// Functions
+
+struct receiving_buffer make_receive_buffer(int size) {
+  
+  struct receiving_buffer buffer;
+  buffer.buffer = NULL;
+  buffer.buffer_size = 0;
+  
+  if(size < 8) {
+    return buffer;
+  }
+
+  int actual_size = size + sizeof(int);
+  
+  void* ptr = tMalloc(actual_size);
+  if(ptr == NULL) return buffer;
+
+  buffer.actual_buffer = ptr;
+  buffer.actual_size = actual_size;
+  
+  buffer.message_size = 0;
+  buffer.message_size_received = 0;
+  
+  buffer.received = 0;
+
+  buffer.buffer = ptr + sizeof(int);
+  buffer.buffer_size = size;
+  
+  return buffer;
+}
 
 
 /*
