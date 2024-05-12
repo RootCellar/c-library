@@ -53,4 +53,12 @@ void main() {
 
   struct receiving_buffer server_buffer = make_receive_buffer(128);
   TEST( server_buffer.buffer != NULL, "a valid server side buffer is created");
+
+  result = 0;
+  start = clock();
+  now = start;
+  while(now - start < 4000 && result == 0) {
+    result = read_buffer(server_fd_to_client, &server_buffer);
+    now = clock();
+  }
 }
