@@ -61,6 +61,7 @@ void main() {
     result = read_buffer(server_fd_to_client, &server_buffer);
     now = clock();
   }
+  TEST( result != -1, "server didn't get an error while reading");
   TEST( result == strlen(to_write), "server recieved correct number of bytes");
 
   for(int i = 0; i < strlen(to_write); i++) {
