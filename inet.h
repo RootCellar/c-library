@@ -27,7 +27,9 @@
 
 #include "memory.h"
 
+
 // Struct(s)
+
 
 struct receiving_buffer {
 
@@ -46,7 +48,13 @@ struct receiving_buffer {
   int received;
 };
 
+
 // Functions
+
+
+int has_flag(short value, short flag) {
+  return value & flag;
+}
 
 struct receiving_buffer make_receive_buffer(int size) {
   
@@ -77,6 +85,118 @@ struct receiving_buffer make_receive_buffer(int size) {
   return buffer;
 }
 
+int is_connected(int fd) {
+  errno = 0;
+
+  struct pollfd poll_data;
+  poll_data.fd = fd;
+  poll_data.events = ~0;
+  int result = poll(&poll_data, 1, 1);
+
+  if(result == 0) {
+    // Timed out
+    return 0;
+  }
+  else if(result < 0) {
+    // Error
+    perror("is_connected");
+    return -1;
+  }
+  else if(has_flag(poll_data.revents, POLLERR)) {
+    // Socket error
+    return -1;
+  }
+
+  return 1;
+  
+}
+
+int has_data(int fd) {
+  errno = 0;
+
+  struct pollfd poll_data;
+  poll_data.fd = fd;
+  poll_data.events = POLLIN;
+  int result = poll(&poll_data, 1, 1);
+
+  if(result == 0) {
+    // Timed out
+    return 0;
+  }
+  else if(result < 0) {
+    // Error
+    perror("is_connected");
+    return -1;
+  }
+  else if(has_flag(poll_data.revents, POLLERR)) {
+    // Socket error
+    return -1;
+  }
+
+  return 1;
+  
+}
+
+int read_buffer(int fd, struct receiving_buffer* buffer) {
+  errno = 0;
+
+  if(buffer->message_size_received < sizeof(int)) {
+  
+    // Work on getting the size of the message
+    if(!has_data(fd)) return 0;
+    int amount_read = read(fd, buffer->actual_buffer, sizeof(int) - buffer->message_size_received);
+    debug_printf("Read %d", amount_read);
+
+    if(errno != 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
+      perror("read_buffer");
+      return -1;
+    }
+
+    buffer->message_size_received += amount_read;
+    
+    if(buffer->message_size_received == sizeof(int)) {
+      for(int i = 0; i < sizeof(int); i++) {
+        buffer->message_size <<= 8;
+        buffer->message_size |= buffer->actual_buffer[i] & 0xFF;
+      }
+      debug_printf("Message size: %d", buffer->message_size);
+    }
+    
+  }
+
+  if(buffer->message_size > 0) {
+
+    // Work on reading the message
+    if(!has_data(fd)) return 0;
+    int amount_left = buffer->message_size - buffer->received;
+    debug_printf("amount_left %d", amount_left);
+    int amount_read = read(fd, buffer->buffer, amount_left);
+    debug_printf("Read %d", amount_read);
+
+    if(errno != 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
+      perror("read_buffer");
+      return -1;
+    }
+
+    buffer->received += amount_read;
+
+    if(buffer->received == buffer->message_size) {
+      // We have the full message
+      int size = buffer->message_size;
+
+      // Clear out buffer read data
+      buffer->received = 0;
+      buffer->message_size = 0;
+
+      return size;
+    }
+    
+    // Don't have a full message yet
+    return 0;
+    
+  }
+  
+}
 
 /*
  * Setup the given socket file descriptor
@@ -84,19 +204,40 @@ struct receiving_buffer make_receive_buffer(int size) {
 */
 int setup_socket_flags(int fd) {
   int flags = fcntl(fd, F_GETFL, 0);
-  fcntl(fd, F_SETFL, flags | O_NONBLOCK);
+  fcntl(fd, F_SETFL, flags | O_NONBLOCK | O_NDELAY);
 
-  flags = 1;
-  setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, (char *) &flags, sizeof(int));
+  // flags = 1;
+  // setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, (char *) &flags, sizeof(int));
 
   return 1;
 }
 
 int send_buffer(int fd, char* data, int count) {
-  int sent;
+  errno = 0;
+
+  int sent = 0;
   int total_sent = 0;
+
+  // Send message size
   
-  while (total_sent < count) {
+  while(total_sent < sizeof(int)) {
+    debug_printf("Count: %d", count);
+    sent = write(fd, ((void*)&count) + total_sent, sizeof(int) - total_sent);
+
+    if(sent >= 0) total_sent += sent;
+
+    if(sent < 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
+      perror("send_buffer");
+      return 1;
+    }
+  }
+
+  // Send buffer
+
+  sent = 0;
+  total_sent = 0;
+  
+  while(total_sent < count) {
     sent = write(fd, data + total_sent, count - total_sent);
 
     if(sent >= 0) total_sent += sent;
@@ -134,37 +275,9 @@ int accept_connection(int fd) {
   return new_socket;
 }
 
-int has_flag(short value, short flag) {
-  return value & flag;
-}
-
-int is_connected(int fd) {
-  errno = 0;
-
-  struct pollfd poll_data;
-  poll_data.fd = fd;
-  poll_data.events = ~0;
-  int result = poll(&poll_data, 1, 1);
-
-  if(result == 0) {
-    // Timed out
-    return 0;
-  }
-  else if(result < 0) {
-    // Error
-    perror("is_connected");
-    return -1;
-  }
-  else if(has_flag(poll_data.revents, POLLERR)) {
-    // Socket error
-    return -1;
-  }
-
-  return 1;
-  
-}
-
 int create_connection(char* host, int port) {
+  errno = 0;
+  
   int sock = -1;
   sock = socket(AF_INET, SOCK_STREAM, 0);
   if(sock < 0) {
