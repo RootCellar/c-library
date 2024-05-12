@@ -65,8 +65,5 @@ void main() {
   TEST( result != -1, "server didn't get an error while reading");
   TEST( result == strlen(to_write), "server recieved correct number of bytes");
 
-  for(int i = 0; i < strlen(to_write); i++) {
-    char value = ((char*)server_buffer.buffer)[i];
-    TEST( value == to_write[i], "server recieved correct data");
-  }
+  TEST( strcmp((char*) server_buffer.buffer, to_write) == 0, "server recieved correct data");
 }
