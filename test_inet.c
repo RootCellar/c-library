@@ -7,6 +7,7 @@
 
 void main() {
   int result = 0;
+  debug_printf("CLOCKS_PER_SEC: %ld", CLOCKS_PER_SEC);
 
   int client_socket = create_connection("localhost", PORT);
   TEST( client_socket >= 0, "client socket can be created" );
