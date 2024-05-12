@@ -1,3 +1,19 @@
+/**
+ *
+ * Darian Marvel / RootCellar
+ *
+ * A simple library that provides packet-based messaging over TCP.
+ *
+ *
+ * a few details:
+ *   * This program assumes that the endian-ness of the client and server are the same
+ *   * This program assumes that sizes for basic data types are the same on the client and server
+ *   * Reading is non-blocking
+ *   * Initiating and accepting connections are non-blocking
+ *   * Writing *may* block depending on kernel activity, but generally shouldn't for very long
+ *
+*/
+
 #ifndef INET_H
 #define INET_H
 
