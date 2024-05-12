@@ -110,24 +110,6 @@ int send_buffer(int fd, char* data, int count) {
   return 0;
 }
 
-int read_buffer(int fd, char* buffer, int size) {
-  int received;
-  int total_read = 0;
-  
-  while (total_read < size) {
-    received = read(fd, buffer + total_read, size - total_read);
-
-    if(received >= 0) total_read += received;
-
-    if(received < 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
-      perror("read_buffer");
-      return 1;
-    }
-  }
-
-  return 0;
-}
-
 int send_string(int fd, char* data) {
   return send_buffer(fd, data, strlen(data));
 }
