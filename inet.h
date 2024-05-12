@@ -28,6 +28,13 @@
 #include "memory.h"
 
 
+// Constants
+
+
+#define MESSAGE_SIZE_TYPE int
+#define MESSAGE_SIZE_BYTES (sizeof(MESSAGE_SIZE_TYPE))
+
+
 // Struct(s)
 
 
@@ -67,7 +74,7 @@ struct receiving_buffer make_receive_buffer(int size) {
     return buffer;
   }
 
-  int actual_size = size + sizeof(int);
+  int actual_size = size + MESSAGE_SIZE_BYTES;
   
   void* ptr = tMalloc(actual_size);
   if(ptr == NULL) {
@@ -83,10 +90,10 @@ struct receiving_buffer make_receive_buffer(int size) {
   
   buffer.received = 0;
 
-  buffer.buffer = ptr + sizeof(int);
+  buffer.buffer = ptr + MESSAGE_SIZE_BYTES;
   buffer.buffer_size = size;
 
-  debug_printf("Created buffer with size %d (Actual: %d, %d for size)", size, actual_size, sizeof(int));
+  debug_printf("Created buffer with size %d (Actual: %d, %d for size)", size, actual_size, MESSAGE_SIZE_BYTES);
   
   return buffer;
 }
@@ -146,11 +153,11 @@ int has_data(int fd) {
 int read_buffer(int fd, struct receiving_buffer* buffer) {
   errno = 0;
 
-  if(buffer->message_size_received < sizeof(int)) {
+  if(buffer->message_size_received < MESSAGE_SIZE_BYTES) {
   
     // Work on getting the size of the message
     if(!has_data(fd)) return 0;
-    int amount_read = read(fd, buffer->actual_buffer + buffer->message_size_received, sizeof(int) - buffer->message_size_received);
+    int amount_read = read(fd, buffer->actual_buffer + buffer->message_size_received, MESSAGE_SIZE_BYTES - buffer->message_size_received);
     debug_printf("Read %d", amount_read);
 
     if(errno != 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
@@ -160,8 +167,8 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
 
     buffer->message_size_received += amount_read;
     
-    if(buffer->message_size_received == sizeof(int)) {
-      for(int i = sizeof(int) - 1; i >= 0; i--) {
+    if(buffer->message_size_received == MESSAGE_SIZE_BYTES) {
+      for(int i = MESSAGE_SIZE_BYTES - 1; i >= 0; i--) {
         buffer->message_size <<= 8;
         buffer->message_size |= buffer->actual_buffer[i] & 0xFF;
       }
@@ -228,9 +235,9 @@ int send_buffer(int fd, char* data, int count) {
 
   // Send message size
   
-  while(total_sent < sizeof(int)) {
+  while(total_sent < MESSAGE_SIZE_BYTES) {
     debug_printf("Count: %d", count);
-    sent = write(fd, ((void*)&count) + total_sent, sizeof(int) - total_sent);
+    sent = write(fd, ((void*)&count) + total_sent, MESSAGE_SIZE_BYTES - total_sent);
 
     if(sent >= 0) total_sent += sent;
 
