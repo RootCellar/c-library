@@ -48,5 +48,6 @@ void main() {
   char* to_write = "hello from the client!";
   TEST( send_string(client_socket, to_write) == 0, "client successfully sends a string to the server");
 
-  
+  struct receiving_buffer server_buffer = make_receive_buffer(128);
+  TEST( server_buffer.buffer != NULL, "a valid server side buffer is created");
 }
