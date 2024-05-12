@@ -144,7 +144,7 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
   
     // Work on getting the size of the message
     if(!has_data(fd)) return 0;
-    int amount_read = read(fd, buffer->actual_buffer, sizeof(int) - buffer->message_size_received);
+    int amount_read = read(fd, buffer->actual_buffer + buffer->message_size_received, sizeof(int) - buffer->message_size_received);
     debug_printf("Read %d", amount_read);
 
     if(errno != 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
@@ -170,7 +170,7 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
     if(!has_data(fd)) return 0;
     int amount_left = buffer->message_size - buffer->received;
     debug_printf("amount_left %d", amount_left);
-    int amount_read = read(fd, buffer->buffer, amount_left);
+    int amount_read = read(fd, buffer->buffer + buffer->received, amount_left);
     debug_printf("Read %d", amount_read);
 
     if(errno != 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
