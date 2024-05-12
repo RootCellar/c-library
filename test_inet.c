@@ -4,6 +4,7 @@
 #include "inet.h"
 
 #define PORT 40001
+#define BUFFER_SIZE 128
 
 void main() {
   int result = 0;
@@ -51,7 +52,7 @@ void main() {
   char* to_write = "hello from the client!";
   TEST( send_string(client_socket, to_write) == 0, "client successfully sends a string to the server");
 
-  struct receiving_buffer server_buffer = make_receive_buffer(128);
+  struct receiving_buffer server_buffer = make_receive_buffer(BUFFER_SIZE);
   TEST( server_buffer.buffer != NULL, "a valid server side buffer is created");
 
   result = 0;
