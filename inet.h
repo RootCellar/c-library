@@ -155,7 +155,7 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
     buffer->message_size_received += amount_read;
     
     if(buffer->message_size_received == sizeof(int)) {
-      for(int i = 0; i < sizeof(int); i++) {
+      for(int i = sizeof(int) - 1; i >= 0; i--) {
         buffer->message_size <<= 8;
         buffer->message_size |= buffer->actual_buffer[i] & 0xFF;
       }
