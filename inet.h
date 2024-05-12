@@ -166,7 +166,6 @@ int create_connection(char* host, int port) {
   debug_printf("Returning fd %d", sock);
 
   return sock;
-
 }
 
 int create_server_socket(int port) {
