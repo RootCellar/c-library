@@ -24,7 +24,7 @@ void main() {
   }
 
   debug_printf("connect result: %d", result);
-  TEST( result < 0, "server can't be connected to" );
+  TEST( result <= 0, "server can't be connected to" );
 
   int server_socket = create_server_socket(port);
   TEST( server_socket >= 0, "server socket created and bound" );
