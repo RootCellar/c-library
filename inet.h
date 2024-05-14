@@ -151,8 +151,8 @@ int is_connected(int fd) {
     perror("is_connected");
     return -1;
   }
-  else if(has_flag(poll_data.revents, POLLERR)) {
-    // Socket error
+  else if(has_flag(poll_data.revents, POLLERR | POLLNVAL | POLLHUP)) {
+    // Socket error - disconnected
     return -1;
   }
 
