@@ -148,7 +148,7 @@ int is_connected(int fd) {
   }
   else if(result < 0) {
     // Error
-    perror("is_connected");
+    perror("poll");
     return -1;
   }
   else if(has_flag(poll_data.revents, POLLERR | POLLNVAL | POLLHUP)) {
