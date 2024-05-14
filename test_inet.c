@@ -16,11 +16,11 @@ void main() {
 
   int client_socket = create_connection("localhost", port);
   TEST( client_socket >= 0, "client socket can be created" );
-  time_t start = clock();
+  time_t start = time(NULL);
   time_t now = start;
-  while(now - start < CLOCKS_PER_SEC && result == 0) {
+  while(now - start < 5 && result == 0) {
     result = is_connected(client_socket);
-    now = clock();
+    now = time(NULL);
   }
 
   debug_printf("connect result: %d", result);
@@ -34,22 +34,22 @@ void main() {
   client_socket = create_connection("localhost", port);
   TEST( client_socket >= 0, "client socket can be created" );
   result = 0;
-  start = clock();
+  start = time(NULL);
   now = start;
-  while(now - start < CLOCKS_PER_SEC && result == 0) {
+  while(now - start < 1 && result == 0) {
     result = is_connected(client_socket);
-    now = clock();
+    now = time(NULL);
   }
 
   debug_printf("connect result: %d", result);
   TEST( result == 1, "server can be connected to" );
 
   int server_fd_to_client = -1;
-  start = clock();
+  start = time(NULL);
   now = start;
-  while(now - start < CLOCKS_PER_SEC && server_fd_to_client == -1) {
+  while(now - start < 1 && server_fd_to_client == -1) {
     server_fd_to_client = accept_connection(server_socket);
-    now = clock();
+    now = time(NULL);
   }
   TEST( server_fd_to_client >= 0, "accept_connection accepted a connection");
 
@@ -60,11 +60,11 @@ void main() {
   TEST( server_buffer.buffer != NULL, "a valid server side buffer is created");
 
   result = 0;
-  start = clock();
+  start = time(NULL);
   now = start;
-  while(now - start < 4000 && result == 0) {
+  while(now - start < 1 && result == 0) {
     result = read_buffer(server_fd_to_client, &server_buffer);
-    now = clock();
+    now = time(NULL);
   }
   TEST( result != -1, "server didn't get an error while reading");
   TEST( result == strlen(to_write), "server recieved correct number of bytes");
