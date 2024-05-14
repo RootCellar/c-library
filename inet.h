@@ -193,6 +193,39 @@ int has_data(int fd) {
 }
 
 /*
+ * Checks to see if the socket given by the file descriptor 'fd' can be written to without blocking.
+ * 
+ * Return values:
+ * 1 : A write() call on the socket should be non-blocking.
+ * 0 : A write() call may block.
+ * -1 : The socket has an error, and is probably disconnected.
+*/
+int can_write_non_blocking(int fd) {
+  errno = 0;
+
+  struct pollfd poll_data;
+  poll_data.fd = fd;
+  poll_data.events = POLLOUT;
+  int result = poll(&poll_data, 1, 1);
+
+  if(result == 0) {
+    // Timed out
+    return 0;
+  }
+  else if(result < 0) {
+    // Error
+    perror("is_connected");
+    return -1;
+  }
+  else if(has_flag(poll_data.revents, POLLERR | POLLNVAL | POLLHUP)) {
+    // Socket error
+    return -1;
+  }
+
+  return 1;
+}
+
+/*
  * Reads from the socket given by 'fd' into the given buffer.
  *
  * - This function reads full messages.
