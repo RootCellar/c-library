@@ -139,7 +139,7 @@ int is_connected(int fd) {
 
   struct pollfd poll_data;
   poll_data.fd = fd;
-  poll_data.events = POLLOUT;
+  poll_data.events = POLLOUT | POLLIN;
   int result = poll(&poll_data, 1, 1);
 
   if(result == 0) {
