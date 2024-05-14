@@ -3,14 +3,18 @@
 #include "test.h"
 #include "inet.h"
 
-#define PORT 40001
 #define BUFFER_SIZE 128
 
 void main() {
+  srand(time(NULL));
+
+  int port = (rand() % 2000) + 40000;
+  debug_printf("Port: %d", port);
+
   int result = 0;
   debug_printf("CLOCKS_PER_SEC: %ld", CLOCKS_PER_SEC);
 
-  int client_socket = create_connection("localhost", PORT);
+  int client_socket = create_connection("localhost", port);
   TEST( client_socket >= 0, "client socket can be created" );
   time_t start = clock();
   time_t now = start;
@@ -22,12 +26,12 @@ void main() {
   debug_printf("connect result: %d", result);
   TEST( result < 0, "server can't be connected to" );
 
-  int server_socket = create_server_socket(PORT);
+  int server_socket = create_server_socket(port);
   TEST( server_socket >= 0, "server socket created and bound" );
 
   TEST( accept_connection(server_socket) == -1, "accept_connection while no clients are connecting");
 
-  client_socket = create_connection("localhost", PORT);
+  client_socket = create_connection("localhost", port);
   TEST( client_socket >= 0, "client socket can be created" );
   result = 0;
   start = clock();
