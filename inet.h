@@ -157,7 +157,6 @@ int is_connected(int fd) {
   }
 
   return 1;
-  
 }
 
 /*
@@ -191,7 +190,6 @@ int has_data(int fd) {
   }
 
   return 1;
-  
 }
 
 /*
@@ -269,7 +267,6 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
     
     // Don't have a full message yet
     return 0;
-    
   }
   
 }
