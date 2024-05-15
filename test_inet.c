@@ -14,7 +14,7 @@ void main() {
   int result = 0;
   debug_printf("CLOCKS_PER_SEC: %ld", CLOCKS_PER_SEC);
 
-  int client_socket = create_connection("localhost", port);
+  int client_socket = create_connection("127.0.0.1", port);
   TEST( client_socket >= 0, "client socket can be created" );
   time_t start = time(NULL);
   time_t now = start;
@@ -31,7 +31,7 @@ void main() {
 
   TEST( accept_connection(server_socket) == -1, "accept_connection while no clients are connecting");
 
-  client_socket = create_connection("localhost", port);
+  client_socket = create_connection("127.0.0.1", port);
   TEST( client_socket >= 0, "client socket can be created" );
   result = 0;
   start = time(NULL);
