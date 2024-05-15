@@ -7,6 +7,7 @@
 
 void main() {
   srand(time(NULL));
+  signal(SIGPIPE,SIG_IGN);
 
   int port = (rand() % 2000) + 40000;
   debug_printf("Port: %d", port);
