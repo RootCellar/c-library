@@ -18,7 +18,7 @@ void main() {
   TEST( client_socket >= 0, "client socket can be created" );
   time_t start = time(NULL);
   time_t now = start;
-  while(now - start < 5 && result == 0) {
+  while(now - start < 2 && result == 0) {
     result = is_connected(client_socket);
     now = time(NULL);
   }
