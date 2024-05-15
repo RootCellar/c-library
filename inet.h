@@ -60,7 +60,7 @@ struct receiving_buffer {
 
   // Used by user and implementation
 
-  void* buffer;
+  char* buffer;
   int buffer_size;
 
   // Used by implementation

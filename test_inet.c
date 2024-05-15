@@ -69,7 +69,7 @@ void main() {
   TEST( result != -1, "server didn't get an error while reading");
   TEST( result == strlen(to_write) + 1, "server recieved correct number of bytes");
 
-  TEST( strcmp((char*) server_buffer.buffer, to_write) == 0, "server recieved correct data");
+  TEST( strcmp(server_buffer.buffer, to_write) == 0, "server recieved correct data");
 
   free_receiving_buffer(&server_buffer);
 
