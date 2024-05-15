@@ -70,4 +70,9 @@ void main() {
   TEST( result == strlen(to_write) + 1, "server recieved correct number of bytes");
 
   TEST( strcmp((char*) server_buffer.buffer, to_write) == 0, "server recieved correct data");
+
+  free_receiving_buffer(&server_buffer);
+
+  TEST( tGetTotalAllocs() == 0, "tGetTotalAllocs() after freeing memory");
+  TEST( tGetTotalAllocSize() == 0, "tGetTotalAllocSize() after freeing memory");
 }

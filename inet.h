@@ -127,6 +127,10 @@ struct receiving_buffer make_receive_buffer(int size) {
   return buffer;
 }
 
+void free_receiving_buffer(struct receiving_buffer* buffer) {
+  tFree(buffer->actual_buffer);
+}
+
 /*
  * Checks to see if the socket given by the file descriptor 'fd' is connected.
  * 
