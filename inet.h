@@ -369,7 +369,7 @@ int send_buffer(int fd, char* data, int count) {
  * Convenience function to send a regular string using send_buffer().
 */
 int send_string(int fd, char* data) {
-  return send_buffer(fd, data, strlen(data));
+  return send_buffer(fd, data, strlen(data) + 1);
 }
 
 /*
