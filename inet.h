@@ -86,6 +86,39 @@ int has_flag(short value, short flag) {
 }
 
 /*
+ * Allocates memory for the given buffer and fills in the struct if it is successful.
+ * If it is not successful, the function leaves the given buffer unchanged.
+*/
+void allocate_receiving_buffer(struct receiving_buffer* buffer, int size) {
+  if(size < 8) {
+    debug_printf("Refusing to make buffer with size %d: too small!", size);
+    return;
+  }
+
+  int actual_size = size + MESSAGE_SIZE_BYTES;
+  
+  void* ptr = tMalloc(actual_size);
+  if(ptr == NULL) {
+    debug_print("Could not allocate space for buffer!");
+    return;
+  }
+
+  buffer->actual_buffer = ptr;
+  buffer->actual_size = actual_size;
+  
+  buffer->message_size = 0;
+  buffer->message_size_received = 0;
+  
+  buffer->received = 0;
+
+  buffer->buffer = ptr + MESSAGE_SIZE_BYTES;
+  buffer->buffer_size = size;
+
+  debug_printf("Allocated buffer with size %d (Actual: %d, %d for size)", size, actual_size, MESSAGE_SIZE_BYTES);
+}
+
+
+/*
  * Creates a receiving_buffer struct to be used in function calls like
  * read_buffer().
  * 
@@ -98,35 +131,17 @@ struct receiving_buffer make_receive_buffer(int size) {
   buffer.buffer = NULL;
   buffer.buffer_size = 0;
   
-  if(size < 8) {
-    debug_printf("Refusing to make buffer with size %d: too small!", size);
-    return buffer;
-  }
+  allocate_receiving_buffer(&buffer, size);
 
-  int actual_size = size + MESSAGE_SIZE_BYTES;
-  
-  void* ptr = tMalloc(actual_size);
-  if(ptr == NULL) {
-    debug_print("Could not allocate space for buffer!");
-    return buffer;
-  }
-
-  buffer.actual_buffer = ptr;
-  buffer.actual_size = actual_size;
-  
-  buffer.message_size = 0;
-  buffer.message_size_received = 0;
-  
-  buffer.received = 0;
-
-  buffer.buffer = ptr + MESSAGE_SIZE_BYTES;
-  buffer.buffer_size = size;
-
-  debug_printf("Created buffer with size %d (Actual: %d, %d for size)", size, actual_size, MESSAGE_SIZE_BYTES);
+  debug_printf("Created buffer with size %d", size);
   
   return buffer;
 }
 
+/*
+ * Frees the memory of the given receiving_buffer.
+ * This function does not clear the fields of the given buffer.
+*/
 void free_receiving_buffer(struct receiving_buffer* buffer) {
   tFree(buffer->actual_buffer);
 }
