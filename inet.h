@@ -166,13 +166,9 @@ int is_connected(int fd) {
     // Timed out
     return 0;
   }
-  else if(result < 0) {
-    // Error
-    perror("poll");
-    return -1;
-  }
-  else if(has_flag(poll_data.revents, POLLERR | POLLNVAL | POLLHUP)) {
-    // Socket error - disconnected
+  else if(result < 0 || has_flag(poll_data.revents, POLLERR | POLLNVAL | POLLHUP)) {
+    // Socket error
+    perror("is_connected");
     return -1;
   }
 
@@ -199,13 +195,9 @@ int has_data(int fd) {
     // Timed out
     return 0;
   }
-  else if(result < 0) {
-    // Error
-    perror("is_connected");
-    return -1;
-  }
-  else if(has_flag(poll_data.revents, POLLERR | POLLNVAL | POLLHUP)) {
+  else if(result < 0 || has_flag(poll_data.revents, POLLERR | POLLNVAL | POLLHUP)) {
     // Socket error
+    perror("has_data");
     return -1;
   }
 
@@ -232,13 +224,9 @@ int can_write_non_blocking(int fd) {
     // Timed out
     return 0;
   }
-  else if(result < 0) {
-    // Error
-    perror("is_connected");
-    return -1;
-  }
-  else if(has_flag(poll_data.revents, POLLERR | POLLNVAL | POLLHUP)) {
+  else if(result < 0 || has_flag(poll_data.revents, POLLERR | POLLNVAL | POLLHUP)) {
     // Socket error
+    perror("can_write_non_blocking");
     return -1;
   }
 
