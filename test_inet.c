@@ -71,6 +71,20 @@ void main() {
 
   TEST( strcmp(server_buffer.buffer, to_write) == 0, "server recieved correct data");
 
+  close(client_socket);
+  
+  result = 0;
+  start = time(NULL);
+  now = start;
+  while(now - start < 4 && result == 0) {
+    result = read_buffer(server_fd_to_client, &server_buffer);
+    now = time(NULL);
+  }
+  debug_printf("read result: %d", result);
+  TEST( read_buffer(server_fd_to_client, &server_buffer) < 1, "server read_buffer() after socket is closed");
+  TEST( send_string(client_socket, to_write) == 1, "client fails to send a string after close()");
+  TEST( send_string(server_fd_to_client, to_write) == 1, "server fails to send a string after close()");
+
   free_receiving_buffer(&server_buffer);
 
   TEST( tGetTotalAllocs() == 0, "tGetTotalAllocs() after freeing memory");
