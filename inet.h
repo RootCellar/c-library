@@ -9,6 +9,7 @@
  *   * This program assumes that the endian-ness of the client and server are the same
  *   * This program assumes that sizes for basic data types are the same on the client and server
  *   * The send and receive functions are only intended to work with both the server and the client using this same library
+ *   * Function calls involving sockets may reset errno to 0
  *   * Reading is non-blocking
  *   * Initiating and accepting connections are non-blocking
  *   * Writing *may* block depending on kernel activity, but generally shouldn't for very long
