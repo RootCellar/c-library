@@ -312,6 +312,7 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
       // Clear out buffer read data
       buffer->received = 0;
       buffer->message_size = 0;
+      buffer->message_size_received = 0;
 
       debug_printf("Finished reading message of size %d", size);
 
