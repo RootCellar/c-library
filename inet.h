@@ -390,6 +390,20 @@ int send_buffer(int fd, char* data, int count) {
 }
 
 /*
+ * Sends nothing through the given socket. send_buffer() will still send the message size,
+ * which will be received as an ignored message on the other end of the socket.
+ *
+ * This is a sure method of determining whether or not the socket is still connected.
+ *
+ * Return values:
+ *   1 : Could not send a message. Socket is disconnected.
+ *   0 : Sending was successful. Socket seems to be connected.
+*/
+int send_nothing(int fd) {
+  return send_buffer(fd, NULL, 0);
+}
+
+/*
  * Convenience function to send a regular string using send_buffer().
 */
 int send_string(int fd, char* data) {
