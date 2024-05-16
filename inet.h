@@ -258,7 +258,6 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
     }
 
     int amount_read = read(fd, buffer->actual_buffer + buffer->message_size_received, MESSAGE_SIZE_BYTES - buffer->message_size_received);
-    debug_printf("Read %d", amount_read);
 
     if(errno != 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
       perror("read_buffer");
@@ -273,7 +272,6 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
         buffer->message_size |= buffer->actual_buffer[i] & 0xFF;
       }
       
-      debug_printf("Message size: %d", buffer->message_size);
       if(buffer->message_size == 0) {
         buffer->message_size_received = 0;
       }
@@ -297,9 +295,7 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
     }
 
     int amount_left = buffer->message_size - buffer->received;
-    debug_printf("amount_left %d", amount_left);
     int amount_read = read(fd, buffer->buffer + buffer->received, amount_left);
-    debug_printf("Read %d", amount_read);
 
     if(errno != 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
       perror("read_buffer");
@@ -316,8 +312,6 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
       buffer->received = 0;
       buffer->message_size = 0;
       buffer->message_size_received = 0;
-
-      debug_printf("Finished reading message of size %d", size);
 
       return size;
     }
@@ -359,7 +353,6 @@ int send_buffer(int fd, char* data, int count) {
   // Send message size
   
   while(total_sent < MESSAGE_SIZE_BYTES) {
-    debug_printf("Count: %d", count);
     sent = write(fd, ((void*)&count) + total_sent, MESSAGE_SIZE_BYTES - total_sent);
 
     if(sent >= 0) total_sent += sent;
