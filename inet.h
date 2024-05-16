@@ -259,7 +259,7 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
       return -1;
     }
 
-    buffer->message_size_received += amount_read;
+    if(amount_read > 0) buffer->message_size_received += amount_read;
     
     if(buffer->message_size_received == MESSAGE_SIZE_BYTES) {
       for(int i = MESSAGE_SIZE_BYTES - 1; i >= 0; i--) {
@@ -291,7 +291,7 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
       return -1;
     }
 
-    buffer->received += amount_read;
+    if(amount_read > 0) buffer->received += amount_read;
 
     if(buffer->received == buffer->message_size) {
       // We have the full message
