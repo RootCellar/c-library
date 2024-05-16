@@ -274,6 +274,9 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
       }
       
       debug_printf("Message size: %d", buffer->message_size);
+      if(buffer->message_size == 0) {
+        buffer->message_size_received = 0;
+      }
 
       if(buffer->message_size > buffer->buffer_size) {
         debug_printf("Message of size %d is too large for buffer (%d)!", buffer->message_size, buffer->buffer_size);
