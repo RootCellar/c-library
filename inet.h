@@ -250,7 +250,13 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
   if(buffer->message_size_received < MESSAGE_SIZE_BYTES) {
   
     // Work on getting the size of the message
-    if(!has_data(fd)) return 0;
+    int status = has_data(fd);
+    if(status == 0) {
+      return 0;
+    } else if(status == -1) {
+      return -1;
+    }
+
     int amount_read = read(fd, buffer->actual_buffer + buffer->message_size_received, MESSAGE_SIZE_BYTES - buffer->message_size_received);
     debug_printf("Read %d", amount_read);
 
@@ -280,7 +286,13 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
   if(buffer->message_size > 0) {
 
     // Work on reading the message
-    if(!has_data(fd)) return 0;
+    int status = has_data(fd);
+    if(status == 0) {
+      return 0;
+    } else if(status == -1) {
+      return -1;
+    }
+
     int amount_left = buffer->message_size - buffer->received;
     debug_printf("amount_left %d", amount_left);
     int amount_read = read(fd, buffer->buffer + buffer->received, amount_left);
