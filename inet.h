@@ -338,12 +338,12 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
   if(buffer->message_size_received < MESSAGE_SIZE_BYTES) {
   
     // Work on getting the size of the message
+    if(connection_keepalive(fd, buffer) < 0) {
+      return -1;
+    }
     int status = has_data(fd);
     if(status < 1) {
       return status;
-    }
-    if(connection_keepalive(fd, buffer) < 0) {
-      return -1;
     }
 
     int amount_read = read(fd, buffer->actual_buffer + buffer->message_size_received, MESSAGE_SIZE_BYTES - buffer->message_size_received);
@@ -376,12 +376,12 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
   if(buffer->message_size > 0) {
 
     // Work on reading the message
+    if(connection_keepalive(fd, buffer) < 0) {
+      return -1;
+    }
     int status = has_data(fd);
     if(status < 1) {
       return status;
-    }
-    if(connection_keepalive(fd, buffer) < 0) {
-      return -1;
     }
 
     int amount_left = buffer->message_size - buffer->received;
