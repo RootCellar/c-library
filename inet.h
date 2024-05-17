@@ -40,6 +40,7 @@
 #include <errno.h>
 #include <signal.h>
 #include <poll.h>
+#include <time.h>
 
 // Local libraries
 
@@ -48,6 +49,8 @@
 
 // Constants
 
+
+#define CONNECTION_TIMEOUT 10 // seconds
 
 #define MESSAGE_SIZE_TYPE int
 #define MESSAGE_SIZE_BYTES (sizeof(MESSAGE_SIZE_TYPE))
@@ -71,6 +74,9 @@ struct receiving_buffer {
   int message_size_received;
   
   int received;
+
+  time_t last_received;
+  
 };
 
 
@@ -113,6 +119,8 @@ void allocate_receiving_buffer(struct receiving_buffer* buffer, int size) {
 
   buffer->buffer = ptr + MESSAGE_SIZE_BYTES;
   buffer->buffer_size = size;
+
+  buffer->last_received = time(NULL);
 
   debug_printf("Allocated buffer with size %d (Actual: %d, %d for size)", size, actual_size, MESSAGE_SIZE_BYTES);
 }
