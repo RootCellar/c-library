@@ -155,6 +155,66 @@ void free_receiving_buffer(struct receiving_buffer* buffer) {
 }
 
 /*
+ * Sends 'count' bytes of the buffer 'data' through the socket given by 'fd'
+ * as a complete message.
+ *
+ * This function sends the size of the message just before sending the actual message.
+ * This function blocks until the message has been fully sent.
+ * 
+*/
+int send_buffer(int fd, char* data, int count) {
+  errno = 0;
+
+  int sent = 0;
+  int total_sent = 0;
+
+  // Send message size
+  
+  while(total_sent < MESSAGE_SIZE_BYTES) {
+    sent = write(fd, ((void*)&count) + total_sent, MESSAGE_SIZE_BYTES - total_sent);
+
+    if(sent >= 0) total_sent += sent;
+
+    if(sent < 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
+      perror("send_buffer");
+      return 1;
+    }
+  }
+
+  // Send buffer
+
+  sent = 0;
+  total_sent = 0;
+  
+  while(total_sent < count) {
+    sent = write(fd, data + total_sent, count - total_sent);
+
+    if(sent >= 0) total_sent += sent;
+
+    if(sent < 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
+      perror("send_buffer");
+      return 1;
+    }
+  }
+
+  return 0;
+}
+
+/*
+ * Sends nothing through the given socket. send_buffer() will still send the message size,
+ * which will be received as an ignored message on the other end of the socket.
+ *
+ * This is a sure method of determining whether or not the socket is still connected.
+ *
+ * Return values:
+ *   1 : Could not send a message. Socket is disconnected.
+ *   0 : Sending was successful. Socket seems to be connected.
+*/
+int send_nothing(int fd) {
+  return send_buffer(fd, NULL, 0);
+}
+
+/*
  * Checks to see if the socket given by the file descriptor 'fd' is connected.
  * 
  * Return values:
@@ -342,66 +402,6 @@ int setup_socket_flags(int fd) {
   // setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, (char *) &flags, sizeof(int));
 
   return 1;
-}
-
-/*
- * Sends 'count' bytes of the buffer 'data' through the socket given by 'fd'
- * as a complete message.
- *
- * This function sends the size of the message just before sending the actual message.
- * This function blocks until the message has been fully sent.
- * 
-*/
-int send_buffer(int fd, char* data, int count) {
-  errno = 0;
-
-  int sent = 0;
-  int total_sent = 0;
-
-  // Send message size
-  
-  while(total_sent < MESSAGE_SIZE_BYTES) {
-    sent = write(fd, ((void*)&count) + total_sent, MESSAGE_SIZE_BYTES - total_sent);
-
-    if(sent >= 0) total_sent += sent;
-
-    if(sent < 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
-      perror("send_buffer");
-      return 1;
-    }
-  }
-
-  // Send buffer
-
-  sent = 0;
-  total_sent = 0;
-  
-  while(total_sent < count) {
-    sent = write(fd, data + total_sent, count - total_sent);
-
-    if(sent >= 0) total_sent += sent;
-
-    if(sent < 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
-      perror("send_buffer");
-      return 1;
-    }
-  }
-
-  return 0;
-}
-
-/*
- * Sends nothing through the given socket. send_buffer() will still send the message size,
- * which will be received as an ignored message on the other end of the socket.
- *
- * This is a sure method of determining whether or not the socket is still connected.
- *
- * Return values:
- *   1 : Could not send a message. Socket is disconnected.
- *   0 : Sending was successful. Socket seems to be connected.
-*/
-int send_nothing(int fd) {
-  return send_buffer(fd, NULL, 0);
 }
 
 /*
