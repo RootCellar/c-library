@@ -273,6 +273,26 @@ int has_data(int fd) {
 }
 
 /*
+ * Definitively tells whether or not the socket is disconnected.
+ * Calls to this function will periodically call send_nothing() to check connectivity.
+ *
+ * Return values:
+ *   -1 : Socket is disconnected.
+ *   0 : The socket is still considered to be connected.
+*/
+int connection_keepalive(int fd, struct receiving_buffer* buffer) {
+  time_t now = time(NULL);
+  int result;
+
+  if(now < buffer->last_received || (now - buffer->last_received) > CONNECTION_TIMEOUT) {
+    result = send_nothing(fd);
+    if(result) return -1;
+  }
+
+  return 0;
+}
+
+/*
  * Checks to see if the socket given by the file descriptor 'fd' can be written to without blocking.
  * 
  * Return values:
@@ -319,9 +339,10 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
   
     // Work on getting the size of the message
     int status = has_data(fd);
-    if(status == 0) {
-      return 0;
-    } else if(status == -1) {
+    if(status < 1) {
+      return status;
+    }
+    if(connection_keepalive(fd, buffer) < 0) {
       return -1;
     }
 
@@ -356,9 +377,10 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
 
     // Work on reading the message
     int status = has_data(fd);
-    if(status == 0) {
-      return 0;
-    } else if(status == -1) {
+    if(status < 1) {
+      return status;
+    }
+    if(connection_keepalive(fd, buffer) < 0) {
       return -1;
     }
 
