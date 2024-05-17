@@ -285,6 +285,7 @@ int connection_keepalive(int fd, struct receiving_buffer* buffer) {
   int result;
 
   if(now < buffer->last_received || (now - buffer->last_received) > CONNECTION_TIMEOUT) {
+    buffer->last_received = time(NULL);
     result = send_nothing(fd);
     if(result) return -1;
   }
