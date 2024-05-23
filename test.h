@@ -24,7 +24,7 @@
 // Test that the given expression is true
 #define TEST(expr, name) \
 do { \
-if(expr == 1) { PASS_TEST(expr, name); } \
+if((expr) == 1) { PASS_TEST(expr, name); } \
 else { FAIL_TEST(expr, name); SHOW_LOCATION(); if(FAIL_FAST) exit(EXIT_FAILURE); }\
  } while(0)
 
