@@ -97,7 +97,7 @@ void main() {
   TEST( tGetTotalAllocs() == 10, "tGetTotalAllocs() is correct");  
   TEST( tGetTotalAllocSize() == ptr_array_size * alloc_bytes, "tGetTotalAllocSize() is correct");
 
-  for(int i = 0; i < ptr_array_size; i++) {
+  for(size_t i = 0; i < ptr_array_size; i++) {
     TEST( tFree(ptr_array[i]) == 0, "can free multiple pointers");
     TEST( tFindSpot(ptr_array[i]) == -1, "free'd pointer is no longer in the list");
   }
@@ -122,7 +122,7 @@ void main() {
   int freed = 0;
   int spread = 2;
   
-  for(int i = 0; i < ptr_array_size; i += spread) {
+  for(size_t i = 0; i < ptr_array_size; i += spread) {
     TEST( tFree(ptr_array[i]) == 0, "can free any pointer at any spot");
     TEST( tFindSpot(ptr_array[i]) == -1, "free'd pointer is no longer in the list");
 
@@ -134,7 +134,7 @@ void main() {
   TEST( tGetTotalAllocs() == ptr_array_size - freed, "Pointer list has correct number of elements");
   TEST( tGetTotalAllocSize() == (ptr_array_size - freed) * alloc_bytes, "Pointer list has correct size");
 
-  for(int i = 0; i < ptr_array_size; i++) {
+  for(size_t i = 0; i < ptr_array_size; i++) {
     if(i % spread == 0) continue;
     TEST( tFree(ptr_array[i]) == 0, "can free multiple pointers");
     TEST( tFindSpot(ptr_array[i]) == -1, "free'd pointer is no longer in the list");
