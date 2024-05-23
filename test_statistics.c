@@ -23,5 +23,7 @@ void main() {
   TEST( floats_equal( statistics_average(many_values, 7), 5.0 ), "average of many values" );
   TEST( floats_equal( statistics_average_deviation(many_values, 7), 5.0 ), "statistics_average_deviation of many values" );
   TEST( floats_equal( statistics_standard_deviation(many_values, 7), 6.1237243569579 ), "statistics_standard_deviation of many values" );
+
+  exit(0);
   
 }

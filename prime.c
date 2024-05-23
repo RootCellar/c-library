@@ -118,4 +118,7 @@ void main() {
   printf(" stddev: %'f \n", stddev);
   printf(" avdev: %'f \n", avdev);
   printf("\n\n");
+
+  exit(0);
+  
 }

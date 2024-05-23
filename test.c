@@ -148,5 +148,7 @@ void main() {
 
   TEST( tGetTotalAllocs() == 0, "Pointer list is empty at end of test");
   TEST( tGetTotalAllocSize() == 0, "Pointer list is empty at end of test");
+
+  exit(0);
   
 }
