@@ -53,7 +53,7 @@
 #define CONNECTION_TIMEOUT 10 // seconds
 
 #define MESSAGE_SIZE_TYPE int
-#define MESSAGE_SIZE_BYTES (sizeof(MESSAGE_SIZE_TYPE))
+#define MESSAGE_SIZE_BYTES ((int)sizeof(MESSAGE_SIZE_TYPE))
 
 
 // Struct(s)
@@ -117,12 +117,12 @@ void allocate_receiving_buffer(struct receiving_buffer* buffer, int size) {
   
   buffer->received = 0;
 
-  buffer->buffer = ptr + MESSAGE_SIZE_BYTES;
+  buffer->buffer = (char*) ptr + MESSAGE_SIZE_BYTES;
   buffer->buffer_size = size;
 
   buffer->last_received = time(NULL);
 
-  debug_printf("Allocated buffer with size %d (Actual: %d, %lu for size)", size, actual_size, MESSAGE_SIZE_BYTES);
+  debug_printf("Allocated buffer with size %d (Actual: %d, %d for size)", size, actual_size, MESSAGE_SIZE_BYTES);
 }
 
 
