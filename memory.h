@@ -96,6 +96,24 @@ void tPrintStatus() {
   debug_printf("The pointer list is %lu bytes, to hold %lu pointers.", POINTER_LIST_SIZE * sizeof(struct ptr_data), POINTER_LIST_SIZE);
 }
 
+int tFreePointerList() {
+  if(tGetTotalAllocs() > 0) {
+    debug_print("Not freeing pointer list: Items are still allocated!");
+    return 1;
+  }
+
+  if(!is_valid_ptr(POINTER_LIST)) {
+    debug_print("Not freeing pointer list: List hasn't been allocated!");
+    return 1;
+  }
+
+  free(POINTER_LIST);
+  POINTER_LIST = NULL;
+  POINTER_LIST_SIZE = 0;
+
+  return 0;
+}
+
 // Find the given pointer.
 // Handy trick: tFindSpot(0) can be used to find an empty slot
 // to track a new pointer

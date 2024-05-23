@@ -299,5 +299,6 @@ int main() {
   TIMES( BENCHMARK_LOOPS( test_bubblesort(100), "test_bubblesort(100)", 1000 ), BENCHMARK_TIMES);
   TIMES( BENCHMARK_LOOPS( test_bubblesort(1000), "test_bubblesort(1,000)", 100 ), BENCHMARK_TIMES);
   TIMES( BENCHMARK_LOOPS( test_bubblesort(4000), "test_bubblesort(10,000)", 1 ), BENCHMARK_TIMES);
-  
+
+  tFreePointerList();
 }

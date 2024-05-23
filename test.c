@@ -30,6 +30,7 @@ void main() {
 
   int* ptr = tMalloc(alloc_bytes);
   TEST( ptr != NULL, "tMalloc() a pointer");
+  TEST( tFreePointerList() == 1, "Attempt to free pointer list while item is allocated");
   TEST( tGetTotalAllocs() == 1, "tGetTotalAllocs() == 1");
   TEST( tGetTotalAllocSize() == alloc_bytes, "tGetTotalAllocSize()");
 
@@ -148,6 +149,8 @@ void main() {
 
   TEST( tGetTotalAllocs() == 0, "Pointer list is empty at end of test");
   TEST( tGetTotalAllocSize() == 0, "Pointer list is empty at end of test");
+
+  TEST( tFreePointerList() == 0, "Pointer list is successfully freed");
 
   exit(0);
   
