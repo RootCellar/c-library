@@ -406,11 +406,12 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
 
       return size;
     }
-    
-    // Don't have a full message yet
-    return 0;
+
   }
-  
+
+  // Don't have a full message yet
+  return 0;
+
 }
 
 /*
