@@ -31,7 +31,7 @@ struct ptr_data* POINTER_LIST = NULL;
 long int POINTER_LIST_SIZE = 0;
 
 int is_valid_ptr(void* ptr) {
-  return ptr > 0;
+  return ptr != NULL;
 }
 
 // Determines whether or not the given address is owned
