@@ -8,7 +8,7 @@ LDFLAGS =
 all: benchmark test test_statistics test_prime test_inet
 
 clean:
-	$(RM) benchmark test test_statistics test_prime test_inet
+	rm benchmark test_memory test_statistics test_prime test_inet
 
 benchmark: benchmark.c $(HEADERS)
 	$(CC) $(CFLAGS)-o $@ benchmark.c
