@@ -92,8 +92,8 @@ unsigned long int tGetTotalAllocSize() {
 }
 
 void tPrintStatus() {
-  debug_printf("There are %lu bytes allocated, amongst %lu pointers.", tGetTotalAllocSize(), tGetTotalAllocs());
-  debug_printf("The pointer list is %lu bytes, to hold %lu pointers.", POINTER_LIST_SIZE * sizeof(struct ptr_data), POINTER_LIST_SIZE);
+  debug_printf("There are %lu bytes allocated, amongst %ld pointers.", tGetTotalAllocSize(), tGetTotalAllocs());
+  debug_printf("The pointer list is %lu bytes, to hold %ld pointers.", POINTER_LIST_SIZE * sizeof(struct ptr_data), POINTER_LIST_SIZE);
 }
 
 int tFreePointerList() {
