@@ -22,7 +22,7 @@
 #define DEFAULT_POINTER_LIST_SIZE 1024
 
 struct ptr_data {
-  void* ptr;
+  char* ptr;
 
   size_t size;
 };
@@ -36,7 +36,7 @@ int is_valid_ptr(void* ptr) {
 
 // Determines whether or not the given address is owned
 // based on what's in the pointer list
-int tOwnsAddress(void* adr) {
+int tOwnsAddress(char* adr) {
   if( !is_valid_ptr(POINTER_LIST) ) return 0;
 
   struct ptr_data* current;
