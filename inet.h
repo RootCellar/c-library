@@ -171,7 +171,7 @@ int send_buffer(int fd, char* data, int count) {
   // Send message size
   
   while(total_sent < MESSAGE_SIZE_BYTES) {
-    sent = write(fd, ((void*)&count) + total_sent, MESSAGE_SIZE_BYTES - total_sent);
+    sent = write(fd, ((char*)&count) + total_sent, MESSAGE_SIZE_BYTES - total_sent);
 
     if(sent >= 0) total_sent += sent;
 
