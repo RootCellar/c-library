@@ -519,7 +519,6 @@ int create_connection(char* host, int port) {
 int create_server_socket(int port) {
   int server_fd;
   struct sockaddr_in address;
-  int addrlen = sizeof(address);
   int opt = 1;
   int result = 0;
 
