@@ -1,5 +1,4 @@
-#!/bin/bash
 
-clear && make && echo
-time ./test
-time ./test_statistics
+make clean
+clear
+make check
