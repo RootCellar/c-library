@@ -2,9 +2,6 @@ CC = gcc
 CFLAGS = -g -Wall -Wextra 
 LDFLAGS =
 
-SOURCES = $(wildcard *.cpp)
-HEADERS = $(wildcard *.hpp) $(wildcard *.h)
-OBJECTS = $(patsubst %.cpp,%.o,$(SOURCES))
 
 .PHONY: all clean
 
