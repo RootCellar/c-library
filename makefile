@@ -1,5 +1,5 @@
 CC = gcc
-CXXFLAGS = -g -Wall
+CFLAGS = -g -Wall -Wextra 
 LDFLAGS =
 
 SOURCES = $(wildcard *.cpp)
@@ -14,16 +14,16 @@ clean:
 	$(RM) benchmark test test_statistics test_prime test_inet
 
 benchmark: benchmark.c $(HEADERS)
-	$(CC) -o $@ benchmark.c
+	$(CC) $(CFLAGS)-o $@ benchmark.c
 
 test: test.c $(HEADERS)
-	$(CC) -o $@ test.c
+	$(CC) $(CFLAGS) -o $@ test.c
 
 test_statistics: test_statistics.c $(HEADERS)
-	$(CC) -o $@ test_statistics.c -lm
+	$(CC) $(CFLAGS) -o $@ test_statistics.c -lm
 
 test_prime: prime.c $(HEADERS)
-	$(CC) -o $@ prime.c -lm
+	$(CC) $(CFLAGS) -o $@ prime.c -lm
 
 test_inet: test_inet.c $(HEADERS)
-	$(CC) -o $@ test_inet.c
+	$(CC) $(CFLAGS) -o $@ test_inet.c
