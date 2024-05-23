@@ -7,7 +7,7 @@
 #include "terminal_color.h"
 #include "debug.h"
 
-#define FAIL_FAST 0
+#define FAIL_FAST 1
 
 #define TEST_PASS_OUTPUT_COLOR ANSI_COLOR_BRIGHT_GREEN
 #define TEST_FAIL_OUTPUT_COLOR ANSI_COLOR_BRIGHT_RED
