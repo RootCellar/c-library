@@ -165,7 +165,7 @@ void free_receiving_buffer(struct receiving_buffer* buffer) {
 int send_buffer(int fd, char* data, int count) {
   errno = 0;
 
-  int sent = 0;
+  int sent;
   int total_sent = 0;
 
   // Send message size
@@ -183,7 +183,6 @@ int send_buffer(int fd, char* data, int count) {
 
   // Send buffer
 
-  sent = 0;
   total_sent = 0;
   
   while(total_sent < count) {
