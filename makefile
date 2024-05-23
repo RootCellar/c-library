@@ -3,6 +3,7 @@ CFLAGS = -g -Wall -Wextra
 LDFLAGS =
 
 VALGRIND=valgrind -s --log-fd=1 --time-stamp=yes --error-exitcode=1 --leak-check=full --show-leak-kinds=all --track-origins=yes --read-var-info=yes --tool=memcheck
+LINTER=cppcheck --enable=all --suppress=missingIncludeSystem --inconclusive --check-level=exhaustive --library=posix 
 
 HEADERS = $(wildcard *.h)
 
@@ -16,7 +17,7 @@ clean:
 check: all test lint
 
 lint:
-	cppcheck --enable=all --suppress=missingIncludeSystem --inconclusive --check-level=exhaustive --library=posix *.c
+	 $(LINTER) *.c
 
 test: all
 	time $(VALGRIND) ./test_memory
