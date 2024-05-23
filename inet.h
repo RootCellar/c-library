@@ -122,7 +122,7 @@ void allocate_receiving_buffer(struct receiving_buffer* buffer, int size) {
 
   buffer->last_received = time(NULL);
 
-  debug_printf("Allocated buffer with size %d (Actual: %d, %d for size)", size, actual_size, MESSAGE_SIZE_BYTES);
+  debug_printf("Allocated buffer with size %d (Actual: %d, %lu for size)", size, actual_size, MESSAGE_SIZE_BYTES);
 }
 
 
