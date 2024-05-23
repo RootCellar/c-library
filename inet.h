@@ -489,6 +489,7 @@ int create_connection(char* host, int port) {
   if(inet_pton(AF_INET, host, &serv_addr.sin_addr)<0)
   {
     perror("Invalid address/Address not supported");
+    close(sock);
     return -1;
   }
 
@@ -528,6 +529,7 @@ int create_server_socket(int port) {
   server_fd = socket(AF_INET, SOCK_STREAM, 0);
   if(server_fd <= 0) {
     perror("socket");
+    close(server_fd);
     return -1;
   }
 
@@ -535,6 +537,7 @@ int create_server_socket(int port) {
   result = setsockopt(server_fd, SOL_SOCKET, SO_KEEPALIVE, &opt, sizeof(opt));
   if(result) {
     perror("setsockopt");
+    close(server_fd);
     return -1;
   }
 
