@@ -111,6 +111,8 @@ int tFreePointerList() {
   POINTER_LIST = NULL;
   POINTER_LIST_SIZE = 0;
 
+  debug_print("Freed pointer list");
+
   return 0;
 }
 
