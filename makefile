@@ -1,9 +1,9 @@
 CC = gcc
-CFLAGS = -g -Wall -Wextra 
+CFLAGS = -g -Wall -Wextra
 LDFLAGS =
 
 VALGRIND=valgrind -s --log-fd=1 --time-stamp=yes --error-exitcode=1 --leak-check=full --show-leak-kinds=all --track-origins=yes --read-var-info=yes --tool=memcheck
-LINTER=cppcheck --enable=all --suppress=missingIncludeSystem --inconclusive --check-level=exhaustive --library=posix 
+LINTER=cppcheck --enable=all --suppress=missingIncludeSystem --inconclusive --check-level=exhaustive --library=posix
 
 HEADERS = $(wildcard *.h)
 
@@ -28,7 +28,7 @@ run_benchmark: all
 	./benchmark
 
 benchmark: benchmark.c $(HEADERS)
-	$(CC) $(CFLAGS)-o $@ benchmark.c
+	$(CC) $(CFLAGS) -o $@ benchmark.c
 
 test_memory: test.c $(HEADERS)
 	$(CC) $(CFLAGS) -o $@ test.c
