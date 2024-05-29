@@ -358,7 +358,7 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
         buffer->message_size |= buffer->actual_buffer[i] & 0xFF;
       }
       
-      if(buffer->message_size == 0) {
+      if(buffer->message_size < 1) {
         buffer->message_size_received = 0;
       }
 
