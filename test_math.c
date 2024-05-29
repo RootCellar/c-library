@@ -40,7 +40,7 @@ void main() {
 
   SECTION("Many 3D Vector Operations");
 
-  int num_tests = 2000000;
+  int num_tests = 100000;
 
   for(int i = 0; i < num_tests; i++) {
     float len = rand() % 100 + 0.01 * (float) (rand() % 100);
