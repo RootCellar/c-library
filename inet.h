@@ -279,11 +279,10 @@ int has_data(int fd) {
 */
 int connection_keepalive(int fd, struct receiving_buffer* buffer) {
   time_t now = time(NULL);
-  int result;
 
   if(now < buffer->last_received || (now - buffer->last_received) > CONNECTION_TIMEOUT) {
     buffer->last_received = time(NULL);
-    result = send_nothing(fd);
+    int result = send_nothing(fd);
     if(result) return -1;
   }
 
@@ -471,9 +470,8 @@ int accept_connection(int fd) {
 */
 int create_connection(char* host, int port) {
   errno = 0;
-  
-  int sock = -1;
-  sock = socket(AF_INET, SOCK_STREAM, 0);
+
+  int sock = socket(AF_INET, SOCK_STREAM, 0);
   if(sock < 0) {
     return -1;
   }
@@ -494,8 +492,7 @@ int create_connection(char* host, int port) {
 
   debug_printf("Connecting to host %s port %d...", host, port);
 
-  int result = -1;
-  result = connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
+  int result = connect(sock, (struct sockaddr*)&serv_addr, sizeof(serv_addr));
   if( result < 0 && errno != EINPROGRESS) {
     debug_printf("Failed connecting to host %s:%d!", host, port);
     perror("connect");
@@ -515,14 +512,12 @@ int create_connection(char* host, int port) {
  * >= 0 : The socket file descriptor of the created listening socket
 */
 int create_server_socket(int port) {
-  int server_fd;
   struct sockaddr_in address;
   int opt = 1;
-  int result = 0;
 
   errno = 0;
 
-  server_fd = socket(AF_INET, SOCK_STREAM, 0);
+  int server_fd = socket(AF_INET, SOCK_STREAM, 0);
   if(server_fd <= 0) {
     perror("socket");
     close(server_fd);
@@ -530,7 +525,7 @@ int create_server_socket(int port) {
   }
 
   // set socket options
-  result = setsockopt(server_fd, SOL_SOCKET, SO_KEEPALIVE, &opt, sizeof(opt));
+  int result = setsockopt(server_fd, SOL_SOCKET, SO_KEEPALIVE, &opt, sizeof(opt));
   if(result) {
     perror("setsockopt");
     close(server_fd);
