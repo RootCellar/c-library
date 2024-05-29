@@ -22,11 +22,13 @@
 #define FAIL_TEST(expr, name) do { printf("\n" TEST_FAIL_OUTPUT_COLOR   " Test: " name " -- " #expr " -- FAILED "  ANSI_COLOR_RESET "\n"); printf(TEST_FAIL_OUTPUT_COLOR " ** TEST FAILED ** " ANSI_COLOR_RESET "\n"); SHOW_LOCATION(); if(FAIL_FAST) exit(EXIT_FAILURE); } while(0)
 
 // Test that the given expression is true
-#define TEST(expr, name) \
+#define __TEST(expr, name, quiet_pass) \
 do { \
-if((expr) == 1) { PASS_TEST(expr, name); } \
+if((expr) == 1) { if(!quiet_pass) PASS_TEST(expr, name); } \
 else { FAIL_TEST(expr, name); }\
  } while(0)
+
+#define TEST(expr, name) __TEST(expr, name, 0)
 
 #define SECTION(name) \
 do { \
