@@ -7,7 +7,7 @@
 
 float statistics_float_abs(float value) {
   if(value < 0.0) return value * -1.0;
-  else return value;
+  return value;
 }
 
 float statistics_max(float* values, size_t count) {
