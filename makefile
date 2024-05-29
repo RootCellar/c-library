@@ -12,7 +12,7 @@ HEADERS = $(wildcard *.h)
 all: benchmark test_memory test_statistics test_math test_prime test_inet
 
 clean:
-	rm benchmark test_memory test_statistics test_math test_prime test_inet
+	rm -f benchmark test_memory test_statistics test_math test_prime test_inet
 
 check: all test lint
 
