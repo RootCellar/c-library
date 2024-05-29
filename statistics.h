@@ -66,7 +66,7 @@ float statistics_standard_deviation(float* values, size_t count) {
     deviation_sum += pow(statistics_float_abs( values[i] - average ), 2.0);
   }
 
-  return (float) sqrt((double) deviation_sum / (double)count);
+  return sqrtf(deviation_sum / (float)count);
 }
 
 #endif
