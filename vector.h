@@ -63,4 +63,8 @@ struct Vector3 vector3_cross_product(struct Vector3 one, struct Vector3 two) {
   );
 }
 
+struct Vector3 vector3_facing(struct Vector3 one, struct Vector3 two) {
+  return vector3_normalize( vector3_subtract(two, one) );
+}
+
 #endif //VECTOR_H
