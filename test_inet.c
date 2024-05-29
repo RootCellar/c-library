@@ -1,3 +1,4 @@
+#include <signal.h>
 #include <time.h>
 
 #include "test.h"

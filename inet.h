@@ -37,7 +37,6 @@
 #include <string.h>
 #include <fcntl.h>
 #include <errno.h>
-#include <signal.h>
 #include <poll.h>
 #include <time.h>
 
