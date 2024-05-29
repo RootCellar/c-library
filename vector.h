@@ -11,39 +11,31 @@ struct Vector3 {
   float z;
 };
 
+struct Vector3 vector3_create(float x, float y, float z) {
+  struct Vector3 toRet;
+
+  toRet.x = x;
+  toRet.y = y;
+  toRet.z = z;
+
+  return toRet;
+}
+
 float vector3_length(struct Vector3 vector) {
   return sqrtf( powf(vector.x, 2) + powf(vector.y, 2) + powf(vector.z, 2) );
 }
 
 struct Vector3 vector3_normalize(struct Vector3 vector) {
-  struct Vector3 toRet;
   float len = vector3_length(vector);
-
-  toRet.x = vector.x / len;
-  toRet.y = vector.y / len;
-  toRet.z = vector.z / len;
-
-  return toRet;
+  return vector3_create(vector.x / len, vector.y / len, vector.z / len);
 }
 
 struct Vector3 vector3_negate(struct Vector3 vector) {
-  struct Vector3 toRet;
-
-  toRet.x = vector.x * -1;
-  toRet.y = vector.y * -1;
-  toRet.z = vector.z * -1;
-
-  return toRet;
+  return vector3_create(vector.x * -1, vector.y * -1, vector.z * -1);
 }
 
 struct Vector3 vector3_add(struct Vector3 one, struct Vector3 two) {
-  struct Vector3 toRet;
-
-  toRet.x = one.x + two.x;
-  toRet.y = one.y + two.y;
-  toRet.z = one.z + two.z;
-
-  return toRet;
+  return vector3_create(one.x + two.x, one.y + two.y, one.z + two.z);
 }
 
 struct Vector3 vector3_subtract(struct Vector3 one, struct Vector3 two) {
@@ -51,13 +43,7 @@ struct Vector3 vector3_subtract(struct Vector3 one, struct Vector3 two) {
 }
 
 struct Vector3 vector3_multiply_scalar(struct Vector3 vector, float mult) {
-  struct Vector3 toRet;
-
-  toRet.x = vector.x * mult;
-  toRet.y = vector.y * mult;
-  toRet.z = vector.z * mult;
-
-  return toRet;
+  return vector3_create(vector.x * mult, vector.y * mult, vector.z * mult);
 }
 
 struct Vector3 vector3_to_length(struct Vector3 vector, float len) {
@@ -70,13 +56,11 @@ float vector3_dot_product(struct Vector3 one, struct Vector3 two) {
 }
 
 struct Vector3 vector3_cross_product(struct Vector3 one, struct Vector3 two) {
-  struct Vector3 toRet;
-
-  toRet.x = one.y * two.z - one.z * two.y;
-  toRet.y = one.z * two.x - one.x * two.z;
-  toRet.z = one.x * two.y - one.y * two.x;
-
-  return toRet;
+  return vector3_create(
+    one.y * two.z - one.z * two.y,
+    one.z * two.x - one.x * two.z,
+    one.x * two.y - one.y * two.x
+  );
 }
 
 #endif //VECTOR_H
