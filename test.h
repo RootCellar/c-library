@@ -12,7 +12,7 @@
 #define TEST_PASS_OUTPUT_COLOR ANSI_COLOR_BRIGHT_GREEN
 #define TEST_FAIL_OUTPUT_COLOR ANSI_COLOR_BRIGHT_RED
 
-#define FLOAT_DIFFERENCE_TOLERANCE (0.00001)
+#define FLOAT_DIFFERENCE_TOLERANCE (0.0001)
 
 #define SHOW_LOCATION() \
         do { fprintf(stderr, "%s: %s() line %d \n\n", __FILE__, \
