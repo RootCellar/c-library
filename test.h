@@ -37,7 +37,7 @@ printf("\n\n  " ANSI_COLOR_BRIGHT_YELLOW " ** " name " ** " ANSI_COLOR_RESET "\n
 
 float float_abs(float value) {
   if(value < 0.0) return value * -1.0;
-  else return value;
+  return value;
 }
 
 int floats_equal(float one, float two) {
