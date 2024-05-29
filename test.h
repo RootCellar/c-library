@@ -19,13 +19,13 @@
                                  __func__, __LINE__); } while (0)
 
 #define PASS_TEST(expr, name) do { printf(""   TEST_PASS_OUTPUT_COLOR   " Test: " name " -- " #expr " -- PASS   "  ANSI_COLOR_RESET "\n"); } while(0)
-#define FAIL_TEST(expr, name) do { printf("\n" TEST_FAIL_OUTPUT_COLOR   " Test: " name " -- " #expr " -- FAILED "  ANSI_COLOR_RESET "\n"); printf(TEST_FAIL_OUTPUT_COLOR " ** TEST FAILED ** " ANSI_COLOR_RESET "\n"); } while(0)
+#define FAIL_TEST(expr, name) do { printf("\n" TEST_FAIL_OUTPUT_COLOR   " Test: " name " -- " #expr " -- FAILED "  ANSI_COLOR_RESET "\n"); printf(TEST_FAIL_OUTPUT_COLOR " ** TEST FAILED ** " ANSI_COLOR_RESET "\n"); SHOW_LOCATION(); if(FAIL_FAST) exit(EXIT_FAILURE); } while(0)
 
 // Test that the given expression is true
 #define TEST(expr, name) \
 do { \
 if((expr) == 1) { PASS_TEST(expr, name); } \
-else { FAIL_TEST(expr, name); SHOW_LOCATION(); if(FAIL_FAST) exit(EXIT_FAILURE); }\
+else { FAIL_TEST(expr, name); }\
  } while(0)
 
 #define SECTION(name) \
