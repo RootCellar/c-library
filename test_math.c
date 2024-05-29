@@ -39,7 +39,7 @@ void main() {
 
   SECTION("Many 3D Vector Operations");
 
-  int num_tests = 20;
+  int num_tests = 2000000;
 
   for(int i = 0; i < num_tests; i++) {
     float len = rand() % 100 + 0.01 * (float) (rand() % 100);
@@ -47,8 +47,8 @@ void main() {
     vector.y = rand() % 1000;
     vector.z = rand() % 1000;
 
-    TEST( floats_equal( vector3_length( vector3_normalize(vector) ), 1.0f ), "vector3_normalize" );
-    TEST( floats_equal( vector3_length( vector3_to_length(vector, len) ), len ), "vector3_to_length" );
+    __TEST( floats_equal( vector3_length( vector3_normalize(vector) ), 1.0f ), "vector3_normalize", 1);
+    __TEST( floats_equal( vector3_length( vector3_to_length(vector, len) ), len ), "vector3_to_length", 1);
   }
 
   exit(0);
