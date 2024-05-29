@@ -182,6 +182,7 @@ int send_buffer(int fd, char* data, int count) {
   // Send buffer
 
   total_sent = 0;
+  if(data == NULL) return 0;
   
   while(total_sent < count) {
     sent = write(fd, data + total_sent, count - total_sent);
