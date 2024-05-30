@@ -4,6 +4,7 @@
 /test_math
 /test_prime
 /test_inet
+/test_sthread
 
 # ---> C
 # Prerequisites
