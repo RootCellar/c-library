@@ -9,10 +9,10 @@ HEADERS = $(wildcard *.h)
 
 .PHONY: all clean run_benchmark check test
 
-all: benchmark test_memory test_statistics test_math test_prime test_inet test_sthread
+all: benchmark benchmark_threads test_memory test_statistics test_math test_prime test_inet test_sthread
 
 clean:
-	rm -f benchmark test_memory test_statistics test_math test_prime test_inet test_sthread
+	rm -f benchmark benchmark_threads test_memory test_statistics test_math test_prime test_inet test_sthread
 
 check: all test lint
 
@@ -31,6 +31,9 @@ run_benchmark: all
 
 benchmark: benchmark.c $(HEADERS)
 	$(CC) $(CFLAGS) -o $@ benchmark.c
+
+benchmark_threads: benchmark_threads.c $(HEADERS)
+	$(CC) $(CFLAGS) -o $@ benchmark_threads.c -lpthread -lm
 
 test_memory: test.c $(HEADERS)
 	$(CC) $(CFLAGS) -o $@ test.c
