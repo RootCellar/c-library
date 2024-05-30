@@ -36,7 +36,7 @@ void main() {
   for(int i = 0; i < 5; i++) {
     BENCHMARK_LOOPS_CODE( run_in_threads(modify_values, (void*) data, THREAD_COUNT, THREAD_COUNT), speed, BENCHMARK_LOOPS);
 
-    printf("Total trig ops per second: %'f\n", speed * (float) BENCHMARK_LOOPS * (float) NUM_LOOPS_SIMPLE * (float) THREAD_COUNT);
+    printf("Total trig ops per second: %'f\n", speed * (float) NUM_LOOPS_SIMPLE * (float) THREAD_COUNT);
   }
 
   exit(0);
