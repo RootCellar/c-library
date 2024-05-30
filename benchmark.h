@@ -21,8 +21,8 @@
     for( int i = 0; i < loops; i++ ) { x; }\
     struct timespec end = get_time();\
     start_time.tv_sec -= end.tv_sec; end.tv_sec=0; \
-    double seconds = timespec_to_double(end) - timespec_to_double(start_time); float runs_per_second = ((float)loops/seconds); \
-    if(SHOW_ALL) printf(ANSI_COLOR_BRIGHT_CYAN #x ": %'d over %'f seconds ( %'f per second ) " ANSI_COLOR_RESET "\n", loops, seconds, runs_per_second); var = runs_per_second; } while(0)
+    double seconds = timespec_to_double(end) - timespec_to_double(start_time); float __runs_per_second = ((float)loops/seconds); \
+    if(SHOW_ALL) printf(ANSI_COLOR_BRIGHT_CYAN #x ": %'d over %'f seconds ( %'f per second ) " ANSI_COLOR_RESET "\n", loops, seconds, __runs_per_second); var = __runs_per_second; } while(0)
 
 // Do whatever x is the given number of times
 #define TIMES(x, times) do { for(int i = 0; i < times; i++) x; } while(0)
