@@ -1,9 +1,10 @@
 
 #include <time.h>
+#include <math.h>
+#include <stdio.h>
 
 #include "sthread.h"
 #include "benchmark.h"
-#include <math.h>
 
 #define NUM_LOOPS_SIMPLE 100000
 #define THREAD_COUNT 16
