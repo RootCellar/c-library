@@ -10,7 +10,7 @@
 #define BENCHMARK_LOOPS 100
 #define THREAD_COUNT 16
 
-void modify_values(int id, int count, void* data) {
+void modify_values(int id, int thread_count, int count, void* data) {
   float* actual_data = (float*) data;
   for(int i = 0; i < NUM_LOOPS_SIMPLE; i++) {
     actual_data[id] += cosf(i);

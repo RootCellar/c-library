@@ -9,12 +9,12 @@ struct thread_args {
   int thread_count;
   void* items;
   int count;
-  void (*function)(int,int,void*);
+  void (*function)(int,int,int,void*);
 };
 
 void start_thread(void* args) {
   struct thread_args* thread_data = (struct thread_args*) (args);
-  (thread_data->function)(thread_data->id, thread_data->thread_count, thread_data->items);
+  (thread_data->function)(thread_data->id, thread_data->thread_count, thread_data->count, thread_data->items);
   pthread_exit(0);
 }
 

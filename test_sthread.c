@@ -8,7 +8,7 @@
 
 #define NUM_LOOPS_SIMPLE 10000000
 
-void increment_values(int id, int count, void* data) {
+void increment_values(int id, int thread_count, int count, void* data) {
   debug_printf("%d", id);
   int* actual_data = (int*) data;
   for(int i = 0; i < NUM_LOOPS_SIMPLE; i++)
