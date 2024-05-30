@@ -28,6 +28,7 @@ test: all
 
 run_benchmark: all
 	./benchmark
+	./benchmark_threads
 
 benchmark: benchmark.c $(HEADERS)
 	$(CC) $(CFLAGS) -o $@ benchmark.c
