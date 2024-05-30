@@ -47,4 +47,4 @@ test_inet: test_inet.c $(HEADERS)
 	$(CC) $(CFLAGS) -o $@ test_inet.c
 
 test_sthread: test_sthread.c $(HEADERS)
-	$(CC) $(CFLAGS) -o $@ test_sthread.c
+	$(CC) $(CFLAGS) -o $@ test_sthread.c -lpthread
