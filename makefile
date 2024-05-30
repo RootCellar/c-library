@@ -24,6 +24,7 @@ test: all
 	time $(VALGRIND) ./test_statistics
 	time $(VALGRIND) ./test_math
 	time $(VALGRIND) ./test_inet
+	time $(VALGRIND) ./test_sthread
 
 run_benchmark: all
 	./benchmark
