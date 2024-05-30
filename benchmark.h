@@ -34,8 +34,8 @@ void benchmark_setupLocale() {
 }
 
 double timespec_to_double(struct timespec time) {
-    double x2 = ((float)time.tv_nsec) / 1000000000.0f;
-    double x1 = (float) time.tv_sec;
+    double x2 = (double) time.tv_nsec / 1000000000.0;
+    double x1 = time.tv_sec;
     double x = x1 + x2;
     // printf("%ld %ld\n", time.tv_sec, time.tv_nsec);
     // printf("%lf %lf %lf\n", x, x1, x2);
