@@ -1,4 +1,5 @@
 /benchmark
+/benchmark_threads
 /test_memory
 /test_statistics
 /test_math
