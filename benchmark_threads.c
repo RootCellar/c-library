@@ -8,9 +8,10 @@
 #include "benchmark.h"
 #include "vector.h"
 
-#define BENCHMARK_LOOPS 100
 #define NUM_LOOPS_TRIG 500000
 #define NUM_LOOPS_VECTOR 50000000
+
+#define BENCHMARK_LOOPS 10
 #define THREAD_COUNT 16
 
 void modify_values(int id, int thread_count, int count, void* data) {
