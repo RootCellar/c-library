@@ -1,7 +1,7 @@
 #include <signal.h>
-#include <time.h>
 
 #include "test.h"
+#include "time.h"
 #include "inet.h"
 
 #define BUFFER_SIZE 128
@@ -18,11 +18,11 @@ void main() {
 
   int client_socket = create_connection("127.0.0.1", port);
   TEST( client_socket >= 0 || errno == ECONNREFUSED, "client socket can be created" );
-  time_t start = time(NULL);
-  time_t now = start;
-  while(now - start < 2 && result == 0) {
+  struct timespec start = get_time();
+  struct timespec now = start;
+  while(timespec_difference_seconds(start, now) < 2 && result == 0) {
     result = is_connected(client_socket);
-    now = time(NULL);
+    now = get_time();
   }
 
   debug_printf("connect result: %d", result);
@@ -36,22 +36,22 @@ void main() {
   client_socket = create_connection("127.0.0.1", port);
   TEST( client_socket >= 0, "client socket can be created" );
   result = 0;
-  start = time(NULL);
+  start = get_time();
   now = start;
-  while(now - start < 1 && result == 0) {
+  while(timespec_difference_seconds(start, now) < 1 && result == 0) {
     result = is_connected(client_socket);
-    now = time(NULL);
+    now = get_time();
   }
 
   debug_printf("connect result: %d", result);
   TEST( result == 1, "server can be connected to" );
 
   int server_fd_to_client = -1;
-  start = time(NULL);
+  start = get_time();
   now = start;
-  while(now - start < 1 && server_fd_to_client == -1) {
+  while(timespec_difference_seconds(start, now) < 1 && server_fd_to_client == -1) {
     server_fd_to_client = accept_connection(server_socket);
-    now = time(NULL);
+    now = get_time();
   }
   TEST( server_fd_to_client >= 0, "accept_connection accepted a connection");
 
@@ -62,11 +62,11 @@ void main() {
   TEST( server_buffer.buffer != NULL, "a valid server side buffer is created");
 
   result = 0;
-  start = time(NULL);
+  start = get_time();
   now = start;
-  while(now - start < 1 && result == 0) {
+  while(timespec_difference_seconds(start, now) < 1 && result == 0) {
     result = read_buffer(server_fd_to_client, &server_buffer);
-    now = time(NULL);
+    now = get_time();
   }
   TEST( result != -1, "server didn't get an error while reading");
   TEST( result == strlen(to_write) + 1, "server recieved correct number of bytes");
@@ -76,11 +76,11 @@ void main() {
   close(client_socket);
   
   result = 0;
-  start = time(NULL);
+  start = get_time();
   now = start;
-  while(now - start < 4 && result == 0) {
+  while(timespec_difference_seconds(start, now) < 4 && result == 0) {
     result = read_buffer(server_fd_to_client, &server_buffer);
-    now = time(NULL);
+    now = get_time();
   }
   debug_printf("read result: %d", result);
   TEST( read_buffer(server_fd_to_client, &server_buffer) < 1, "server read_buffer() after socket is closed");
