@@ -83,6 +83,7 @@ void main() {
     now = get_time();
   }
   debug_printf("read result: %d", result);
+  send_nothing(server_fd_to_client);
   TEST( read_buffer(server_fd_to_client, &server_buffer) < 1, "server read_buffer() after socket is closed");
   TEST( send_string(client_socket, to_write) == 1, "client fails to send a string after close()");
   TEST( send_string(server_fd_to_client, to_write) == 1, "server fails to send a string after close()");
