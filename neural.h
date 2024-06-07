@@ -98,7 +98,7 @@ struct NeuralNet create_neural_net(int layers, int neurons_per_layer) {
 
   neural_net.neurons = tMalloc(layers_list_bytes);
   if(neural_net.neurons == NULL) {
-    debug_printf("Failed to create neural layers!", layers, neurons_per_layer);
+    debug_print("Failed to create neural layers!");
     return neural_net;
   }
   memset(neural_net.neurons, 0, layers_list_bytes);
