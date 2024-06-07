@@ -146,8 +146,47 @@ float activation_tanh(float output) {
   return tanh(output);
 }
 
+float neuron_evaluate(struct Neuron neuron, float* input, int input_count) {
+  float output = 0.0;
+
+  for(int i = 0; i < input_count && i < neuron.input_count; i++) {
+    output += input[i] * neuron.input_weights[i];
+  }
+
+  return activation_tanh(output);
+}
+
+void neural_layer_evaluate(struct Neuron* layer, int layer_count, float* input, int input_count, float* layer_outputs) {
+  for(int i = 0; i < layer_count; i++) {
+    layer_outputs[i] = neuron_evaluate(layer[i], input, input_count);
+  }
+}
+
 float neural_evaluate(struct NeuralNet* net, float* input, int input_count) {
-  
+
+  if(net->layers < 1) {
+    return neuron_evaluate(net->output_neuron, input, input_count);
+  }
+
+  float layer_outputs[net->neurons_per_layer];
+
+  // Handle the first layer
+  neural_layer_evaluate(net->neurons[0], net->neurons_per_layer, input, input_count, layer_outputs);
+
+  if(net->layers == 1) {
+    return neuron_evaluate(net->output_neuron, layer_outputs, net->neurons_per_layer);
+  }
+
+  for(int i = 1; i < net->layers; i++) {
+    float new_layer_outputs[net->neurons_per_layer];
+    neural_layer_evaluate(net->neurons[i], net->neurons_per_layer, layer_outputs, net->neurons_per_layer, new_layer_outputs);
+
+    for(int i = 0; i < net->neurons_per_layer; i++) {
+      layer_outputs[i] = new_layer_outputs[i];
+    }
+  }
+
+  return neuron_evaluate(net->output_neuron, layer_outputs, net->neurons_per_layer);
 }
 
 float neural_train(struct NeuralNet* net, float* input, int input_count, float correct_output) {
