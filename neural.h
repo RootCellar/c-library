@@ -146,11 +146,11 @@ float activation_tanh(float output) {
   return tanh(output);
 }
 
-float neural_evaluate(struct NeuralNet* net, float* input) {
-
+float neural_evaluate(struct NeuralNet* net, float* input, int input_count) {
+  
 }
 
-float neural_train(struct NeuralNet* net, float* input, float* correct_output) {
+float neural_train(struct NeuralNet* net, float* input, int input_count, float correct_output) {
 
 }
 
