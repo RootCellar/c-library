@@ -19,6 +19,10 @@
 
 #include "debug.h"
 
+#define MEMORY_DEBUG 0
+#define memory_debug_printf(fmt, ...) if(MEMORY_DEBUG) debug_printf(fmt, __VA_ARGS__);
+#define memory_debug_print(fmt) if(MEMORY_DEBUG) debug_print(fmt);
+
 #define DEFAULT_POINTER_LIST_SIZE 1024
 
 struct ptr_data {
@@ -63,7 +67,7 @@ long int tGetTotalAllocs() {
   if( !is_valid_ptr(POINTER_LIST) ) return 0;
 
   long int count = 0;
-  debug_print("Counting all pointers...");
+  memory_debug_print("Counting all pointers...");
 
   for(long int i = 0; i < POINTER_LIST_SIZE; i++) {
     if(is_valid_ptr(POINTER_LIST[i].ptr)) {
@@ -78,7 +82,7 @@ unsigned long int tGetTotalAllocSize() {
   if( !is_valid_ptr(POINTER_LIST) ) return 0;
 
   unsigned long int sum = 0;
-  debug_print("Finding total size of all pointers...");
+  memory_debug_print("Finding total size of all pointers...");
 
   for(long int i = 0; i < POINTER_LIST_SIZE; i++) {
     if( is_valid_ptr(POINTER_LIST[i].ptr) ) {
@@ -90,18 +94,18 @@ unsigned long int tGetTotalAllocSize() {
 }
 
 void tPrintStatus() {
-  debug_printf("There are %lu bytes allocated, amongst %ld pointers.", tGetTotalAllocSize(), tGetTotalAllocs());
-  debug_printf("The pointer list is %lu bytes, to hold %ld pointers.", POINTER_LIST_SIZE * sizeof(struct ptr_data), POINTER_LIST_SIZE);
+  memory_debug_printf("There are %lu bytes allocated, amongst %ld pointers.", tGetTotalAllocSize(), tGetTotalAllocs());
+  memory_debug_printf("The pointer list is %lu bytes, to hold %ld pointers.", POINTER_LIST_SIZE * sizeof(struct ptr_data), POINTER_LIST_SIZE);
 }
 
 int tFreePointerList() {
   if(tGetTotalAllocs() > 0) {
-    debug_print("Not freeing pointer list: Items are still allocated!");
+    memory_debug_print("Not freeing pointer list: Items are still allocated!");
     return 1;
   }
 
   if(!is_valid_ptr(POINTER_LIST)) {
-    debug_print("Not freeing pointer list: List hasn't been allocated!");
+    memory_debug_print("Not freeing pointer list: List hasn't been allocated!");
     return 1;
   }
 
@@ -109,7 +113,7 @@ int tFreePointerList() {
   POINTER_LIST = NULL;
   POINTER_LIST_SIZE = 0;
 
-  debug_print("Freed pointer list");
+  memory_debug_print("Freed pointer list");
 
   return 0;
 }
@@ -120,10 +124,10 @@ int tFreePointerList() {
 long int tFindSpot(void* ptr) {
   if( !is_valid_ptr(POINTER_LIST) ) return -1;
 
-  debug_printf("Finding pointer %p", ptr);
+  memory_debug_printf("Finding pointer %p", ptr);
   for(long int i = 0; i < POINTER_LIST_SIZE; i++) {
     if(POINTER_LIST[i].ptr == ptr) {
-      debug_printf("Found pointer in slot %ld", i);
+      memory_debug_printf("Found pointer in slot %ld", i);
       return i;
     }
   }
@@ -146,7 +150,7 @@ size_t tGetSize(void* ptr) {
    No return value.
 */
 void tCondense() {
-  debug_print("Condensing list...");
+  memory_debug_print("Condensing list...");
 
   long int new_spot = tFindSpot(0);
   if(new_spot < 0) return;
@@ -162,7 +166,7 @@ void tCondense() {
       POINTER_LIST[i].ptr = NULL;
       POINTER_LIST[i].size = 0;
 
-      debug_printf(" %ld -> %ld ", i, new_spot);
+      memory_debug_printf(" %ld -> %ld ", i, new_spot);
       new_spot = tFindSpot(0);
     }
   }
@@ -177,39 +181,39 @@ void tCondense() {
 int tResize(long int len) {
 
   if(len <= 0) {
-    debug_print("Refusing size smaller than one...");
+    memory_debug_print("Refusing size smaller than one...");
     return 1;
   }
 
   long int allocs = tGetTotalAllocs();
-  debug_printf("Attempting to resize pointer list... %ld -> %ld", POINTER_LIST_SIZE, len);
+  memory_debug_printf("Attempting to resize pointer list... %ld -> %ld", POINTER_LIST_SIZE, len);
   if(len < allocs) {
-    debug_print("Refusing to allocate pointer list to be smaller than current number of allocations");
+    memory_debug_print("Refusing to allocate pointer list to be smaller than current number of allocations");
     return 1;
   }
 
   if(len == POINTER_LIST_SIZE) {
-    debug_print("Sizes equal, doing nothing...");
+    memory_debug_print("Sizes equal, doing nothing...");
     return 0;
   }
 
   void* new_pointer_list = malloc(len * sizeof(struct ptr_data));
   if(!is_valid_ptr(new_pointer_list)) {
-    debug_print("Could not allocate new pointer list!");
+    memory_debug_print("Could not allocate new pointer list!");
     return 1;
   }
 
   memset(new_pointer_list, 0, len * sizeof(struct ptr_data));
 
   if(is_valid_ptr(POINTER_LIST)) {
-    debug_print("Replacing old pointer list...");
+    memory_debug_print("Replacing old pointer list...");
     tCondense();
     long int copy_length = len < POINTER_LIST_SIZE ? len : POINTER_LIST_SIZE;
     memcpy(new_pointer_list, POINTER_LIST, copy_length * sizeof(struct ptr_data));
     free(POINTER_LIST);
   }
 
-  debug_print("Success");
+  memory_debug_print("Success");
 
   POINTER_LIST_SIZE = len;
   POINTER_LIST = new_pointer_list;
@@ -244,29 +248,29 @@ int tAdd(void* ptr, unsigned long int len) {
 // Allocate memory for a pointer and return the pointer,
 // adding it to the tracked list if the memory allocation was successful
 void* tMalloc(unsigned long int len) {
-  debug_printf("Allocating %lu bytes", len);
+  memory_debug_printf("Allocating %lu bytes", len);
 
   if(len < 1) {
-    debug_printf("Refusing to allocate %lu bytes", len);
+    memory_debug_printf("Refusing to allocate %lu bytes", len);
     return NULL;
   }
 
   void* toRet = malloc(len);
 
   if(!is_valid_ptr(toRet)) {
-    debug_printf("Failed to allocate %lu bytes!", len);
+    memory_debug_printf("Failed to allocate %lu bytes!", len);
     return NULL;
   }
 
-  debug_printf("Successfully allocated %lu bytes", len);
+  memory_debug_printf("Successfully allocated %lu bytes", len);
   int failed = tAdd(toRet, len);
   if(failed) {
-    debug_print("Could not add pointer to list!");
+    memory_debug_print("Could not add pointer to list!");
     free(toRet);
     return NULL;
   }
   
-  debug_print("Successfully added pointer to list");
+  memory_debug_print("Successfully added pointer to list");
   tPrintStatus();
 
   return toRet;
@@ -278,13 +282,13 @@ int tFree(void* ptr) {
 
   if(!is_valid_ptr(ptr)) return 1; // invalid pointer
 
-  debug_print("Attempting to free a pointer");
+  memory_debug_print("Attempting to free a pointer");
 
   // Find the pointer in the list
   // if we don't have it, then we don't manage it
   long int spot = tFindSpot(ptr);
   if(spot < 0) {
-    debug_print("Could not find pointer in list!");
+    memory_debug_print("Could not find pointer in list!");
     return 1;
   }
 
@@ -293,7 +297,7 @@ int tFree(void* ptr) {
   // Free the pointer, remove it from the list
   free(ptr);
   ptrData->ptr = NULL;
-  debug_printf("Freed %lu bytes", ptrData->size );
+  memory_debug_printf("Freed %lu bytes", ptrData->size );
   ptrData->size = 0;
   tPrintStatus();
   return 0;
