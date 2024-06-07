@@ -67,7 +67,6 @@ long int tGetTotalAllocs() {
 
   for(long int i = 0; i < POINTER_LIST_SIZE; i++) {
     if(is_valid_ptr(POINTER_LIST[i].ptr)) {
-      debug_printf("Found pointer in slot %ld", i);
       count += 1;
     }
   }
@@ -83,7 +82,6 @@ unsigned long int tGetTotalAllocSize() {
 
   for(long int i = 0; i < POINTER_LIST_SIZE; i++) {
     if( is_valid_ptr(POINTER_LIST[i].ptr) ) {
-      debug_printf("Found pointer in slot %ld", i);
       sum += POINTER_LIST[i].size;
     }
   }
