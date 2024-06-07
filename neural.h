@@ -6,19 +6,21 @@
 
 #include "memory.h"
 
+struct Neuron {
+  float* input_weights;
+  int input_count;
+};
+
 struct NeuralNet {
 
   int layers;
   int neurons_per_layer;
 
   struct Neuron** neurons;
+  struct Neuron output_neuron;
 
 };
 
-struct Neuron {
-  float* input_weights;
-  int input_count;
-};
 void free_neuron(struct Neuron* neuron) {
   if(neuron->input_weights != NULL) {
     tFree(neuron->input_weights);
@@ -53,6 +55,10 @@ void free_neural_net(struct NeuralNet* neural_net) {
   tFree(neural_net->neurons);
   neural_net->neurons = NULL;
 
+  if(neural_net->output_neuron.input_weights != NULL) {
+    debug_print("Freeing output neuron");
+    free_neuron(&neural_net->output_neuron);
+  }
   debug_print("Neural net freed and cleared");
 }
 
@@ -118,6 +124,15 @@ struct NeuralNet create_neural_net(int layers, int neurons_per_layer) {
   }
 
   debug_print("Built neurons");
+
+  neural_net.output_neuron = create_neuron(neurons_per_layer);
+  if(neural_net.output_neuron.input_weights == NULL) {
+    debug_print("Failed to allocate memory for output neuron");
+    free_neural_net(&neural_net);
+    return neural_net;
+  }
+
+  debug_print("Built output neuron");
 
   return neural_net;
 }
