@@ -19,6 +19,12 @@ struct Neuron {
   float* input_weights;
   int input_count;
 };
+void free_neuron(struct Neuron* neuron) {
+  if(neuron->input_weights != NULL) {
+    tFree(neuron->input_weights);
+    neuron->input_weights = NULL;
+  }
+}
 
 void free_neural_net(struct NeuralNet* neural_net) {
   if(neural_net->neurons == NULL) return;
@@ -30,8 +36,7 @@ void free_neural_net(struct NeuralNet* neural_net) {
       struct Neuron neuron = neural_net->neurons[i][k];
       if(neuron.input_weights != NULL) {
         debug_printf("Freeing neuron %d in layer %d", k, i);
-        tFree(neuron.input_weights);
-        neuron.input_weights = NULL;
+        free_neuron(&neuron);
       }
     }
   }
