@@ -54,7 +54,15 @@ void free_neural_net(struct NeuralNet* neural_net) {
 struct Neuron create_neuron(int input_count) {
   struct Neuron neuron;
   neuron.input_count = input_count;
-  neuron.input_weights = tMalloc(sizeof(float) * input_count);
+
+  unsigned long weights_list_bytes = sizeof(float) * input_count;
+
+  neuron.input_weights = tMalloc(weights_list_bytes);
+  if(neuron.input_weights == NULL) {
+    debug_printf("Failed to allocate memory for a neuron with %d inputs!", input_count);
+    return neuron;
+  }
+  memset(neuron.input_weights, 0, weights_list_bytes);
 
   debug_printf("Created a neuron with %d inputs", input_count);
 
@@ -69,21 +77,26 @@ struct NeuralNet create_neural_net(int layers, int neurons_per_layer) {
   neural_net.layers = layers;
   neural_net.neurons_per_layer = neurons_per_layer;
 
-  neural_net.neurons = tMalloc(sizeof(struct Neuron*) * layers);
+  unsigned long layers_list_bytes = sizeof(struct Neuron*) * layers;
+  unsigned long neuron_list_bytes = sizeof(struct Neuron) * neurons_per_layer;
+
+  neural_net.neurons = tMalloc(layers_list_bytes);
   if(neural_net.neurons == NULL) {
     debug_printf("Failed to create neural layers!", layers, neurons_per_layer);
     return neural_net;
   }
+  memset(neural_net.neurons, 0, layers_list_bytes);
 
   debug_print("Created neural layer list");
 
   for(int i = 0; i < layers; i++) {
-    neural_net.neurons[i] = tMalloc(sizeof(struct Neuron) * neurons_per_layer);
+    neural_net.neurons[i] = tMalloc(neuron_list_bytes);
     if(neural_net.neurons[i] == NULL) {
       debug_printf("Failed to allocate layer %d!", i);
       free_neural_net(&neural_net);
       return neural_net;
     }
+    memset(neural_net.neurons[i], 0, neuron_list_bytes);
   }
 
   debug_print("Allocated neural layers");
