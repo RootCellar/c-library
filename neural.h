@@ -34,13 +34,17 @@ void free_neural_net(struct NeuralNet* neural_net) {
   debug_printf("Freeing neural net with %d layers and %d neurons per layer", neural_net->layers, neural_net->neurons_per_layer);
 
   for(int i = 0; i < neural_net->layers; i++) {
+    struct Neuron* neuron_layer = neural_net->neurons[i];
+    if(neuron_layer == NULL) continue;
+
     for(int k = 0; k < neural_net->neurons_per_layer; k++) {
-      struct Neuron neuron = neural_net->neurons[i][k];
+      struct Neuron neuron = neuron_layer[k];
       if(neuron.input_weights != NULL) {
         debug_printf("Freeing neuron %d in layer %d", k, i);
         free_neuron(&neuron);
       }
     }
+
   }
 
   for(int i = 0; i < neural_net->layers; i++) {
@@ -59,6 +63,7 @@ void free_neural_net(struct NeuralNet* neural_net) {
     debug_print("Freeing output neuron");
     free_neuron(&neural_net->output_neuron);
   }
+
   debug_print("Neural net freed and cleared");
 }
 
