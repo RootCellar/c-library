@@ -181,8 +181,8 @@ float neural_evaluate(struct NeuralNet* net, float* input, int input_count) {
     float new_layer_outputs[net->neurons_per_layer];
     neural_layer_evaluate(net->neurons[i], net->neurons_per_layer, layer_outputs, net->neurons_per_layer, new_layer_outputs);
 
-    for(int i = 0; i < net->neurons_per_layer; i++) {
-      layer_outputs[i] = new_layer_outputs[i];
+    for(int k = 0; k < net->neurons_per_layer; k++) {
+      layer_outputs[k] = new_layer_outputs[k];
     }
   }
 
