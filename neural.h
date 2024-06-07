@@ -40,16 +40,16 @@ void free_neural_net(struct NeuralNet* neural_net) {
     for(int k = 0; k < neural_net->neurons_per_layer; k++) {
       struct Neuron neuron = neuron_layer[k];
       if(neuron.input_weights != NULL) {
-        debug_printf("Freeing neuron %d in layer %d", k, i);
         free_neuron(&neuron);
       }
     }
 
   }
 
+  debug_print("Freeing neuron layers");
+
   for(int i = 0; i < neural_net->layers; i++) {
     if(neural_net->neurons[i] != NULL) {
-      debug_printf("Freeing neuron layer %d", i);
       tFree(neural_net->neurons[i]);
       neural_net->neurons[i] = NULL;
     }
@@ -79,8 +79,6 @@ struct Neuron create_neuron(int input_count) {
     return neuron;
   }
   memset(neuron.input_weights, 0, weights_list_bytes);
-
-  debug_printf("Created a neuron with %d inputs", input_count);
 
   return neuron;
 }
