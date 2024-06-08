@@ -21,6 +21,11 @@ struct NeuralNet {
 
 };
 
+struct Net_Training_Settings {
+  float learning_rate;
+  float acceptable_error;
+};
+
 void free_neuron(struct Neuron* neuron) {
   if(neuron->input_weights != NULL) {
     tFree(neuron->input_weights);
@@ -162,6 +167,7 @@ void neural_layer_evaluate(struct Neuron* layer, int layer_count, float* input, 
 
 float neural_evaluate(struct NeuralNet* net, float* input, int input_count) {
 
+  // Just return the output of the output neuron if there are no hidden layers
   if(net->layers < 1) {
     return neuron_evaluate(net->output_neuron, input, input_count);
   }
@@ -171,6 +177,7 @@ float neural_evaluate(struct NeuralNet* net, float* input, int input_count) {
   // Handle the first layer
   neural_layer_evaluate(net->neurons[0], net->neurons_per_layer, input, input_count, layer_outputs);
 
+  // Handle every layer afterwards
   for(int i = 1; i < net->layers; i++) {
     float new_layer_outputs[net->neurons_per_layer];
     neural_layer_evaluate(net->neurons[i], net->neurons_per_layer, layer_outputs, net->neurons_per_layer, new_layer_outputs);
@@ -180,11 +187,60 @@ float neural_evaluate(struct NeuralNet* net, float* input, int input_count) {
     }
   }
 
+  // Run the output neuron on the output of the last hidden layer
   return neuron_evaluate(net->output_neuron, layer_outputs, net->neurons_per_layer);
 }
 
-float neural_train(struct NeuralNet* net, float* input, int input_count, float correct_output) {
+float neural_absolute_error(struct NeuralNet* net, float* input, int input_count, float correct_output) {
+  float result = neural_evaluate(net, input, input_count);
 
+  float error = correct_output - result;
+  return fabs(error);
+}
+
+float random_sign() {
+  int x = rand() % 2;
+  if(x == 0) return -1.0;
+  return 1.0;
+}
+
+float sign_of(float x) {
+  if(x < 0.0) return -1.0;
+  return 1.0;
+}
+
+void neuron_test_random_adjust(struct NeuralNet* net, struct Net_Training_Settings settings, float* input, int input_count, float correct_output, struct Neuron* neuron) {
+  float abs_error = neural_absolute_error(net, input, input_count, correct_output);
+
+  int rand_weight = rand() % neuron->input_count;
+  float orig_value = neuron->input_weights[rand_weight];
+
+  neuron->input_weights[rand_weight] += settings.learning_rate * random_sign();
+
+  float new_result = neural_evaluate(net, input, input_count);
+
+  float new_error = correct_output - new_result;
+  float new_abs_error = fabs(new_error);
+
+  if(new_abs_error > abs_error) neuron->input_weights[rand_weight] = orig_value;
+}
+
+int neural_train(struct NeuralNet* net, struct Net_Training_Settings settings, float* input, int input_count, float correct_output) {
+  float abs_error = neural_absolute_error(net, input, input_count, correct_output);
+
+  // Output seems good
+  if(abs_error < settings.acceptable_error) {
+    return 0;
+  }
+
+  neuron_test_random_adjust(net, settings, input, input_count, correct_output, &net->output_neuron);
+
+  int rand_layer = rand() % net->layers;
+  int rand_neuron = rand() % net->neurons_per_layer;
+  struct Neuron* neuron = &(net->neurons[rand_layer][rand_neuron]);
+  neuron_test_random_adjust(net, settings, input, input_count, correct_output, neuron);
+
+  return 1;
 }
 
 #endif
