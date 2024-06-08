@@ -19,7 +19,7 @@ void main() {
   settings.acceptable_error = 0.001;
   settings.learning_rate = 0.1;
 
-  for(int i = 0; i < 5000000; i++) {
+  for(int i = 0; i < 500000; i++) {
     neural_train(&neural_net, settings, &one, 1, onehalf);
     neural_train(&neural_net, settings, &onehalf, 1, one);
   }
