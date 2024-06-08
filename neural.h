@@ -85,6 +85,10 @@ struct Neuron create_neuron(int input_count) {
   }
   memset(neuron.input_weights, 0, weights_list_bytes);
 
+  for(int i = 0; i < input_count; i++) {
+    neuron.input_weights[i] = 0.1;
+  }
+
   return neuron;
 }
 
@@ -191,11 +195,10 @@ float neural_evaluate(struct NeuralNet* net, float* input, int input_count) {
   return neuron_evaluate(net->output_neuron, layer_outputs, net->neurons_per_layer);
 }
 
-float neural_absolute_error(struct NeuralNet* net, float* input, int input_count, float correct_output) {
+float neural_error(struct NeuralNet* net, float* input, int input_count, float correct_output) {
   float result = neural_evaluate(net, input, input_count);
-
   float error = correct_output - result;
-  return fabs(error);
+  return error;
 }
 
 float random_sign() {
@@ -210,26 +213,23 @@ float sign_of(float x) {
 }
 
 void neuron_test_random_adjust(struct NeuralNet* net, struct Net_Training_Settings settings, float* input, int input_count, float correct_output, struct Neuron* neuron) {
-  float abs_error = neural_absolute_error(net, input, input_count, correct_output);
+  float error = neural_error(net, input, input_count, correct_output);
 
   int rand_weight = rand() % neuron->input_count;
   float orig_value = neuron->input_weights[rand_weight];
 
-  neuron->input_weights[rand_weight] += settings.learning_rate * random_sign();
+  neuron->input_weights[rand_weight] += settings.learning_rate * error;
 
-  float new_result = neural_evaluate(net, input, input_count);
+  float new_error = neural_error(net, input, input_count, correct_output);
 
-  float new_error = correct_output - new_result;
-  float new_abs_error = fabs(new_error);
-
-  if(new_abs_error > abs_error) neuron->input_weights[rand_weight] = orig_value;
+  if( !(fabs(new_error) < fabs(error)) ) neuron->input_weights[rand_weight] = orig_value;
 }
 
 int neural_train(struct NeuralNet* net, struct Net_Training_Settings settings, float* input, int input_count, float correct_output) {
-  float abs_error = neural_absolute_error(net, input, input_count, correct_output);
+  float error = neural_error(net, input, input_count, correct_output);
 
   // Output seems good
-  if(abs_error < settings.acceptable_error) {
+  if(fabs(error) < settings.acceptable_error) {
     return 0;
   }
 
