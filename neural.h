@@ -171,10 +171,6 @@ float neural_evaluate(struct NeuralNet* net, float* input, int input_count) {
   // Handle the first layer
   neural_layer_evaluate(net->neurons[0], net->neurons_per_layer, input, input_count, layer_outputs);
 
-  if(net->layers == 1) {
-    return neuron_evaluate(net->output_neuron, layer_outputs, net->neurons_per_layer);
-  }
-
   for(int i = 1; i < net->layers; i++) {
     float new_layer_outputs[net->neurons_per_layer];
     neural_layer_evaluate(net->neurons[i], net->neurons_per_layer, layer_outputs, net->neurons_per_layer, new_layer_outputs);
