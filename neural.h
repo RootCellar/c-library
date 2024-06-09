@@ -212,13 +212,19 @@ float sign_of(float x) {
   return 1.0;
 }
 
+float random_float() {
+  float x = rand() % 20;
+  x -= 10.0;
+  return x / 10.0;
+}
+
 void neuron_test_random_adjust(struct NeuralNet* net, struct Net_Training_Settings settings, float* input, int input_count, float correct_output, struct Neuron* neuron) {
   float error = neural_error(net, input, input_count, correct_output);
 
   int rand_weight = rand() % neuron->input_count;
   float orig_value = neuron->input_weights[rand_weight];
 
-  neuron->input_weights[rand_weight] += settings.learning_rate * error;
+  neuron->input_weights[rand_weight] += settings.learning_rate * error * random_float();
 
   float new_error = neural_error(net, input, input_count, correct_output);
 
