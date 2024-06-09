@@ -1,4 +1,6 @@
 #include "neural.h"
+#include "statistics.h"
+#include "time.h"
 
 #include <time.h>
 
@@ -9,37 +11,68 @@ void main() {
 
   struct NeuralNet neural_net = create_neural_net(3, 3);
 
-  float onehalf = 0.5;
-  float onefifth = 1.0 / 5.0;
-  float onethird = 1.0 / 3.0;
-  float one = 1.0;
-  float negone = -1.0;
-
-  float result = neural_evaluate(&neural_net, &one, 1);
-  printf("Result: %f\n", result);
+  float inputs[] = {1.0, 1.0 / 2.0, 1.0 / 3.0, 1.0 / 5.0};
+  float outputs[] = {-1.0, 1.0, -1.0, -1.0};
 
   struct Net_Training_Settings settings;
-  settings.acceptable_error = 0.001;
-  settings.learning_rate = 0.1;
+  settings.acceptable_error = 0.01;
+  settings.learning_rate = 1.0;
 
-  for(int i = 0; i < 500000; i++) {
-    neural_train(&neural_net, settings, &one, 1, negone);
-    neural_train(&neural_net, settings, &onehalf, 1, one);
-    neural_train(&neural_net, settings, &onethird, 1, negone);
-    neural_train(&neural_net, settings, &onefifth, 1, negone);
+  unsigned long num_inputs = sizeof(inputs) / sizeof(float);
+  unsigned long num_outputs = sizeof(outputs) / sizeof(float);
+
+  if(num_inputs != num_outputs) {
+    printf("mismatch between number of inputs and outputs!\n");
+    return;
   }
 
-  result = neural_evaluate(&neural_net, &one, 1);
-  printf("Result: %f\n", result);
+  int training = 1;
+  float result;
+  float errors[num_inputs];
+  struct timespec start, now;
+  start = get_time();
 
-  result = neural_evaluate(&neural_net, &onehalf, 1);
-  printf("Result: %f\n", result);
+  while(training) {
+    for(int i = 0; i < num_inputs; i++) {
+      neural_train(&neural_net, settings, &inputs[i], 1, outputs[i]);
+      errors[i] = (float) fabs(neural_error(&neural_net, &inputs[i], 1, outputs[i]));
+    }
 
-  result = neural_evaluate(&neural_net, &onethird, 1);
-  printf("Result: %f\n", result);
+    float max_error = statistics_max(errors, num_inputs);
+    if(max_error < settings.acceptable_error) {
+      // may be done?
 
-  result = neural_evaluate(&neural_net, &onefifth, 1);
-  printf("Result: %f\n", result);
+      // check again
+      for(int i = 0; i < num_inputs; i++) {
+        errors[i] = (float) fabs(neural_error(&neural_net, &inputs[i], 1, outputs[i]));
+      }
+
+      max_error = statistics_max(errors, num_inputs);
+      if(max_error < settings.acceptable_error) {
+        training = 0;
+      }
+
+    }
+
+    now = get_time();
+    if(timespec_difference_seconds(start, now) >= 1.0) {
+      start = get_time();
+
+      for(int i = 0; i < num_inputs; i++) {
+        result = neural_evaluate(&neural_net, &inputs[i], 1);
+        errors[i] = (float) fabs(neural_error(&neural_net, &inputs[i], 1, outputs[i]));
+        printf("%f: %f %f\n", inputs[i], result, errors[i]);
+      }
+
+      printf("Max error: %f\n", max_error);
+    }
+  }
+
+  for(int i = 0; i < num_inputs; i++) {
+    result = neural_evaluate(&neural_net, &inputs[i], 1);
+    errors[i] = (float) fabs(neural_error(&neural_net, &inputs[i], 1, outputs[i]));
+    printf("%f: %f %f\n", inputs[i], result, errors[i]);
+  }
 
   free_neural_net(&neural_net);
   tFreePointerList();
