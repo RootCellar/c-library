@@ -27,6 +27,7 @@ void main() {
   }
 
   int training = 1;
+  int rounds = 0;
   float result;
   float errors[num_inputs];
   struct timespec start, now;
@@ -37,6 +38,7 @@ void main() {
       neural_train(&neural_net, settings, &inputs[i], 1, outputs[i]);
       errors[i] = (float) fabs(neural_error(&neural_net, &inputs[i], 1, outputs[i]));
     }
+    rounds++;
 
     float max_error = statistics_max(errors, num_inputs);
     if(max_error < settings.acceptable_error) {
@@ -67,6 +69,8 @@ void main() {
       printf("Max error: %f\n", max_error);
     }
   }
+
+  printf("Finished training after %d rounds.\n", rounds);
 
   for(int i = 0; i < num_inputs; i++) {
     result = neural_evaluate(&neural_net, &inputs[i], 1);
