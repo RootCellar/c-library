@@ -67,6 +67,7 @@ void main() {
       }
 
       printf("Max error: %f\n", max_error);
+      printf("Rounds: %d\n", rounds);
     }
   }
 
