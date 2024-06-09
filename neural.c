@@ -15,7 +15,7 @@ void main() {
   float outputs[] = {-1.0, 1.0, -1.0, -1.0};
 
   struct Net_Training_Settings settings;
-  settings.acceptable_error = 0.01;
+  settings.acceptable_error = 0.001;
   settings.learning_rate = 1.0;
 
   unsigned long num_inputs = sizeof(inputs) / sizeof(float);
