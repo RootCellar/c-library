@@ -92,5 +92,7 @@ void main() {
   printf("Overall error: %f\n", overall_error);
 
   free_neural_net(&neural_net);
+  free_neural_net(&copy_neural_net);
+  tFree(items);
   tFreePointerList();
 }
