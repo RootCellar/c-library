@@ -26,6 +26,13 @@ struct Net_Training_Settings {
   float acceptable_error;
 };
 
+struct Net_Training_Item {
+  float* inputs;
+  int input_count;
+
+  float correct_output;
+};
+
 void free_neuron(struct Neuron* neuron) {
   if(neuron->input_weights != NULL) {
     tFree(neuron->input_weights);
@@ -201,6 +208,17 @@ float neural_error(struct NeuralNet* net, float* input, int input_count, float c
   return error;
 }
 
+float neural_overall_error(struct NeuralNet* net, struct Net_Training_Item* items, int count) {
+  float overall_error = 0.0;
+
+  for(int i = 0; i < count; i++) {
+    struct Net_Training_Item net_training_item = items[i];
+    overall_error += (float) powf(neural_error(net, net_training_item.inputs, net_training_item.input_count, net_training_item.correct_output),2.0f);
+  }
+
+  return overall_error;
+}
+
 float random_sign() {
   int x = rand() % 2;
   if(x == 0) return -1.0;
@@ -218,33 +236,37 @@ float random_float() {
   return x / 10.0;
 }
 
-void neuron_test_random_adjust(struct NeuralNet* net, struct Net_Training_Settings settings, float* input, int input_count, float correct_output, struct Neuron* neuron) {
-  float error = neural_error(net, input, input_count, correct_output);
+void neuron_test_random_adjust(struct NeuralNet* net, struct Net_Training_Settings settings, struct Net_Training_Item* items, int count, struct Neuron* neuron) {
+  for(int i = 0; i < neuron->input_count; i++) {
+    if( fabs(neuron->input_weights[i] - 0.0) < 0.001 ) neuron->input_weights[i] = 0.01;
+  }
+
+  float error = neural_overall_error(net, items, count);
 
   int rand_weight = rand() % neuron->input_count;
   float orig_value = neuron->input_weights[rand_weight];
 
-  neuron->input_weights[rand_weight] += settings.learning_rate * error * random_float();
+  neuron->input_weights[rand_weight] += settings.learning_rate * random_float();
 
-  float new_error = neural_error(net, input, input_count, correct_output);
+  float new_error = neural_overall_error(net, items, count);
 
-  if( !(fabs(new_error) < fabs(error)) ) neuron->input_weights[rand_weight] = orig_value;
+  if( fabs(new_error) > fabs(error) ) neuron->input_weights[rand_weight] = orig_value;
 }
 
-int neural_train(struct NeuralNet* net, struct Net_Training_Settings settings, float* input, int input_count, float correct_output) {
-  float error = neural_error(net, input, input_count, correct_output);
+int neural_train(struct NeuralNet* net, struct Net_Training_Settings settings, struct Net_Training_Item* items, int count) {
+  float error = neural_overall_error(net, items, count);
 
   // Output seems good
   if(fabs(error) < settings.acceptable_error) {
     return 0;
   }
 
-  neuron_test_random_adjust(net, settings, input, input_count, correct_output, &net->output_neuron);
+  neuron_test_random_adjust(net, settings, items, count, &net->output_neuron);
 
   int rand_layer = rand() % net->layers;
   int rand_neuron = rand() % net->neurons_per_layer;
   struct Neuron* neuron = &(net->neurons[rand_layer][rand_neuron]);
-  neuron_test_random_adjust(net, settings, input, input_count, correct_output, neuron);
+  neuron_test_random_adjust(net, settings, items, count, neuron);
 
   return 1;
 }
