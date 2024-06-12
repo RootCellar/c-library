@@ -1,4 +1,5 @@
 
+// ReSharper disable CppNonInlineFunctionDefinitionInHeaderFile
 #ifndef NEURAL_H
 #define NEURAL_H
 
@@ -24,6 +25,7 @@ struct NeuralNet {
 struct Net_Training_Settings {
   float learning_rate;
   float acceptable_error;
+  int max_changes_at_once;
 };
 
 struct Net_Training_Item {
@@ -44,20 +46,20 @@ struct NeuralNet_Weight_Adjustment {
 
 void apply_weight_adjustments(struct NeuralNet_Weight_Adjustment* adjustments, int count) {
   for(int i = 0; i < count; i++) {
-    struct NeuralNet_Weight_Adjustment adjustment = adjustments[i];
-    if(!adjustment.applied) {
-      adjustment.neuron->input_weights[adjustment.weight] += adjustment.amount;
-      adjustment.applied = 1;
+    struct NeuralNet_Weight_Adjustment* adjustment = &adjustments[i];
+    if(!adjustment->applied) {
+      adjustment->neuron->input_weights[adjustment->weight] += adjustment->amount;
+      adjustment->applied = 1;
     }
   }
 }
 
 void undo_weight_adjustments(struct NeuralNet_Weight_Adjustment* adjustments, int count) {
   for(int i = count - 1; i >= 0; i--) {
-    struct NeuralNet_Weight_Adjustment adjustment = adjustments[i];
-    if(adjustment.applied) {
-      adjustment.neuron->input_weights[adjustment.weight] -= adjustment.amount;
-      adjustment.applied = 0;
+    struct NeuralNet_Weight_Adjustment* adjustment = &adjustments[i];
+    if(adjustment->applied) {
+      adjustment->neuron->input_weights[adjustment->weight] -= adjustment->amount;
+      adjustment->applied = 0;
     }
   }
 }
@@ -328,37 +330,53 @@ float random_float() {
   return x / 10.0;
 }
 
-void neuron_test_random_adjust(struct NeuralNet* net, struct Net_Training_Settings settings, struct Net_Training_Item* items, int count, struct Neuron* neuron) {
-  for(int i = 0; i < neuron->input_count; i++) {
-    if( fabs(neuron->input_weights[i] - 0.0) < 0.001 ) neuron->input_weights[i] = 0.01;
+void neural_net_test_random_adjust(struct NeuralNet* net, struct Net_Training_Item* items, int item_count, struct NeuralNet_Weight_Adjustment* adjustments, int adj_count) {
+  float error = neural_overall_error(net, items, item_count);
+
+  apply_weight_adjustments(adjustments, adj_count);
+
+  float new_error = neural_overall_error(net, items, item_count);
+
+  if( fabs(new_error) > fabs(error) ) {
+    undo_weight_adjustments(adjustments, adj_count);
   }
-
-  float error = neural_overall_error(net, items, count);
-
-  int rand_weight = rand() % neuron->input_count;
-  float orig_value = neuron->input_weights[rand_weight];
-
-  neuron->input_weights[rand_weight] += settings.learning_rate * random_float();
-
-  float new_error = neural_overall_error(net, items, count);
-
-  if( fabs(new_error) > fabs(error) ) neuron->input_weights[rand_weight] = orig_value;
 }
 
-int neural_train(struct NeuralNet* net, struct Net_Training_Settings settings, struct Net_Training_Item* items, int count) {
-  float error = neural_overall_error(net, items, count);
+struct NeuralNet_Weight_Adjustment generate_random_weight_adjustment(struct NeuralNet* net, struct Net_Training_Settings settings) {
+  struct Neuron* neuron;
+
+  int weight = rand() % net->neurons_per_layer;
+
+  if(rand() % 10 < 2) {
+    neuron = &(net->output_neuron);
+  }
+  else {
+    int layer = rand() % net->layers;
+    int neuron_num = rand() % net->neurons_per_layer;
+    neuron = &(net->neurons[layer][neuron_num]);
+  }
+
+  float amount = settings.learning_rate * random_float();
+
+  return generate_weight_adjustment(neuron, weight, amount);
+}
+
+int neural_train(struct NeuralNet* net, struct Net_Training_Settings settings, struct Net_Training_Item* items, int item_count) {
+  float error = neural_overall_error(net, items, item_count);
 
   // Output seems good
   if(fabs(error) < settings.acceptable_error) {
     return 0;
   }
 
-  neuron_test_random_adjust(net, settings, items, count, &net->output_neuron);
+  int num_adjust = rand() % settings.max_changes_at_once + 1;
+  // int num_adjust = 1;
+  struct NeuralNet_Weight_Adjustment adjustments[num_adjust];
+  for(int i = 0; i < num_adjust; i++) {
+    adjustments[i] = generate_random_weight_adjustment(net, settings);
+  }
 
-  int rand_layer = rand() % net->layers;
-  int rand_neuron = rand() % net->neurons_per_layer;
-  struct Neuron* neuron = &(net->neurons[rand_layer][rand_neuron]);
-  neuron_test_random_adjust(net, settings, items, count, neuron);
+  neural_net_test_random_adjust(net, items, item_count, adjustments, num_adjust);
 
   return 1;
 }
