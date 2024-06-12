@@ -95,4 +95,6 @@ void main() {
   free_neural_net(&copy_neural_net);
   tFree(items);
   tFreePointerList();
+
+  exit(0);
 }
