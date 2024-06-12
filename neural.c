@@ -42,6 +42,7 @@ void main() {
 
   int training = 1;
   unsigned long int rounds = 0;
+  unsigned long int old_rounds = 0;
   float result;
   float error, overall_error = 0.0;
   struct timespec start, now;
@@ -70,7 +71,8 @@ void main() {
       }
 
       printf("Overall error: %f\n", overall_error);
-      printf("Rounds: %lu\n", rounds);
+      printf("Rounds: %lu (%lu since last check)\n", rounds, rounds - old_rounds);
+      old_rounds = rounds;
     }
   }
 
