@@ -33,6 +33,45 @@ struct Net_Training_Item {
   float correct_output;
 };
 
+struct NeuralNet_Weight_Adjustment {
+  float amount;
+  int weight;
+
+  struct Neuron* neuron;
+
+  int applied;
+};
+
+void apply_weight_adjustments(struct NeuralNet_Weight_Adjustment* adjustments, int count) {
+  for(int i = 0; i < count; i++) {
+    struct NeuralNet_Weight_Adjustment adjustment = adjustments[i];
+    if(!adjustment.applied) {
+      adjustment.neuron->input_weights[adjustment.weight] += adjustment.amount;
+      adjustment.applied = 1;
+    }
+  }
+}
+
+void undo_weight_adjustments(struct NeuralNet_Weight_Adjustment* adjustments, int count) {
+  for(int i = count - 1; i >= 0; i--) {
+    struct NeuralNet_Weight_Adjustment adjustment = adjustments[i];
+    if(adjustment.applied) {
+      adjustment.neuron->input_weights[adjustment.weight] -= adjustment.amount;
+      adjustment.applied = 0;
+    }
+  }
+}
+
+struct NeuralNet_Weight_Adjustment generate_weight_adjustment(struct Neuron* neuron, int weight, int amount) {
+  struct NeuralNet_Weight_Adjustment adjustment;
+  adjustment.neuron = neuron;
+  adjustment.amount = amount;
+  adjustment.weight = weight;
+  adjustment.applied = 0;
+
+  return adjustment;
+}
+
 void free_neuron(struct Neuron* neuron) {
   if(neuron->input_weights != NULL) {
     tFree(neuron->input_weights);
