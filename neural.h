@@ -99,6 +99,25 @@ struct Neuron create_neuron(int input_count) {
   return neuron;
 }
 
+int copy_neuron(struct Neuron* from, struct Neuron* to) {
+  if(from->input_weights == NULL || to->input_weights == NULL) return -1;
+  if(from->input_count != to->input_count) return -1;
+
+  for(int i = 0; i < from->input_count; i++) {
+    to->input_weights[i] = from->input_weights[i];
+  }
+
+  return 0;
+}
+
+struct Neuron duplicate_neuron(struct Neuron dup) {
+  struct Neuron toRet = create_neuron(dup.input_count);
+  if(toRet.input_weights == NULL) return toRet;
+
+  if(copy_neuron(&dup, &toRet) < 0) free_neuron(&toRet);
+  return toRet;
+}
+
 struct NeuralNet create_neural_net(int layers, int neurons_per_layer) {
 
   debug_printf("Creating neural net with %d layers and %d neurons per layer...", layers, neurons_per_layer);
@@ -154,6 +173,40 @@ struct NeuralNet create_neural_net(int layers, int neurons_per_layer) {
   debug_print("Built output neuron");
 
   return neural_net;
+}
+
+int copy_neural_net(struct NeuralNet* from, struct NeuralNet* to) {
+  debug_print("Attempting to copy neural net...");
+
+  if(from->neurons == NULL || to->neurons == NULL) return -1;
+  if(from->layers != to->layers) return -1;
+  if(from->neurons_per_layer != to->neurons_per_layer) return -1;
+
+  debug_print("Copying neurons...");
+
+  for(int i = 0; i < from->layers; i++) {
+    for(int k = 0; k < from->neurons_per_layer; k++) {
+      if(copy_neuron(&from->neurons[i][k], &to->neurons[i][k]) == -1) return -1;
+    }
+  }
+
+  debug_print("Copying output neuron...");
+
+  if(copy_neuron(&from->output_neuron, &to->output_neuron) == -1) return -1;
+
+  debug_print("Neural net copied.");
+
+  return 0;
+}
+
+struct NeuralNet duplicate_neural_net(struct NeuralNet dup) {
+  debug_print("Attempting to duplicate neural net...");
+  struct NeuralNet toRet = create_neural_net(dup.layers, dup.neurons_per_layer);
+  if(toRet.neurons == NULL) return toRet;
+
+  copy_neural_net(&dup, &toRet);
+  debug_print("Neural net duplicated.");
+  return toRet;
 }
 
 float activation_tanh(float output) {
