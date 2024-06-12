@@ -10,13 +10,15 @@ void main() {
   tResize(8192);
 
   struct NeuralNet neural_net = create_neural_net(3, 3);
+  struct NeuralNet copy_neural_net = duplicate_neural_net(neural_net);
 
-  float inputs[] = {1.0, 0.1, 0.2, 0.3, 0.4, 0.15, 0.25};
-  float outputs[] = {-1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0};
+  float inputs[] = {1.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.15, 0.25};
+  float outputs[] = {-1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0};
 
   struct Net_Training_Settings settings;
   settings.acceptable_error = 0.001;
   settings.learning_rate = 1.0;
+  settings.max_changes_at_once = 2;
 
   unsigned long num_inputs = sizeof(inputs) / sizeof(float);
   unsigned long num_outputs = sizeof(outputs) / sizeof(float);
@@ -50,7 +52,7 @@ void main() {
 
   while(training) {
 
-    settings.learning_rate = sinf((float) rounds / 100) * 10.0;
+    settings.learning_rate = sinf((float) rounds / 1000) * 10.0;
 
     neural_train(&neural_net, settings, items, num_inputs);
     rounds++;
@@ -63,6 +65,8 @@ void main() {
     now = get_time();
     if(timespec_difference_seconds(start, now) >= 1.0) {
       start = get_time();
+
+      settings.max_changes_at_once = rand() % 10 + 1;
 
       for(int i = 0; i < num_inputs; i++) {
         result = neural_evaluate(&neural_net, &inputs[i], 1);
