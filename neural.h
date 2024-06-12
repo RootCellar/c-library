@@ -142,7 +142,7 @@ struct NeuralNet create_neural_net(int layers, int neurons_per_layer) {
     }
   }
 
-  debug_print("Built neurons");
+  debug_printf("Built %d neurons", layers * neurons_per_layer);
 
   neural_net.output_neuron = create_neuron(neurons_per_layer);
   if(neural_net.output_neuron.input_weights == NULL) {
