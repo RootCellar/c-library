@@ -347,7 +347,7 @@ struct NeuralNet_Weight_Adjustment generate_random_weight_adjustment(struct Neur
 
   int weight = rand() % net->neurons_per_layer;
 
-  if(rand() % 10 < 2) {
+  if(rand() % 10 < 1) {
     neuron = &(net->output_neuron);
   }
   else {
