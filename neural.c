@@ -5,20 +5,22 @@
 #include <time.h>
 
 void main() {
-  srand(time(NULL));
+  srandom(time(NULL));
 
   tResize(8192);
 
-  struct NeuralNet neural_net = create_neural_net(3, 3);
+  struct NeuralNet neural_net = create_neural_net(3, 10);
   struct NeuralNet copy_neural_net = duplicate_neural_net(neural_net);
 
-  float inputs[] = {1.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.15, 0.25};
-  float outputs[] = {-1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0};
+  float inputs[] = {1.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.15, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 0.85, 0.95};
+  float outputs[] = {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0};
 
   struct Net_Training_Settings settings;
   settings.acceptable_error = 0.001;
   settings.learning_rate = 1.0;
   settings.max_changes_at_once = 2;
+  settings.num_threads = 12;
+  settings.iterations_per_thread = 1000;
 
   unsigned long num_inputs = sizeof(inputs) / sizeof(float);
   unsigned long num_outputs = sizeof(outputs) / sizeof(float);
@@ -52,9 +54,9 @@ void main() {
 
   while(training) {
 
-    settings.learning_rate = sinf((float) rounds / 1000) * 10.0;
+    settings.learning_rate = sinf((float) rounds / 100.0) * 10.0;
 
-    neural_train(&neural_net, settings, items, num_inputs);
+    neural_train_threaded(&neural_net, settings, items, num_inputs);
     rounds++;
 
     overall_error = neural_overall_error(&neural_net, items, num_inputs);
@@ -74,8 +76,9 @@ void main() {
         printf("%f: %f %f\n", inputs[i], result, error);
       }
 
+      unsigned long rounds_change = rounds - old_rounds;
       printf("Overall error: %f\n", overall_error);
-      printf("Rounds: %lu (%lu since last check)\n", rounds, rounds - old_rounds);
+      printf("Rounds: %lu (%lu since last check, %lu rounds across thread iterations)\n", rounds, rounds_change, rounds_change * settings.num_threads * settings.iterations_per_thread);
       old_rounds = rounds;
     }
   }
