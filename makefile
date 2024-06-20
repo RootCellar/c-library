@@ -55,4 +55,4 @@ test_sthread: test_sthread.c $(HEADERS)
 	$(CC) $(CFLAGS) -o $@ test_sthread.c -lpthread
 
 neural: neural.c $(HEADERS)
-	$(CC) $(CFLAGS) -o $@ neural.c -lm
+	$(CC) $(CFLAGS) -o $@ neural.c -lm -lpthread
