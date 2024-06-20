@@ -303,4 +303,8 @@ int tFree(void* ptr) {
   return 0;
 }
 
+#undef MEMORY_DEBUG
+#undef memory_debug_print
+#undef memory_debug_printf
+
 #endif
