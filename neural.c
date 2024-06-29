@@ -65,7 +65,8 @@ void main() {
     }
 
     now = get_time();
-    if(timespec_difference_seconds(start, now) >= 1.0) {
+    float difference_seconds = timespec_difference_seconds(start, now);
+    if(difference_seconds >= 1.0) {
       start = get_time();
 
       settings.max_changes_at_once = rand() % 10 + 1;
@@ -77,8 +78,10 @@ void main() {
       }
 
       unsigned long rounds_change = rounds - old_rounds;
+      unsigned long rounds_across_threads = rounds_change * settings.num_threads * settings.iterations_per_thread;
       printf("Overall error: %f\n", overall_error);
-      printf("Rounds: %lu (%lu since last check, %lu rounds across thread iterations)\n", rounds, rounds_change, rounds_change * settings.num_threads * settings.iterations_per_thread);
+      printf("Rounds: %lu (%lu since last check, %lu rounds across thread iterations)\n", rounds, rounds_change, rounds_across_threads);
+      printf("Rounds per second: %f\n", (float) rounds_across_threads / difference_seconds);
       old_rounds = rounds;
     }
   }
