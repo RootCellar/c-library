@@ -253,7 +253,11 @@ struct NeuralNet duplicate_neural_net(struct NeuralNet dup) {
   struct NeuralNet toRet = create_neural_net(dup.layers, dup.neurons_per_layer);
   if(toRet.neurons == NULL) return toRet;
 
-  copy_neural_net(&dup, &toRet);
+  if(copy_neural_net(&dup, &toRet) == -1) {
+    debug_print("Failed to duplicate Neural net!");
+    free_neural_net(&toRet);
+    return toRet;
+  }
   debug_print("Neural net duplicated.");
   return toRet;
 }
