@@ -8,8 +8,8 @@
 #include "benchmark.h"
 #include "vector.h"
 
-#define NUM_LOOPS_TRIG 500000
-#define NUM_LOOPS_VECTOR 50000000
+#define NUM_LOOPS_TRIG 100000
+#define NUM_LOOPS_VECTOR 100000
 
 #define BENCHMARK_LOOPS 10
 #define THREAD_COUNT 16
