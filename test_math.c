@@ -10,6 +10,8 @@ void main() {
 
   srand(time(NULL));
 
+  benchmark_setupLocale();
+
   SECTION("3D Vectors");
 
   SECTION("Basic 3D Vector Checks");
