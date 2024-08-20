@@ -171,20 +171,14 @@ void empty_function() {
 
 void test_bubblesort(size_t size) {
   int* nums = malloc(sizeof(int) * size);
+  if(nums == NULL) return;
 
   for(size_t i = 0; i < size; i++) {
     nums[i] = size - i;
-    // debug_printf("%d ", nums[i]);
   }
-  // debug_print("\n ");
-  
 
   bubblesort(nums, size);
-
-  // for(size_t i = 0; i < size; i++) {
-  //   debug_printf("%d ", nums[i]);
-  // }
-  // debug_print("\n ");
+  free(nums);
 }
 
 int main() {
