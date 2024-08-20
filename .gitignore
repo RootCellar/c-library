@@ -1,3 +1,5 @@
+/.idea
+
 /benchmark
 /benchmark_threads
 /test_memory
