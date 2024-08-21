@@ -3,9 +3,21 @@
 #include "time.h"
 
 #include <time.h>
+#include <signal.h>
+#include <stdbool.h>
+
+static bool should_run = true;
+
+static void flag_exit() {
+  should_run = false;
+  printf("\n\n Exiting... \n\n");
+}
 
 void main() {
   srandom(time(NULL));
+
+  signal(SIGINT, flag_exit);
+  signal(SIGTERM, flag_exit);
 
   tResize(8192);
 
@@ -52,7 +64,7 @@ void main() {
   struct timespec start, now;
   start = get_time();
 
-  while(training) {
+  while(training && should_run) {
 
     settings.learning_rate = sinf((float) rounds / 100.0) * 10.0;
 
