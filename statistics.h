@@ -40,7 +40,7 @@ float statistics_average(float* values, size_t count) {
     sum += values[i];
   }
 
-  return sum / (float)count;
+  return sum / (float) count;
 }
 
 float statistics_average_deviation(float* values, size_t count) {
@@ -50,23 +50,23 @@ float statistics_average_deviation(float* values, size_t count) {
 
   float deviation_sum = 0;
   for(size_t i = 0; i < count; i++) {
-    deviation_sum += statistics_float_abs( values[i] - average );
+    deviation_sum += statistics_float_abs(values[i] - average);
   }
 
-  return deviation_sum / (float)count;
+  return deviation_sum / (float) count;
 }
 
 float statistics_standard_deviation(float* values, size_t count) {
   if(count < 1) return 0.0;
-  
+
   float average = statistics_average(values, count);
 
   float deviation_sum = 0;
   for(size_t i = 0; i < count; i++) {
-    deviation_sum += pow(statistics_float_abs( values[i] - average ), 2.0);
+    deviation_sum += pow(statistics_float_abs(values[i] - average), 2.0);
   }
 
-  return sqrtf(deviation_sum / (float)count);
+  return sqrtf(deviation_sum / (float) count);
 }
 
 #endif

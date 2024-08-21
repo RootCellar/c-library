@@ -58,7 +58,6 @@
 
 
 struct receiving_buffer {
-
   // Used by user and implementation
 
   char* buffer;
@@ -67,14 +66,13 @@ struct receiving_buffer {
   // Used by implementation
   char* actual_buffer;
   int actual_size;
-  
+
   int message_size;
   int message_size_received;
-  
+
   int received;
 
   time_t last_received;
-  
 };
 
 
@@ -100,7 +98,7 @@ void allocate_receiving_buffer(struct receiving_buffer* buffer, int size) {
   }
 
   int actual_size = size + MESSAGE_SIZE_BYTES;
-  
+
   void* ptr = tMalloc(actual_size);
   if(ptr == NULL) {
     debug_print("Could not allocate space for buffer!");
@@ -109,10 +107,10 @@ void allocate_receiving_buffer(struct receiving_buffer* buffer, int size) {
 
   buffer->actual_buffer = ptr;
   buffer->actual_size = actual_size;
-  
+
   buffer->message_size = 0;
   buffer->message_size_received = 0;
-  
+
   buffer->received = 0;
 
   buffer->buffer = (char*) ptr + MESSAGE_SIZE_BYTES;
@@ -132,15 +130,14 @@ void allocate_receiving_buffer(struct receiving_buffer* buffer, int size) {
  * the function failed to create the buffer. Otherwise, it succeeded.
 */
 struct receiving_buffer make_receive_buffer(int size) {
-  
   struct receiving_buffer buffer;
   buffer.buffer = NULL;
   buffer.buffer_size = 0;
-  
+
   allocate_receiving_buffer(&buffer, size);
 
   debug_printf("Created buffer with size %d", size);
-  
+
   return buffer;
 }
 
@@ -167,9 +164,9 @@ int send_buffer(int fd, char* data, int count) {
   int total_sent = 0;
 
   // Send message size
-  
+
   while(total_sent < MESSAGE_SIZE_BYTES) {
-    sent = write(fd, ((char*)&count) + total_sent, MESSAGE_SIZE_BYTES - total_sent);
+    sent = write(fd, ((char*) &count) + total_sent, MESSAGE_SIZE_BYTES - total_sent);
 
     if(sent >= 0) total_sent += sent;
 
@@ -183,7 +180,7 @@ int send_buffer(int fd, char* data, int count) {
 
   total_sent = 0;
   if(data == NULL) return 0;
-  
+
   while(total_sent < count) {
     sent = write(fd, data + total_sent, count - total_sent);
 
@@ -334,7 +331,6 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
   errno = 0;
 
   if(buffer->message_size_received < MESSAGE_SIZE_BYTES) {
-  
     // Work on getting the size of the message
     if(connection_keepalive(fd, buffer) < 0) {
       return -1;
@@ -344,7 +340,8 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
       return status;
     }
 
-    int amount_read = read(fd, buffer->actual_buffer + buffer->message_size_received, MESSAGE_SIZE_BYTES - buffer->message_size_received);
+    int amount_read = read(fd, buffer->actual_buffer + buffer->message_size_received,
+                           MESSAGE_SIZE_BYTES - buffer->message_size_received);
 
     if(errno != 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
       perror("read_buffer");
@@ -352,13 +349,13 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
     }
 
     if(amount_read > 0) buffer->message_size_received += amount_read;
-    
+
     if(buffer->message_size_received == MESSAGE_SIZE_BYTES) {
       for(int i = MESSAGE_SIZE_BYTES - 1; i >= 0; i--) {
         buffer->message_size <<= 8;
         buffer->message_size |= buffer->actual_buffer[i] & 0xFF;
       }
-      
+
       if(buffer->message_size < 1) {
         buffer->message_size_received = 0;
       }
@@ -368,11 +365,9 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
         return -1;
       }
     }
-    
   }
 
   if(buffer->message_size > 0) {
-
     // Work on reading the message
     if(connection_keepalive(fd, buffer) < 0) {
       return -1;
@@ -403,12 +398,10 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
 
       return size;
     }
-
   }
 
   // Don't have a full message yet
   return 0;
-
 }
 
 /*
@@ -445,7 +438,7 @@ int accept_connection(int fd) {
 
   struct sockaddr address;
   socklen_t addrlen = sizeof(address);
-  
+
   int new_socket = accept(fd, &address, &addrlen);
   if(errno == EAGAIN || errno == EWOULDBLOCK) {
     return -1;
@@ -482,8 +475,7 @@ int create_connection(char* host, int port) {
   serv_addr.sin_family = AF_INET;
   serv_addr.sin_port = htons(port);
 
-  if(inet_pton(AF_INET, host, &serv_addr.sin_addr)<0)
-  {
+  if(inet_pton(AF_INET, host, &serv_addr.sin_addr) < 0) {
     perror("Invalid address/Address not supported");
     close(sock);
     return -1;
@@ -493,8 +485,8 @@ int create_connection(char* host, int port) {
 
   debug_printf("Connecting to host %s port %d...", host, port);
 
-  int result = connect(sock, (struct sockaddr*)&serv_addr, sizeof(serv_addr));
-  if( result < 0 && errno != EINPROGRESS) {
+  int result = connect(sock, (struct sockaddr*) &serv_addr, sizeof(serv_addr));
+  if(result < 0 && errno != EINPROGRESS) {
     debug_printf("Failed connecting to host %s:%d!", host, port);
     perror("connect");
     return -1;
@@ -538,13 +530,13 @@ int create_server_socket(int port) {
 
   address.sin_family = AF_INET;
   address.sin_addr.s_addr = INADDR_ANY;
-  address.sin_port = htons( port );
+  address.sin_port = htons(port);
 
   debug_printf("Binding server socket to port %d...", port);
 
-  result = bind(server_fd, (struct sockaddr *)&address, sizeof(address));
+  result = bind(server_fd, (struct sockaddr*) &address, sizeof(address));
 
-  if(result < 0) { 
+  if(result < 0) {
     perror("bind");
     return -1;
   }

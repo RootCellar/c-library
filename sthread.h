@@ -9,7 +9,7 @@ struct thread_args {
   int thread_count;
   void* items;
   int count;
-  void (*function)(int,int,int,void*);
+  void (*function)(int, int, int, void*);
 };
 
 void start_thread(void* args) {
@@ -19,7 +19,6 @@ void start_thread(void* args) {
 }
 
 void run_in_threads(void* function, void* items, int count, int thread_count) {
-
   pthread_t threads[thread_count];
   struct thread_args args[thread_count];
 
@@ -30,14 +29,12 @@ void run_in_threads(void* function, void* items, int count, int thread_count) {
     args[i].count = count;
     args[i].function = function;
 
-    pthread_create(&threads[i], NULL, start_thread, (void*)&(args[i]));
+    pthread_create(&threads[i], NULL, start_thread, (void*) &(args[i]));
   }
 
-  for(int i = 0; i < thread_count; i++)
-  {
+  for(int i = 0; i < thread_count; i++) {
     pthread_join(threads[i], NULL);
   }
-
 }
 
 #endif //STHREAD_H

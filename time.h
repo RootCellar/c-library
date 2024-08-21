@@ -15,7 +15,6 @@ double timespec_to_double(struct timespec time) {
 }
 
 double timespec_difference_seconds(struct timespec start, struct timespec end) {
-
   // Shrink tv_sec down to the actual integer difference between them
   // Helps protect time measurements from floating point roundoff because
   // tv_sec is a large number

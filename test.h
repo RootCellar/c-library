@@ -42,7 +42,7 @@ float float_abs(float value) {
 
 int floats_equal(float one, float two) {
   // debug_printf(" %f == %f ? ", one, two);
-  return float_abs( one - two ) < FLOAT_DIFFERENCE_TOLERANCE;
+  return float_abs(one - two) < FLOAT_DIFFERENCE_TOLERANCE;
 }
 
 #endif

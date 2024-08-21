@@ -22,7 +22,7 @@ struct Vector3 vector3_create(float x, float y, float z) {
 }
 
 float vector3_length(struct Vector3 vector) {
-  return sqrtf( powf(vector.x, 2) + powf(vector.y, 2) + powf(vector.z, 2) );
+  return sqrtf(powf(vector.x, 2) + powf(vector.y, 2) + powf(vector.z, 2));
 }
 
 struct Vector3 vector3_normalize(struct Vector3 vector) {
@@ -39,7 +39,7 @@ struct Vector3 vector3_add(struct Vector3 one, struct Vector3 two) {
 }
 
 struct Vector3 vector3_subtract(struct Vector3 one, struct Vector3 two) {
-  return vector3_add( one, vector3_negate(two) );
+  return vector3_add(one, vector3_negate(two));
 }
 
 struct Vector3 vector3_multiply_scalar(struct Vector3 vector, float mult) {
@@ -64,7 +64,7 @@ struct Vector3 vector3_cross_product(struct Vector3 one, struct Vector3 two) {
 }
 
 struct Vector3 vector3_facing(struct Vector3 one, struct Vector3 two) {
-  return vector3_normalize( vector3_subtract(two, one) );
+  return vector3_normalize(vector3_subtract(two, one));
 }
 
 #endif //VECTOR_H

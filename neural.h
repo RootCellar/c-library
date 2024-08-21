@@ -15,13 +15,11 @@ struct Neuron {
 };
 
 struct NeuralNet {
-
   int layers;
   int neurons_per_layer;
 
   struct Neuron** neurons;
   struct Neuron output_neuron;
-
 };
 
 struct Net_Training_Settings {
@@ -92,7 +90,8 @@ void free_neuron(struct Neuron* neuron) {
 void free_neural_net(struct NeuralNet* neural_net) {
   if(neural_net->neurons == NULL) return;
 
-  debug_printf("Freeing neural net with %d layers and %d neurons per layer", neural_net->layers, neural_net->neurons_per_layer);
+  debug_printf("Freeing neural net with %d layers and %d neurons per layer", neural_net->layers,
+               neural_net->neurons_per_layer);
 
   for(int i = 0; i < neural_net->layers; i++) {
     struct Neuron* neuron_layer = neural_net->neurons[i];
@@ -104,7 +103,6 @@ void free_neural_net(struct NeuralNet* neural_net) {
         free_neuron(&neuron);
       }
     }
-
   }
 
   debug_print("Freeing neuron layers");
@@ -168,7 +166,6 @@ struct Neuron duplicate_neuron(struct Neuron dup) {
 }
 
 struct NeuralNet create_neural_net(int layers, int neurons_per_layer) {
-
   debug_printf("Creating neural net with %d layers and %d neurons per layer...", layers, neurons_per_layer);
 
   struct NeuralNet neural_net;
@@ -283,7 +280,6 @@ void neural_layer_evaluate(struct Neuron* layer, int layer_count, float* input, 
 }
 
 float neural_evaluate(struct NeuralNet* net, float* input, int input_count) {
-
   // Just return the output of the output neuron if there are no hidden layers
   if(net->layers < 1) {
     return neuron_evaluate(net->output_neuron, input, input_count);
@@ -297,7 +293,8 @@ float neural_evaluate(struct NeuralNet* net, float* input, int input_count) {
   // Handle every layer afterwards
   for(int i = 1; i < net->layers; i++) {
     float new_layer_outputs[net->neurons_per_layer];
-    neural_layer_evaluate(net->neurons[i], net->neurons_per_layer, layer_outputs, net->neurons_per_layer, new_layer_outputs);
+    neural_layer_evaluate(net->neurons[i], net->neurons_per_layer, layer_outputs, net->neurons_per_layer,
+                          new_layer_outputs);
 
     for(int k = 0; k < net->neurons_per_layer; k++) {
       layer_outputs[k] = new_layer_outputs[k];
@@ -319,7 +316,8 @@ float neural_overall_error(struct NeuralNet* net, struct Net_Training_Item* item
 
   for(int i = 0; i < count; i++) {
     struct Net_Training_Item net_training_item = items[i];
-    overall_error += (float) powf(neural_error(net, net_training_item.inputs, net_training_item.input_count, net_training_item.correct_output),2.0f);
+    overall_error += (float) powf(neural_error(net, net_training_item.inputs, net_training_item.input_count,
+                                               net_training_item.correct_output), 2.0f);
   }
 
   return overall_error;
@@ -342,7 +340,8 @@ float random_float() {
   return x / 10.0;
 }
 
-struct NeuralNet_Weight_Adjustment generate_random_weight_adjustment(struct NeuralNet* net, struct Net_Training_Settings settings) {
+struct NeuralNet_Weight_Adjustment generate_random_weight_adjustment(struct NeuralNet* net,
+                                                                     struct Net_Training_Settings settings) {
   struct Neuron* neuron;
 
   int weight = get_rand() % net->neurons_per_layer;
@@ -361,19 +360,21 @@ struct NeuralNet_Weight_Adjustment generate_random_weight_adjustment(struct Neur
   return generate_weight_adjustment(neuron, weight, amount);
 }
 
-void neural_net_test_random_adjust(struct NeuralNet* net, struct Net_Training_Item* items, int item_count, struct NeuralNet_Weight_Adjustment* adjustments, int adj_count) {
+void neural_net_test_random_adjust(struct NeuralNet* net, struct Net_Training_Item* items, int item_count,
+                                   struct NeuralNet_Weight_Adjustment* adjustments, int adj_count) {
   float error = neural_overall_error(net, items, item_count);
 
   apply_weight_adjustments(adjustments, adj_count);
 
   float new_error = neural_overall_error(net, items, item_count);
 
-  if( !(fabs(new_error) < fabs(error)) ) {
+  if(!(fabs(new_error) < fabs(error))) {
     undo_weight_adjustments(adjustments, adj_count);
   }
 }
 
-int neural_train(struct NeuralNet* net, struct Net_Training_Settings settings, struct Net_Training_Item* items, int item_count) {
+int neural_train(struct NeuralNet* net, struct Net_Training_Settings settings, struct Net_Training_Item* items,
+                 int item_count) {
   float error = neural_overall_error(net, items, item_count);
 
   // Output seems good
@@ -412,7 +413,8 @@ void __neural_train_thread(int id, int thread_count, int count, void* data) {
   thread_data->error = neural_overall_error(&thread_data->net, thread_data->items, thread_data->item_count);
 }
 
-int neural_train_threaded(struct NeuralNet* net, struct Net_Training_Settings settings, struct Net_Training_Item* items, int item_count) {
+int neural_train_threaded(struct NeuralNet* net, struct Net_Training_Settings settings, struct Net_Training_Item* items,
+                          int item_count) {
   float error = neural_overall_error(net, items, item_count);
 
   // Output seems good
