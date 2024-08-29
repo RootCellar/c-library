@@ -50,8 +50,8 @@ void main() {
     vector.y = rand() % 1000;
     vector.z = rand() % 1000;
 
-    __TEST( floats_equal( vector3_length( vector3_normalize(vector) ), 1.0f ), "vector3_normalize", 1);
-    __TEST( floats_equal( vector3_length( vector3_to_length(vector, len) ), len ), "vector3_to_length", 1);
+    TEST_QUIET( floats_equal( vector3_length( vector3_normalize(vector) ), 1.0f ), "vector3_normalize");
+    TEST_QUIET( floats_equal( vector3_length( vector3_to_length(vector, len) ), len ), "vector3_to_length");
   }
 
   TIMES( BENCHMARK_LOOPS( vector3_to_length(vector, 8.0f), "vector3_to_length", 100000 ), 3);

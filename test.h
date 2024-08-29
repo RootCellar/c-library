@@ -29,6 +29,7 @@ else { FAIL_TEST(expr, name); }\
  } while(0)
 
 #define TEST(expr, name) __TEST(expr, name, 0)
+#define TEST_QUIET(expr, name) __TEST(expr, name, 1)
 
 #define SECTION(name) \
 do { \
