@@ -8,6 +8,7 @@
 /test_prime
 /test_inet
 /test_sthread
+/test_strings
 /neural
 
 # ---> C
