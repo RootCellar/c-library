@@ -10,9 +10,16 @@ void main() {
   SECTION("Digits");
 
   for(int i = 0; i < 10; i++) {
-    char c = '0' + i;
+    unsigned char c = '0' + i;
     sprintf(buf, "%c is a digit", c);
     TEST(is_digit(c), buf);
+  }
+
+  for(int i = 0; i < 256; i++) {
+    if(i >= '0' && i <= '9') continue;
+    unsigned char c = i;
+    sprintf(buf, "ASCII Code %d is NOT a digit", c);
+    TEST(is_digit(c) == 0, buf);
   }
 
   exit(0);
