@@ -271,6 +271,43 @@ void* tMalloc(unsigned long int len) {
   return toRet;
 }
 
+// Reallocate the given pointer and update the list entry
+// If the block of memory is expanded, the new space is
+// filled with zeros
+void* tRealloc(void* ptr, unsigned long int len) {
+  memory_debug_printf("Reallocating %p to %lu bytes", ptr, len);
+
+  if(!is_valid_ptr(ptr)) return NULL;
+
+  long int spot = tFindSpot(ptr);
+  if(spot < 0) {
+    memory_debug_print("Could not find pointer in the list!");
+    return NULL;
+  }
+
+  struct ptr_data* ptr_data = &POINTER_LIST[spot];
+  int shrunk = 0;
+  if(len < ptr_data->size) shrunk = 1;
+
+  void* new_ptr = realloc(ptr, len);
+  if(!is_valid_ptr(new_ptr)) {
+    memory_debug_print("Could not reallocate pointer!");
+    return NULL;
+  }
+
+  if(!shrunk) {
+    memory_debug_print("Memory block was expanded, zero-filling new space...");
+    memset(&ptr[len], 0, len - ptr_data->size);
+  }
+
+  memory_debug_print("Updating list entry...");
+
+  ptr_data->ptr = new_ptr;
+  ptr_data->size = len;
+
+  return new_ptr;
+}
+
 // Free the given pointer and remove it from the list,
 // if it is in the list and is a valid pointer
 int tFree(void* ptr) {

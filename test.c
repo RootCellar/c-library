@@ -15,6 +15,7 @@ void main() {
   TEST( tFree( (void*) 16 ) == 1, "free a pointer that isn't in the list");
 
   TEST( tMalloc(0) == NULL, "tMalloc(0)");
+  TEST( tRealloc(NULL, 16) == NULL, "tRealloc(NULL, 16)");
 
   TEST( tGetTotalAllocs() == 0, "tGetTotalAllocs() with nothing allocated");
   TEST( tGetTotalAllocSize() == 0, "tGetTotalAllocSize() with nothing allocated");
@@ -53,7 +54,21 @@ void main() {
 
 
   ptr = tMalloc(alloc_bytes);
+  int* ptr2;
+  TEST( ptr != NULL, "Successfully allocate memory");
   TEST( tMalloc(alloc_bytes) == NULL, "pointer list too small");
+
+  ptr2 = ptr;
+  ptr = tRealloc(ptr, alloc_bytes + 16);
+  TEST( ptr != NULL, "can reallocate the chunk of memory");
+  TEST( tOwnsAddress(ptr) == 1, "tOwnsAddress() on reallocated memory chunk");
+  TEST( tOwnsAddress(ptr2) == 0, "tOwnsAddress() on free'd memory chunk");
+
+  TEST( (ptr = tRealloc(ptr, 1)) != NULL, "realloc pointer to smaller chunk of memory");
+
+  TEST( tResize(10) == 0, "expand pointer list with one chunk of memory allocated");
+  TEST( tResize(1) == 0, "shrink pointer list to fit the one pointer");
+
   TEST( tFree(ptr) == 0, "tFree() the pointer");
 
   TEST( tResize(10) == 0, "expand pointer list");
@@ -63,6 +78,7 @@ void main() {
   TEST( tMalloc(alloc_bytes) == NULL, "tMalloc() pointer list too small");
   TEST( tOwnsAddress(ptr) == 1, "tOwnsAddress() on pointer");
   TEST( tFree(ptr) == 0, "tFree() the pointer");
+
   TEST( tGetTotalAllocs() == 0, "tGetTotalAllocs() after tFree()");
   TEST( tGetTotalAllocSize() == 0, "tGetTotalAllocSize() after tFree()");
   TEST( tOwnsAddress(ptr) == 0, "tOwnsAddress() on pointer after free");
@@ -75,7 +91,7 @@ void main() {
   SECTION("Pointer List expanded to 10 items");
 
 
-  
+
   TEST( tResize(10) == 0, "expand pointer list");
 
 
@@ -86,7 +102,7 @@ void main() {
 
   size_t ptr_array_size = 10;
   int* ptr_array[ptr_array_size];
-  
+
   TEST( tResize(10) == 0, "expand pointer list");
   for(size_t i = 0; i < ptr_array_size; i++) {
     ptr_array[i] = tMalloc(alloc_bytes);
