@@ -9,8 +9,6 @@ double timespec_to_double(struct timespec time) {
   double nanoseconds_in_seconds = (double) time.tv_nsec / 1000000000.0;
   double seconds = time.tv_sec;
   double timespec_in_seconds = seconds + nanoseconds_in_seconds;
-  // printf("%ld %ld\n", time.tv_sec, time.tv_nsec);
-  // printf("%lf %lf %lf\n", x, x1, x2);
   return timespec_in_seconds;
 }
 
