@@ -10,6 +10,7 @@
 /test_sthread
 /test_strings
 /neural
+/dice
 
 # ---> C
 # Prerequisites
