@@ -1,21 +1,29 @@
 #ifndef TERMINAL_COLOR_H
 #define TERMINAL_COLOR_H
 
-#define ANSI_COLOR_RED     "\x1b[31m"
-#define ANSI_COLOR_GREEN   "\x1b[32m"
-#define ANSI_COLOR_YELLOW  "\x1b[33m"
-#define ANSI_COLOR_BLUE    "\x1b[34m"
-#define ANSI_COLOR_MAGENTA "\x1b[35m"
-#define ANSI_COLOR_CYAN    "\x1b[36m"
+#include <unistd.h>
 
-#define ANSI_COLOR_GRAY           "\x1b[90m"
-#define ANSI_COLOR_BRIGHT_RED     "\x1b[91m"
-#define ANSI_COLOR_BRIGHT_GREEN   "\x1b[92m"
-#define ANSI_COLOR_BRIGHT_YELLOW  "\x1b[93m"
-#define ANSI_COLOR_BRIGHT_BLUE    "\x1b[94m"
-#define ANSI_COLOR_BRIGHT_MAGENTA "\x1b[95m"
-#define ANSI_COLOR_BRIGHT_CYAN    "\x1b[96m"
+char* color(char* color) {
+  return isatty(STDOUT_FILENO) ? color : "";
+}
 
-#define ANSI_COLOR_RESET   "\x1b[0m"
+#define __COLOR(col) color(col)
+
+#define ANSI_COLOR_RED     __COLOR("\x1b[31m")
+#define ANSI_COLOR_GREEN   __COLOR("\x1b[32m")
+#define ANSI_COLOR_YELLOW  __COLOR("\x1b[33m")
+#define ANSI_COLOR_BLUE    __COLOR("\x1b[34m")
+#define ANSI_COLOR_MAGENTA __COLOR("\x1b[35m")
+#define ANSI_COLOR_CYAN    __COLOR("\x1b[36m")
+
+#define ANSI_COLOR_GRAY           __COLOR("\x1b[90m")
+#define ANSI_COLOR_BRIGHT_RED     __COLOR("\x1b[91m")
+#define ANSI_COLOR_BRIGHT_GREEN   __COLOR("\x1b[92m")
+#define ANSI_COLOR_BRIGHT_YELLOW  __COLOR("\x1b[93m")
+#define ANSI_COLOR_BRIGHT_BLUE    __COLOR("\x1b[94m")
+#define ANSI_COLOR_BRIGHT_MAGENTA __COLOR("\x1b[95m")
+#define ANSI_COLOR_BRIGHT_CYAN    __COLOR("\x1b[96m")
+
+#define ANSI_COLOR_RESET   __COLOR("\x1b[0m")
 
 #endif

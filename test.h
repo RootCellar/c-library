@@ -15,11 +15,17 @@
 #define FLOAT_DIFFERENCE_TOLERANCE (0.0001)
 
 #define SHOW_LOCATION() \
-        do { fprintf(stderr, "%s: %s() line %d \n\n", __FILE__, \
+        do { fprintf(stdout, "%s: %s() line %d \n\n", __FILE__, \
                                  __func__, __LINE__); } while (0)
 
-#define PASS_TEST(expr, name) do { printf(""   TEST_PASS_OUTPUT_COLOR   " Test: %s -- " #expr " -- PASS   "  ANSI_COLOR_RESET "\n", name); } while(0)
-#define FAIL_TEST(expr, name) do { printf("\n" TEST_FAIL_OUTPUT_COLOR   " Test: %s -- " #expr " -- FAILED "  ANSI_COLOR_RESET "\n", name); printf(TEST_FAIL_OUTPUT_COLOR " ** TEST FAILED ** " ANSI_COLOR_RESET "\n"); SHOW_LOCATION(); if(FAIL_FAST) exit(EXIT_FAILURE); } while(0)
+#define PASS_TEST(expr, name) do { \
+                                   printf(""   "%s Test: %s -- " #expr " -- PASS   " "%s\n", TEST_PASS_OUTPUT_COLOR, name, ANSI_COLOR_RESET); \
+                                   } while(0)
+
+#define FAIL_TEST(expr, name) do { printf("\n" "%s Test: %s -- " #expr " -- FAILED " "%s\n", TEST_FAIL_OUTPUT_COLOR, name, ANSI_COLOR_RESET); \
+                                   printf("%s ** TEST FAILED ** " "%s\n", TEST_FAIL_OUTPUT_COLOR, ANSI_COLOR_RESET); SHOW_LOCATION(); \
+                                   if(FAIL_FAST) exit(EXIT_FAILURE); \
+                                   } while(0)
 
 // Test that the given expression is true
 #define __TEST(expr, name, quiet_pass) \
@@ -33,7 +39,7 @@ else { FAIL_TEST(expr, name); }\
 
 #define SECTION(name) \
 do { \
-printf("\n\n  " ANSI_COLOR_BRIGHT_YELLOW " ** " name " ** " ANSI_COLOR_RESET "\n\n\n");\
+printf("\n\n  " "%s ** " name " ** %s" "\n\n\n", ANSI_COLOR_BRIGHT_YELLOW, ANSI_COLOR_RESET);\
 } while(0)
 
 float float_abs(float value) {
