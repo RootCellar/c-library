@@ -423,6 +423,7 @@ int neural_train_threaded(struct NeuralNet* net, struct Net_Training_Settings se
   }
 
   int num_threads = settings.num_threads;
+  if(num_threads < 1) return 1;
 
   struct neural_train_thread_data thread_args[num_threads];
   for(int i = 0; i < num_threads; i++) {
@@ -434,9 +435,9 @@ int neural_train_threaded(struct NeuralNet* net, struct Net_Training_Settings se
 
   run_in_threads(__neural_train_thread, thread_args, num_threads, num_threads);
 
-  float min_error = FLT_MAX;
-  int which_has_min = -1;
-  for(int i = 0; i < num_threads; i++) {
+  float min_error = thread_args[0].error;
+  int which_has_min = 0;
+  for(int i = 1; i < num_threads; i++) {
     error = thread_args[i].error;
     if(error < min_error) {
       min_error = error;
