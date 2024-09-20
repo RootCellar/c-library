@@ -297,7 +297,7 @@ void* tRealloc(void* ptr, unsigned long int len) {
 
   if(expanded) {
     memory_debug_print("Memory block was expanded, zero-filling new space...");
-    memset(new_ptr + ptr_data->size, 0, len - ptr_data->size);
+    memset((char*)new_ptr + ptr_data->size, 0, len - ptr_data->size);
   }
 
   memory_debug_print("Updating list entry...");
