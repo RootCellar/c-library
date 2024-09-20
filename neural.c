@@ -22,7 +22,7 @@ void main() {
   tResize(8192);
 
   struct NeuralNet neural_net = create_neural_net(3, 10);
-  struct NeuralNet copy_neural_net = duplicate_neural_net(neural_net);
+  struct NeuralNet neural_net_copy = duplicate_neural_net(neural_net);
 
   float inputs[] = {1.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.15, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 0.85, 0.95};
   float outputs[] = {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0};
