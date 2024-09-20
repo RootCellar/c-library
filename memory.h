@@ -90,7 +90,7 @@ unsigned long int tGetTotalAllocSize() {
 
 void tPrintStatus() {
   memory_debug_printf("There are %lu bytes allocated, amongst %ld pointers.", tGetTotalAllocSize(), tGetTotalAllocs());
-  memory_debug_printf("The pointer list is %lu bytes, to hold %ld pointers.",
+  memory_debug_printf("The pointer list is %zu bytes, to hold %ld pointers.",
                       POINTER_LIST_SIZE * sizeof(struct ptr_data), POINTER_LIST_SIZE);
 }
 
@@ -328,7 +328,7 @@ int tFree(void* ptr) {
   // Free the pointer, remove it from the list
   free(ptr);
   ptrData->ptr = NULL;
-  memory_debug_printf("Freed %lu bytes", ptrData->size);
+  memory_debug_printf("Freed %zu bytes", ptrData->size);
   ptrData->size = 0;
   tPrintStatus();
   return 0;
