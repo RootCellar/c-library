@@ -286,8 +286,8 @@ void* tRealloc(void* ptr, unsigned long int len) {
   }
 
   struct ptr_data* ptr_data = &POINTER_LIST[spot];
-  int shrunk = 0;
-  if(len < ptr_data->size) shrunk = 1;
+  int expanded = 0;
+  if(len > ptr_data->size) expanded = 1;
 
   void* new_ptr = realloc(ptr, len);
   if(!is_valid_ptr(new_ptr)) {
@@ -295,9 +295,9 @@ void* tRealloc(void* ptr, unsigned long int len) {
     return NULL;
   }
 
-  if(!shrunk) {
+  if(expanded) {
     memory_debug_print("Memory block was expanded, zero-filling new space...");
-    memset(ptr + len, 0, len - ptr_data->size);
+    memset(new_ptr + ptr_data->size, 0, len - ptr_data->size);
   }
 
   memory_debug_print("Updating list entry...");
