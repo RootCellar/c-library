@@ -17,7 +17,7 @@ clean:
 check: all test lint
 
 lint:
-	 $(LINTER) *.c
+	 $(LINTER) .
 
 test: all
 	time $(VALGRIND) ./test_memory
