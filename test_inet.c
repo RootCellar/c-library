@@ -1,4 +1,5 @@
 #include <signal.h>
+#include <unistd.h>
 
 #include "test.h"
 #include "time.h"
@@ -23,6 +24,7 @@ void main() {
   while(timespec_difference_seconds(start, now) < 2 && result == 0) {
     result = is_connected(client_socket);
     now = get_time();
+    usleep(100);
   }
 
   debug_printf("connect result: %d", result);
@@ -41,6 +43,7 @@ void main() {
   while(timespec_difference_seconds(start, now) < 1 && result == 0) {
     result = is_connected(client_socket);
     now = get_time();
+    usleep(100);
   }
 
   debug_printf("connect result: %d", result);
@@ -52,6 +55,7 @@ void main() {
   while(timespec_difference_seconds(start, now) < 1 && server_fd_to_client == -1) {
     server_fd_to_client = accept_connection(server_socket);
     now = get_time();
+    usleep(100);
   }
   TEST( server_fd_to_client >= 0, "accept_connection accepted a connection");
 
@@ -67,24 +71,28 @@ void main() {
   while(timespec_difference_seconds(start, now) < 1 && result == 0) {
     result = read_buffer(server_fd_to_client, &server_buffer);
     now = get_time();
+    usleep(100);
   }
   TEST( result != -1, "server didn't get an error while reading");
   TEST( result == strlen(to_write) + 1, "server recieved correct number of bytes");
 
   TEST( strcmp(server_buffer.buffer, to_write) == 0, "server recieved correct data");
 
+  // Client closes the connection, server would eventually send_nothing() and realize
+  // connection is closed
   close(client_socket);
-  
+  send_nothing(server_fd_to_client);
+
   result = 0;
   start = get_time();
   now = start;
   while(timespec_difference_seconds(start, now) < 4 && result == 0) {
     result = read_buffer(server_fd_to_client, &server_buffer);
     now = get_time();
+    usleep(100);
   }
   debug_printf("read result: %d", result);
-  send_nothing(server_fd_to_client);
-  TEST( read_buffer(server_fd_to_client, &server_buffer) < 1, "server read_buffer() after socket is closed");
+  TEST( read_buffer(server_fd_to_client, &server_buffer) == -1, "server read_buffer() after socket is closed");
   TEST( send_string(client_socket, to_write) == 1, "client fails to send a string after close()");
   TEST( send_string(server_fd_to_client, to_write) == 1, "server fails to send a string after close()");
 
