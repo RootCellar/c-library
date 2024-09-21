@@ -6,6 +6,7 @@
 #include "debug.h"
 #include "benchmark.h"
 #include "memory.h"
+#include "random.h"
 
 #define BENCHMARK_TIMES (2)
 
@@ -274,6 +275,10 @@ int main() {
   float modifier = 0.0;
   TIMES( BENCHMARK_LOOPS( hit(0.05,&modifier), "hit", 1000000 ), BENCHMARK_TIMES);
 
+  // Dice Roll
+
+  TIMES( BENCHMARK_LOOPS( roll_die(8), "roll_die", 100000), BENCHMARK_TIMES);
+
   // malloc_and_free
 
   TIMES( BENCHMARK_LOOPS( malloc_and_free(), "malloc_and_free", 1000000 ), BENCHMARK_TIMES);
@@ -295,4 +300,5 @@ int main() {
   TIMES( BENCHMARK_LOOPS( test_bubblesort(4000), "test_bubblesort(10,000)", 1 ), BENCHMARK_TIMES);
 
   tFreePointerList();
+  exit(0);
 }
