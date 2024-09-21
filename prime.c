@@ -20,7 +20,7 @@ int isPrime(int num) {
 int isPrime_new(int num) {
   if(num <= 1) return 0;
   if(num == 2 || num == 3) return 1;
-  
+
   int remainder = num % 6;
   if(remainder != 5 && remainder != 1) return 0;
 
@@ -65,9 +65,6 @@ void main() {
   int benchmark_loops = 1000;
   int random;
 
-  debug_printf("Float max: %f", FLT_MAX);
-  debug_printf("CLOCKS_PER_SEC: %d", CLOCKS_PER_SEC);
-
   float* results = malloc( sizeof(float) * test_reach );
   float* results_new = malloc( sizeof(float) * test_reach );
 
@@ -75,50 +72,44 @@ void main() {
     printf("Could not allocate memory for results lists! \n");
     exit(1);
   }
-  
+
+  printf("Benchmarking isPrime() runs per second...\n");
+
   for(int i = 0; i < test_reach; i++) {
     random = rand() % 1000000;
-    
-    do {
-      BENCHMARK_LOOPS_CODE(isPrime(random), results[i], benchmark_loops);
-    } while(results[i] > FLT_MAX);
-    
-    if(results[i] > FLT_MAX) {
-      debug_printf("%d came up with inf", random);
-    }
 
-    do {
-      BENCHMARK_LOOPS_CODE(isPrime_new(random), results_new[i], benchmark_loops);
-    } while(results_new[i] > FLT_MAX);
-    
-    if(results_new[i] > FLT_MAX) {
-      debug_printf("%d came up with inf", random);
-    }
+    BENCHMARK_LOOPS_CODE(isPrime(random), results[i], benchmark_loops);
+    BENCHMARK_LOOPS_CODE(isPrime_new(random), results_new[i], benchmark_loops);
   }
+
+  printf("\n");
+  printf("Original isPrime():\n");
+
   float average = statistics_average(results, test_reach);
   float max = statistics_max(results, test_reach);
   float min = statistics_min(results, test_reach);
   float stddev = statistics_standard_deviation(results, test_reach);
   float avdev = statistics_average_deviation(results, test_reach);
-  printf(" average: %'f \n", average);
-  printf(" max: %'f \n", max);
-  printf(" min: %'f \n", min);
-  printf(" stddev: %'f \n", stddev);
-  printf(" avdev: %'f \n", avdev);
+  printf(" average: %'20.0f \n", average);
+  printf(" max:     %'20.0f \n", max);
+  printf(" min:     %'20.0f \n", min);
+  printf(" stddev:  %'20.0f \n", stddev);
+  printf(" avdev:   %'20.0f \n", avdev);
   printf("\n\n");
+
+  printf("New isPrime():\n");
 
   average = statistics_average(results_new, test_reach);
   max = statistics_max(results_new, test_reach);
   min = statistics_min(results_new, test_reach);
   stddev = statistics_standard_deviation(results_new, test_reach);
   avdev = statistics_average_deviation(results_new, test_reach);
-  printf(" average: %'f \n", average);
-  printf(" max: %'f \n", max);
-  printf(" min: %'f \n", min);
-  printf(" stddev: %'f \n", stddev);
-  printf(" avdev: %'f \n", avdev);
+  printf(" average: %'20.0f \n", average);
+  printf(" max:     %'20.0f \n", max);
+  printf(" min:     %'20.0f \n", min);
+  printf(" stddev:  %'20.0f \n", stddev);
+  printf(" avdev:   %'20.0f \n", avdev);
   printf("\n\n");
 
   exit(0);
-  
 }
