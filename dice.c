@@ -54,6 +54,7 @@ int main(int argc, char** argv) {
       int roll = roll_die(sides);
       sum += roll;
       printf("%d ", roll);
+      if(!isatty(STDOUT_FILENO) && i < count-1) printf("\n");
     }
     printf("\n");
     if(show_sum) printf("%d\n", sum);
