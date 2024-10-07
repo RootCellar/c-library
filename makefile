@@ -9,10 +9,10 @@ HEADERS = $(wildcard *.h)
 
 .PHONY: all clean run_benchmark check test
 
-all: benchmark benchmark_threads test_memory test_statistics test_math test_prime test_inet test_sthread test_strings neural dice
+all: benchmark benchmark_threads test_memory test_statistics test_math test_matrix test_prime test_inet test_sthread test_strings neural dice
 
 clean:
-	rm -f benchmark benchmark_threads test_memory test_statistics test_math test_prime test_inet test_sthread test_strings neural dice
+	rm -f benchmark benchmark_threads test_memory test_statistics test_math test_matrix test_prime test_inet test_sthread test_strings neural dice
 
 check: all test lint
 
@@ -23,6 +23,7 @@ test: all
 	time $(VALGRIND) ./test_memory
 	time $(VALGRIND) ./test_statistics
 	time $(VALGRIND) ./test_math
+	time $(VALGRIND) ./test_matrix
 	time $(VALGRIND) ./test_inet
 	time $(VALGRIND) ./test_sthread
 	time $(VALGRIND) ./test_strings
@@ -45,6 +46,9 @@ test_statistics: test_statistics.c $(HEADERS)
 
 test_math: test_math.c $(HEADERS)
 	$(CC) $(CFLAGS) -o $@ test_math.c -lm
+
+test_matrix: test_matrix.c $(HEADERS)
+	$(CC) $(CFLAGS) -o $@ test_matrix.c -lm
 
 test_prime: prime.c $(HEADERS)
 	$(CC) $(CFLAGS) -o $@ prime.c -lm
