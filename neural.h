@@ -172,6 +172,9 @@ struct NeuralNet create_neural_net(int layers, int neurons_per_layer) {
   neural_net.layers = layers;
   neural_net.neurons_per_layer = neurons_per_layer;
 
+  // Initialize output neuron as blank
+  neural_net.output_neuron.input_weights = NULL; neural_net.output_neuron.input_count = 0;
+
   unsigned long layers_list_bytes = sizeof(struct Neuron*) * layers;
   unsigned long neuron_list_bytes = sizeof(struct Neuron) * neurons_per_layer;
 
