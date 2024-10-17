@@ -59,6 +59,8 @@ void main() {
 
   TEST_PRIME_FUNCTION(isPrime_new);
 
+  SHOW_TEST_RESULTS();
+
   printf("\n\n");
 
   int test_reach = 50000;

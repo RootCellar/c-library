@@ -22,5 +22,7 @@ void main() {
     TEST(is_digit(c) == 0, buf);
   }
 
+  SHOW_TEST_RESULTS();
+
   exit(0);
 }

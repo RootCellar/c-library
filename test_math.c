@@ -54,6 +54,8 @@ void main() {
     TEST_QUIET( floats_equal( vector3_length( vector3_to_length(vector, len) ), len ), "vector3_to_length");
   }
 
+  SHOW_TEST_RESULTS();
+
   TIMES( BENCHMARK_LOOPS( vector3_to_length(vector, 8.0f), "vector3_to_length", 100000 ), 3);
   TIMES( BENCHMARK_LOOPS( vector3_dot_product(vector, vector2), "vector3_dot_product", 100000 ), 3);
   TIMES( BENCHMARK_LOOPS( vector3_cross_product(vector, vector2), "vector3_cross_product", 100000 ), 3);

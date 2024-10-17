@@ -168,6 +168,8 @@ void main() {
 
   TEST( tFreePointerList() == 0, "Pointer list is successfully freed");
 
+  SHOW_TEST_RESULTS();
+
   exit(0);
   
 }

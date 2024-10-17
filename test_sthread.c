@@ -40,6 +40,7 @@ void main() {
     TEST( data[i] == starting_value + NUM_LOOPS_SIMPLE, "spot was incremented" );
   }
 
-  exit(0);
+  SHOW_TEST_RESULTS();
 
+  exit(0);
 }

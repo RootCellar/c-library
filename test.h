@@ -18,8 +18,12 @@
         do { fprintf(stdout, "%s: %s() line %d \n\n", __FILE__, \
                                  __func__, __LINE__); } while (0)
 
-#define PASS_TEST(expr, name) do { \
-                                   printf(""   "%s Test: %s -- " #expr " -- PASS   " "%s\n", TEST_PASS_OUTPUT_COLOR, name, ANSI_COLOR_RESET); \
+static int tests = 0;
+static int tests_passed = 0;
+
+#define PASS_TEST(expr, name, quiet_pass) do { \
+                                   tests_passed++;\
+                                   if(!quiet_pass) printf(""   "%s Test: %s -- " #expr " -- PASS   " "%s\n", TEST_PASS_OUTPUT_COLOR, name, ANSI_COLOR_RESET); \
                                    } while(0)
 
 #define FAIL_TEST(expr, name) do { printf("\n" "%s Test: %s -- " #expr " -- FAILED " "%s\n", TEST_FAIL_OUTPUT_COLOR, name, ANSI_COLOR_RESET); \
@@ -30,7 +34,8 @@
 // Test that the given expression is true
 #define __TEST(expr, name, quiet_pass) \
 do { \
-if((expr) == 1) { if(!quiet_pass) PASS_TEST(expr, name); } \
+tests++;\
+if(expr) { PASS_TEST(expr, name, quiet_pass); } \
 else { FAIL_TEST(expr, name); }\
  } while(0)
 
@@ -41,6 +46,14 @@ else { FAIL_TEST(expr, name); }\
 do { \
 printf("\n\n  " "%s ** " name " ** %s" "\n\n\n", ANSI_COLOR_BRIGHT_YELLOW, ANSI_COLOR_RESET);\
 } while(0)
+
+#define SHOW_TEST_RESULTS() do { \
+                            printf("\n\n%s %d PASSED%s\n", TEST_PASS_OUTPUT_COLOR, tests_passed, ANSI_COLOR_RESET);\
+                            int __failed = tests - tests_passed;\
+                            char* __output_color = TEST_FAIL_OUTPUT_COLOR;\
+                            if(__failed == 0) __output_color = TEST_PASS_OUTPUT_COLOR;\
+                            printf("%s %d FAILED%s\n", __output_color, __failed, ANSI_COLOR_RESET);\
+                            } while(0)
 
 float float_abs(float value) {
   if(value < 0.0) return value * -1.0;

@@ -101,6 +101,8 @@ void main() {
   TEST( tGetTotalAllocs() == 0, "tGetTotalAllocs() after freeing memory");
   TEST( tGetTotalAllocSize() == 0, "tGetTotalAllocSize() after freeing memory");
 
+  SHOW_TEST_RESULTS();
+
   tFreePointerList();
 
   exit(0);

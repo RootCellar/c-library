@@ -28,6 +28,8 @@ int main() {
     prev_idx = idx;
   }
 
+  SHOW_TEST_RESULTS();
+
   SECTION("Benchmarks");
 
   BENCHMARK_LOOPS(index_2d(1, 2, 3), "index_2d", 50000000);
