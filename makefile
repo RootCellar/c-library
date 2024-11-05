@@ -33,7 +33,7 @@ run_benchmark: all
 	./benchmark_threads
 
 benchmark: benchmark.c $(HEADERS)
-	$(CC) $(CFLAGS) -o $@ benchmark.c
+	$(CC) $(CFLAGS) -o $@ benchmark.c -lm
 
 benchmark_threads: benchmark_threads.c $(HEADERS)
 	$(CC) $(CFLAGS) -o $@ benchmark_threads.c -lpthread -lm
