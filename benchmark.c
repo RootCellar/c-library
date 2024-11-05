@@ -8,7 +8,7 @@
 #include "memory.h"
 #include "random.h"
 
-#define BENCHMARK_TIMES (2)
+#define BENCHMARK_TIMES (3)
 
 // Real world workload type functions
 
@@ -54,23 +54,31 @@ void bubblesort(int* nums, size_t size) {
 // float benchmarks
 
 float float_add(float f) {
-  return f + 5.5;
+  volatile float result;
+  result = f + 3.3f;
+  return result;
 }
 
 float float_subtract(float f) {
-  return f - 5.5;
+  volatile float result;
+  result = f - 3.3f;
+  return result;
 }
 
 float float_multiply(float f) {
-  return f * 5.5;
+  volatile float result;
+  result = f * 3.3f;
+  return result;
 }
 
 float float_divide(float f) {
-  return f / 5.5;
+  volatile float result;
+  result = f / 3.3f;
+  return result;
 }
 
 float float_many(float f) {
-  float v = f + 5.5;
+  volatile float v = f + 5.5;
   v += 8.7;
   v *= 6.54;
   v *= 32.17;
@@ -82,84 +90,139 @@ float float_many(float f) {
   return v;
 }
 
+float float_sine(float f) {
+  volatile float result;
+  result = sinf(f);
+  return result;
+}
+
+float float_cosine(float f) {
+  volatile float result;
+  result = cosf(f);
+  return result;
+}
+
+float float_tangent(float f) {
+  volatile float result;
+  result = tanf(f);
+  return result;
+}
+
 // double benchmarks
 
 double double_add(double f) {
-  return f + 5.5;
+  volatile double result;
+  result = f + 3.3;
+  return result;
 }
 
 double double_subtract(double f) {
-  return f - 5.5;
+  volatile double result;
+  result = f - 3.3;
+  return result;
 }
 
 double double_multiply(double f) {
-  return f * 5.5;
+  volatile double result;
+  result = f * 3.3;
+  return result;
 }
 
 double double_divide(double f) {
-  return f / 5.5;
+  volatile double result;
+  result = f / 3.3;
+  return result;
+
 }
 
 // int benchmarks
 
 int int_add(int i) {
-  return i + 7;
+  volatile int result;
+  result = i + 3;
+  return result;
 }
 
 int int_subtract(int i) {
-  return i - 7;
+  volatile int result;
+  result = i - 3;
+  return result;
 }
 
 int int_multiply(int i) {
-  return i * 7;
+  volatile int result;
+  result = i * 3;
+  return result;
 }
 
 int int_divide(int i) {
-  return i / 7;
+  volatile int result;
+  result = i / 3;
+  return result;
 }
 
 int int_mod(int i) {
-  return i % 7;
+  volatile int result;
+  result = i % 3;
+  return result;
 }
 
 // long benchmarks
 
 long long_add(long i) {
-  return i + 7;
+  volatile long result;
+  result = i + 3;
+  return result;
 }
 
 long long_subtract(long i) {
-  return i - 7;
+  volatile long result;
+  result = i - 3;
+  return result;
 }
 
 long long_multiply(long i) {
-  return i * 7;
+  volatile long result;
+  result = i * 3;
+  return result;
 }
 
 long long_divide(long i) {
-  return i / 7;
+  volatile long result;
+  result = i / 3;
+  return result;
 }
 
 long long_mod(long i) {
-  return i % 7;
+  volatile long result;
+  result = i % 3;
+  return result;
 }
 
 // logic operations
 
 int left_shift(int i) {
-  return i << 3;
+  volatile int result;
+  result = i << 3;
+  return result;
 }
 
 int right_shift(int i) {
-  return i >> 3;
+  volatile int result;
+  result = i >> 3;
+  return result;
 }
 
 int logic_and(int i) {
-  return i & 2915;
+  volatile int result;
+  result = i & 3;
+  return result;
 }
 
 int logic_or(int i) {
-  return i | 2915;
+  volatile int result;
+  result = i | 3;
+  return result;
 }
 
 // other
@@ -216,9 +279,9 @@ int main() {
 
   TIMES( BENCHMARK_LOOPS( float_many(9.0), "float_many", float_times / 10 ), BENCHMARK_TIMES);
 
-  TIMES( BENCHMARK_LOOPS( cosf(1.42), "float_cosine", float_times ), BENCHMARK_TIMES);
-  TIMES( BENCHMARK_LOOPS( sinf(1.42), "float_sine", float_times ), BENCHMARK_TIMES);
-  TIMES( BENCHMARK_LOOPS( tanf(1.42), "float_tangent", float_times ), BENCHMARK_TIMES);
+  TIMES( BENCHMARK_LOOPS( float_cosine(1.42), "float_cosine", float_times ), BENCHMARK_TIMES);
+  TIMES( BENCHMARK_LOOPS( float_sine(1.42), "float_sine", float_times ), BENCHMARK_TIMES);
+  TIMES( BENCHMARK_LOOPS( float_tangent(1.42), "float_tangent", float_times ), BENCHMARK_TIMES);
 
   // int benchmarks
 
