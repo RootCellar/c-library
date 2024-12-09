@@ -2,7 +2,6 @@
 #ifndef NEURAL_H
 #define NEURAL_H
 
-#include <float.h>
 #include <math.h>
 
 #include "memory.h"
