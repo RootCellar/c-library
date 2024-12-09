@@ -5,7 +5,6 @@
 #include <stdio.h>
 
 #include "terminal_color.h"
-#include "debug.h"
 
 #define FAIL_FAST 1
 
