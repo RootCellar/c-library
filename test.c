@@ -1,7 +1,7 @@
 #include "test.h"
 #include "memory.h"
 
-void main() {
+int main() {
 
   SECTION("Basic checks");
 
@@ -170,6 +170,6 @@ void main() {
 
   SHOW_TEST_RESULTS();
 
-  exit(0);
+  return 0;
   
 }

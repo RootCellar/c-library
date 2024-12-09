@@ -6,7 +6,7 @@
 #include "debug.h"
 #include "vector.h"
 
-void main() {
+int main() {
 
   srand(time(NULL));
 
@@ -60,6 +60,6 @@ void main() {
   TIMES( BENCHMARK_LOOPS( vector3_dot_product(vector, vector2), "vector3_dot_product", 100000 ), 3);
   TIMES( BENCHMARK_LOOPS( vector3_cross_product(vector, vector2), "vector3_cross_product", 100000 ), 3);
 
-  exit(0);
+  return 0;
 
 }

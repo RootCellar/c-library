@@ -39,7 +39,7 @@ int is_valid_ptr(void* ptr) {
 
 // Determines whether or not the given address is owned
 // based on what's in the pointer list
-int tOwnsAddress(char* adr) {
+int tOwnsAddress(void* adr) {
   if(!is_valid_ptr(POINTER_LIST)) return 0;
 
   struct ptr_data* current;

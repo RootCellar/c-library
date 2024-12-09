@@ -1,5 +1,4 @@
 #include <math.h>
-#include <float.h>
 #include <time.h>
 
 #include "benchmark.h"
@@ -46,7 +45,7 @@ TEST( function(40) == 0, "40 is not prime");\
 TEST( function(1000) == 0, "1000 is not prime");\
 
 
-void main() {
+int main() {
 
   benchmark_setupLocale();
   srand(time(NULL));
@@ -113,5 +112,5 @@ void main() {
   printf(" avdev:   %'20.0f \n", avdev);
   printf("\n\n");
 
-  exit(0);
+  return 0;
 }
