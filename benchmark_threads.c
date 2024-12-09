@@ -11,8 +11,8 @@
 #define NUM_LOOPS_TRIG 100000
 #define NUM_LOOPS_VECTOR 100000
 
-#define BENCHMARK_LOOPS 10
-#define THREAD_COUNT 16
+#define BENCHMARK_TIMES 3
+#define THREAD_COUNT 4
 
 void modify_values(int id, int thread_count, int count, void* data) {
   float* actual_data = (float*) data;
@@ -49,13 +49,13 @@ void main() {
   float runs_per_second;
 
   for(int i = 0; i < 5; i++) {
-    BENCHMARK_LOOPS_CODE( run_in_threads(modify_values, (void*) data, THREAD_COUNT, THREAD_COUNT), runs_per_second, BENCHMARK_LOOPS);
+    BENCHMARK_LOOPS_CODE( run_in_threads(modify_values, (void*) data, THREAD_COUNT, THREAD_COUNT), runs_per_second, BENCHMARK_TIMES);
 
     printf("Total trig ops per second: %'f\n", runs_per_second * (float) NUM_LOOPS_TRIG * (float) THREAD_COUNT);
   }
 
   for(int i = 0; i < 5; i++) {
-    BENCHMARK_LOOPS_CODE( run_in_threads(vector_operations, (void*) data, THREAD_COUNT, THREAD_COUNT), runs_per_second, BENCHMARK_LOOPS);
+    BENCHMARK_LOOPS_CODE( run_in_threads(vector_operations, (void*) data, THREAD_COUNT, THREAD_COUNT), runs_per_second, BENCHMARK_TIMES);
 
     printf("Total vector ops per second: %'f\n", runs_per_second * (float) NUM_LOOPS_VECTOR * (float) THREAD_COUNT);
   }
