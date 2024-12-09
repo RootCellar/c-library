@@ -1,5 +1,4 @@
 
-// ReSharper disable CppNonInlineFunctionDefinitionInHeaderFile
 #ifndef NEURAL_H
 #define NEURAL_H
 
