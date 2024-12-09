@@ -412,9 +412,6 @@ int setup_socket_flags(int fd) {
   int flags = fcntl(fd, F_GETFL, 0);
   fcntl(fd, F_SETFL, flags | O_NONBLOCK | O_NDELAY);
 
-  // flags = 1;
-  // setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, (char *) &flags, sizeof(int));
-
   return 1;
 }
 
