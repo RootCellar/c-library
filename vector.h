@@ -41,8 +41,8 @@ struct Vector3 vector3_multiply_scalar(struct Vector3 vector, float mult) {
 }
 
 struct Vector3 vector3_to_length(struct Vector3 vector, float len) {
-  struct Vector3 normalized = vector3_normalize(vector);
-  return vector3_multiply_scalar(normalized, len);
+  float factor = len / vector3_length(vector);
+  return vector3_multiply_scalar(vector, factor);
 }
 
 float vector3_dot_product(struct Vector3 one, struct Vector3 two) {
