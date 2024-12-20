@@ -33,7 +33,7 @@ struct Vector3 vector3_add(struct Vector3 one, struct Vector3 two) {
 }
 
 struct Vector3 vector3_subtract(struct Vector3 one, struct Vector3 two) {
-  return vector3_add(one, vector3_negate(two));
+  return vector3_create(one.x - two.x, one.y - two.y, one.z - two.z);
 }
 
 struct Vector3 vector3_multiply_scalar(struct Vector3 vector, float mult) {
