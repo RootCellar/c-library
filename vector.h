@@ -12,13 +12,7 @@ struct Vector3 {
 };
 
 struct Vector3 vector3_create(float x, float y, float z) {
-  struct Vector3 toRet;
-
-  toRet.x = x;
-  toRet.y = y;
-  toRet.z = z;
-
-  return toRet;
+  return (struct Vector3) {.x = x, .y = y, .z = z};
 }
 
 float vector3_length(struct Vector3 vector) {
