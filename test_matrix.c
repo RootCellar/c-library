@@ -6,6 +6,8 @@
 #include "memory.h"
 #include "matrix.h"
 
+#define BENCHMARK_ITERATIONS 5000000
+
 int main() {
 
   int wid = 3;
@@ -32,9 +34,9 @@ int main() {
 
   SECTION("Benchmarks");
 
-  BENCHMARK_LOOPS(index_2d(1, 2, 3), "index_2d", 50000000);
-  BENCHMARK_LOOPS(index_3d(1, 2, 3, 3, 3), "index_3d", 50000000);
-  BENCHMARK_LOOPS(index_4d(1, 2, 3, 4, 3, 3, 3), "index_4d", 50000000);
+  BENCHMARK_LOOPS(index_2d(1, 2, 3), "index_2d", BENCHMARK_ITERATIONS);
+  BENCHMARK_LOOPS(index_3d(1, 2, 3, 3, 3), "index_3d", BENCHMARK_ITERATIONS);
+  BENCHMARK_LOOPS(index_4d(1, 2, 3, 4, 3, 3, 3), "index_4d", BENCHMARK_ITERATIONS);
 
   tFree(matrix);
   tFreePointerList();
