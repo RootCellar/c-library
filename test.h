@@ -20,19 +20,8 @@
 static int tests = 0;
 static int tests_passed = 0;
 
-#define PASS_TEST(expr, file, func, line, name, quiet_pass) pass_test(#expr, file, func, line, name, quiet_pass);
-#define FAIL_TEST(expr, file, func, line, name) fail_test(#expr, file, func, line, name);
-
-// Test that the given expression is true
-#define __TEST(expr, file, func, line, name, quiet_pass) \
-do { \
-tests++;\
-if(expr) { PASS_TEST(expr, file, func, line, name, quiet_pass); } \
-else { FAIL_TEST(expr, file, func, line, name); }\
- } while(0)
-
-#define TEST(expr, name) __TEST(expr, __FILE__, __func__, __LINE__, name, 0)
-#define TEST_QUIET(expr, name) __TEST(expr, __FILE__, __func__, __LINE__, name, 1)
+#define TEST(expr, name) handle_test_result(#expr, expr, __FILE__, __func__, __LINE__, name, 0)
+#define TEST_QUIET(expr, name) handle_test_result(#expr, expr, __FILE__, __func__, __LINE__, name, 1)
 
 #define SECTION(name) \
         do { \
@@ -43,18 +32,30 @@ else { FAIL_TEST(expr, file, func, line, name); }\
 
 void pass_test(const char* expr, const char* file, const char* func, int line, const char* name, int quiet_pass) {
   tests_passed++;
+
   if(!quiet_pass) {
     printf("%sTest: %s -- %s -- PASS %s\n", TEST_PASS_OUTPUT_COLOR, name, expr, ANSI_COLOR_RESET);
   }
 }
 
-void fail_test(const char* expr, char* file, const char* func, int line, const char* name) {
+void fail_test(const char* expr, const char* file, const char* func, int line, const char* name) {
   printf("\n%sTest: %s -- %s -- FAILED %s\n", TEST_FAIL_OUTPUT_COLOR, name, expr, ANSI_COLOR_RESET);
   printf("%s ** TEST FAILED ** " "%s\n", TEST_FAIL_OUTPUT_COLOR, ANSI_COLOR_RESET);
   printf("%s ** %s line %d in %s() ** " "%s\n", TEST_FAIL_OUTPUT_COLOR, file, line, func, ANSI_COLOR_RESET);
 
   if(FAIL_FAST) {
     exit(EXIT_FAILURE);
+  }
+}
+
+void handle_test_result(const char* expr, int result, const char* file, const char* func, int line, const char* name, int quiet_pass) {
+  tests++;
+
+  if(result) {
+    pass_test(expr, file, func, line, name, quiet_pass);
+  }
+  else {
+    fail_test(expr, file, func, line, name);
   }
 }
 
