@@ -44,12 +44,12 @@ else { FAIL_TEST(expr, file, func, line, name); }\
 void pass_test(const char* expr, const char* file, const char* func, int line, const char* name, int quiet_pass) {
   tests_passed++;
   if(!quiet_pass) {
-    printf(""   "%s Test: %s -- %s -- PASS   " "%s\n", TEST_PASS_OUTPUT_COLOR, name, expr, ANSI_COLOR_RESET);
+    printf("%sTest: %s -- %s -- PASS %s\n", TEST_PASS_OUTPUT_COLOR, name, expr, ANSI_COLOR_RESET);
   }
 }
 
 void fail_test(const char* expr, char* file, const char* func, int line, const char* name) {
-  printf("\n" "%s Test: %s -- %s -- FAILED " "%s\n", TEST_FAIL_OUTPUT_COLOR, name, expr, ANSI_COLOR_RESET);
+  printf("\n%sTest: %s -- %s -- FAILED %s\n", TEST_FAIL_OUTPUT_COLOR, name, expr, ANSI_COLOR_RESET);
   printf("%s ** TEST FAILED ** " "%s\n", TEST_FAIL_OUTPUT_COLOR, ANSI_COLOR_RESET);
   printf("%s ** %s line %d in %s() ** " "%s\n", TEST_FAIL_OUTPUT_COLOR, file, line, func, ANSI_COLOR_RESET);
 
