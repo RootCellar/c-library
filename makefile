@@ -5,19 +5,37 @@ LDFLAGS =
 VALGRIND=valgrind -s --log-fd=1 --time-stamp=yes --error-exitcode=1 --leak-check=full --show-leak-kinds=all --track-origins=yes --read-var-info=yes --tool=memcheck
 LINTER=cppcheck --enable=all --suppress=missingIncludeSystem --inconclusive --check-level=exhaustive --library=posix
 
-HEADERS = $(wildcard *.h)
+SOURCE=$(wildcard *.c)
+HEADERS=$(wildcard *.h)
 
-.PHONY: all clean run_benchmark check test
+ASSEMBLIES=$(SOURCE:%.c=%.asm)
+OBJECTS=$(SOURCE:%.c=%.o)
 
-all: benchmark benchmark_threads test_memory test_statistics test_math test_matrix test_prime test_inet test_sthread test_strings neural dice
+EXECUTABLES=benchmark benchmark_threads test_memory test_statistics test_math test_matrix test_prime test_inet test_sthread test_strings neural dice
+
+all: executables
+
+.PHONY: all assemblies objects executables clean run_benchmark check test
 
 clean:
-	rm -f benchmark benchmark_threads test_memory test_statistics test_math test_matrix test_prime test_inet test_sthread test_strings neural dice
+	rm -f $(ASSEMBLIES)
+	rm -f $(OBJECTS)
+	rm -f $(EXECUTABLES)
 
 check: all test lint
 
 lint:
-	 $(LINTER) .
+	$(LINTER) .
+
+assemblies: $(ASSEMBLIES)
+objects: $(OBJECTS)
+executables: $(EXECUTABLES)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+%.asm: %.c
+	$(CC) $(CFLAGS) -S -o $@ $<
 
 test: all
 	time $(VALGRIND) ./test_memory
