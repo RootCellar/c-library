@@ -13,6 +13,9 @@
 /neural
 /dice
 
+# Assembly Files
+*.asm
+
 # ---> C
 # Prerequisites
 *.d
