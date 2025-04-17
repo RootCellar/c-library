@@ -14,8 +14,9 @@ OBJECTS=$(SOURCE:%.c=%.o)
 EXECUTABLES=benchmark benchmark_threads test_memory test_statistics test_math test_matrix test_prime test_inet test_sthread test_strings neural dice
 
 all: executables
+everything: assemblies objects executables
 
-.PHONY: all assemblies objects executables clean run_benchmark check test
+.PHONY: all everything assemblies objects executables clean run_benchmark check test
 
 clean:
 	rm -f $(ASSEMBLIES)
