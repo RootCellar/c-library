@@ -58,7 +58,7 @@ benchmark_threads: time.o
 	$(CC) $(CFLAGS) -o $@ benchmark_threads.c -lpthread -lm $^
 
 test_memory: memory.o unit_testing.o terminal_color.o
-	$(CC) $(CFLAGS) -o $@ test.c $^
+	$(CC) $(CFLAGS) -o $@ test_memory.c $^
 
 test_statistics: memory.o unit_testing.o terminal_color.o
 	$(CC) $(CFLAGS) -o $@ test_statistics.c -lm $^
