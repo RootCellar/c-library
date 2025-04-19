@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "test.h"
+#include "unit_testing.h"
 #include "terminal_color.h"
 
 static int tests = 0;

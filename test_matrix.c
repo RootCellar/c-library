@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "test.h"
+#include "unit_testing.h"
 #include "debug.h"
 #include "benchmark.h"
 #include "memory.h"

@@ -2,7 +2,7 @@
 #include <time.h>
 
 #include "benchmark.h"
-#include "test.h"
+#include "unit_testing.h"
 #include "statistics.h"
 
 int isPrime(int num) {

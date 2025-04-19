@@ -2,7 +2,7 @@
 #include <time.h>
 
 #include "sthread.h"
-#include "test.h"
+#include "unit_testing.h"
 #include "benchmark.h"
 #include "debug.h"
 
