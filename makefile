@@ -51,38 +51,38 @@ run_benchmark: all
 	./benchmark
 	./benchmark_threads
 
-benchmark: benchmark.c $(HEADERS)
-	$(CC) $(CFLAGS) -o $@ benchmark.c -lm
+benchmark: memory.o
+	$(CC) $(CFLAGS) -o $@ benchmark.c -lm $^
 
-benchmark_threads: benchmark_threads.c $(HEADERS)
+benchmark_threads:
 	$(CC) $(CFLAGS) -o $@ benchmark_threads.c -lpthread -lm
 
-test_memory: test.c $(HEADERS)
-	$(CC) $(CFLAGS) -o $@ test.c
+test_memory: memory.o
+	$(CC) $(CFLAGS) -o $@ test.c $^
 
-test_statistics: test_statistics.c $(HEADERS)
-	$(CC) $(CFLAGS) -o $@ test_statistics.c -lm
+test_statistics: memory.o
+	$(CC) $(CFLAGS) -o $@ test_statistics.c -lm $^
 
-test_math: test_math.c $(HEADERS)
-	$(CC) $(CFLAGS) -o $@ test_math.c -lm
+test_math: memory.o
+	$(CC) $(CFLAGS) -o $@ test_math.c -lm $^
 
-test_matrix: test_matrix.c $(HEADERS)
-	$(CC) $(CFLAGS) -o $@ test_matrix.c -lm
+test_matrix: memory.o
+	$(CC) $(CFLAGS) -o $@ test_matrix.c -lm $^
 
-test_prime: prime.c $(HEADERS)
-	$(CC) $(CFLAGS) -o $@ prime.c -lm
+test_prime: unit_testing.o terminal_color.o
+	$(CC) $(CFLAGS) -o $@ prime.c -lm $^
 
-test_inet: test_inet.c $(HEADERS)
-	$(CC) $(CFLAGS) -o $@ test_inet.c
+test_inet: memory.o unit_testing.o
+	$(CC) $(CFLAGS) -o $@ test_inet.c $^
 
-test_sthread: test_sthread.c $(HEADERS)
-	$(CC) $(CFLAGS) -o $@ test_sthread.c -lpthread
+test_sthread: unit_testing.o terminal_color.o
+	$(CC) $(CFLAGS) -o $@ test_sthread.c -lpthread $^
 
-test_strings: test_strings.c $(HEADERS)
-	$(CC) $(CFLAGS) -o $@ test_strings.c
+test_strings: unit_testing.o terminal_color.o
+	$(CC) $(CFLAGS) -o $@ test_strings.c $^
 
-neural: neural.c $(HEADERS)
-	$(CC) $(CFLAGS) -o $@ neural.c -lm -lpthread
+neural: memory.o
+	$(CC) $(CFLAGS) -o $@ neural.c -lm -lpthread $^
 
-dice: dice.c $(HEADERS)
+dice:
 	$(CC) $(CFLAGS) -o $@ dice.c
