@@ -1,14 +1,14 @@
 #ifndef DEBUG_H
 #define DEBUG_H
 
-#define DEBUG 0
-#define DEBUG_STREAM stdout
-#define DEBUG_COLOR ANSI_COLOR_GRAY
-
 #include <stdlib.h>
 #include <stdio.h>
 
 #include "terminal_color.h"
+
+#define DEBUG 0
+#define DEBUG_STREAM stdout
+#define DEBUG_COLOR ANSI_COLOR_GRAY
 
 #define debug_printf(fmt, ...) do { \
   if (DEBUG) fprintf(DEBUG_STREAM, "%s %s:%d:%s(): " fmt "%s\n", \
