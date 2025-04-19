@@ -1,11 +1,7 @@
 #ifndef TERMINAL_COLOR_H
 #define TERMINAL_COLOR_H
 
-#include <unistd.h>
-
-char* color(char* color) {
-  return isatty(STDOUT_FILENO) ? color : "";
-}
+char* color(char* color);
 
 #define __COLOR(col) color(col)
 
