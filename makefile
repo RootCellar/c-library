@@ -51,28 +51,28 @@ run_benchmark: all
 	./benchmark
 	./benchmark_threads
 
-benchmark: memory.o
+benchmark: memory.o terminal_color.o
 	$(CC) $(CFLAGS) -o $@ benchmark.c -lm $^
 
 benchmark_threads:
 	$(CC) $(CFLAGS) -o $@ benchmark_threads.c -lpthread -lm
 
-test_memory: memory.o
+test_memory: memory.o unit_testing.o terminal_color.o
 	$(CC) $(CFLAGS) -o $@ test.c $^
 
-test_statistics: memory.o
+test_statistics: memory.o unit_testing.o terminal_color.o
 	$(CC) $(CFLAGS) -o $@ test_statistics.c -lm $^
 
-test_math: memory.o
+test_math: memory.o unit_testing.o terminal_color.o
 	$(CC) $(CFLAGS) -o $@ test_math.c -lm $^
 
-test_matrix: memory.o
+test_matrix: memory.o unit_testing.o terminal_color.o
 	$(CC) $(CFLAGS) -o $@ test_matrix.c -lm $^
 
 test_prime: unit_testing.o terminal_color.o
 	$(CC) $(CFLAGS) -o $@ prime.c -lm $^
 
-test_inet: memory.o unit_testing.o
+test_inet: memory.o unit_testing.o terminal_color.o
 	$(CC) $(CFLAGS) -o $@ test_inet.c $^
 
 test_sthread: unit_testing.o terminal_color.o
@@ -81,7 +81,7 @@ test_sthread: unit_testing.o terminal_color.o
 test_strings: unit_testing.o terminal_color.o
 	$(CC) $(CFLAGS) -o $@ test_strings.c $^
 
-neural: memory.o
+neural: memory.o terminal_color.o
 	$(CC) $(CFLAGS) -o $@ neural.c -lm -lpthread $^
 
 dice:
