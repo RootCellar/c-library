@@ -1,10 +1,14 @@
+
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <time.h>
+#include <signal.h>
+
 #include "neural.h"
 #include "statistics.h"
 #include "time.h"
-
-#include <time.h>
-#include <signal.h>
-#include <stdbool.h>
 
 static bool should_run = true;
 

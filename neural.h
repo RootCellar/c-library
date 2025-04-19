@@ -5,6 +5,7 @@
 #include <math.h>
 
 #include "memory.h"
+#include "debug.h"
 #include "sthread.h"
 
 struct Neuron {

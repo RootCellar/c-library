@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "test.h"
+#include "debug.h"
 #include "benchmark.h"
 #include "memory.h"
 #include "matrix.h"

@@ -2,6 +2,7 @@
 #include <unistd.h>
 
 #include "test.h"
+#include "debug.h"
 #include "time.h"
 #include "inet.h"
 
