@@ -30,7 +30,10 @@ struct ptr_data {
   size_t size;
 };
 
+static
 struct ptr_data* POINTER_LIST = NULL;
+
+static
 long int POINTER_LIST_SIZE = 0;
 
 int is_valid_ptr(void* ptr) {
