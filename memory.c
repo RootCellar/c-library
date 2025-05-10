@@ -17,8 +17,13 @@
 #include "memory.h"
 #include "debug.h"
 
+// Memory debug prints used only in this file
 #define memory_debug_printf(fmt, ...) if(MEMORY_DEBUG) debug_printf(fmt, __VA_ARGS__);
 #define memory_debug_print(fmt) if(MEMORY_DEBUG) debug_print(fmt);
+
+// Undefine malloc and free macros so we use the real functions
+#undef malloc
+#undef free
 
 struct ptr_data {
   char* ptr;

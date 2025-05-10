@@ -2,8 +2,14 @@
 #define MEMORY_H
 
 #define MEMORY_DEBUG 0
+#define REPLACE_MALLOC 1
 
 #define DEFAULT_POINTER_LIST_SIZE 1024
+
+#if REPLACE_MALLOC == 1
+#define malloc(x) tMalloc(x)
+#define free(x) tFree(x)
+#endif
 
 int is_valid_ptr(void* ptr);
 int tOwnsAddress(void* adr);
