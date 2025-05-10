@@ -112,6 +112,7 @@ int tFreePointerList() {
 // Find the given pointer.
 // Handy trick: tFindSpot(0) can be used to find an empty slot
 // to track a new pointer
+static
 long int tFindSpot(void* ptr) {
   if(!is_valid_ptr(POINTER_LIST)) return -1;
 
@@ -124,6 +125,10 @@ long int tFindSpot(void* ptr) {
   }
 
   return -1;
+}
+
+int tHasPtr(void* ptr) {
+  return tFindSpot(ptr) >= 0;
 }
 
 // Get the size of the given pointer.
@@ -214,6 +219,7 @@ int tResize(long int len) {
 
 // Add the given pointer, with len bytes allocated,
 // to the list of tracked pointers
+static
 int tAdd(void* ptr, unsigned long int len) {
   if(!is_valid_ptr(POINTER_LIST)) {
     int failed = tResize(DEFAULT_POINTER_LIST_SIZE);

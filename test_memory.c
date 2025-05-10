@@ -40,7 +40,7 @@ int main() {
   TEST( tOwnsAddress(ptr - 1) == 0, "tOwnsAddress() before bound");
 
   tFree(ptr);
-  TEST( tFindSpot(ptr) == -1, "Attempt to find pointer that was just freed");
+  TEST( tHasPtr(ptr) == 0, "Pointer list doesn't have pointer that was just freed");
 
   TEST( tGetTotalAllocs() == 0, "tGetTotalAllocs() after tFree()");
   TEST( tGetTotalAllocSize() == 0, "tGetTotalAllocSize() after tFree()");
@@ -68,7 +68,7 @@ int main() {
   TEST( tResize(1) == 0, "shrink pointer list to fit the one pointer");
 
   tFree(ptr);
-  TEST( tFindSpot(ptr) == -1, "Attempt to find pointer that was just freed");
+  TEST( tHasPtr(ptr) == 0, "Pointer list doesn't have pointer that was just freed");
 
   TEST( tResize(10) == 0, "expand pointer list");
   TEST( tResize(1) == 0, "shrink pointer list");
@@ -77,13 +77,11 @@ int main() {
   TEST( tMalloc(alloc_bytes) == NULL, "tMalloc() pointer list too small");
   TEST( tOwnsAddress(ptr) == 1, "tOwnsAddress() on pointer");
   tFree(ptr);
-  TEST( tFindSpot(ptr) == -1, "Attempt to find pointer that was just freed");
+  TEST( tHasPtr(ptr) == 0, "Pointer list doesn't have pointer that was just freed");
 
   TEST( tGetTotalAllocs() == 0, "tGetTotalAllocs() after tFree()");
   TEST( tGetTotalAllocSize() == 0, "tGetTotalAllocSize() after tFree()");
   TEST( tOwnsAddress(ptr) == 0, "tOwnsAddress() on pointer after free");
-
-  TEST( tFindSpot(ptr) == -1, "find a pointer that is not in the list");
 
 
 
@@ -106,7 +104,7 @@ int main() {
   for(size_t i = 0; i < ptr_array_size; i++) {
     ptr_array[i] = tMalloc(alloc_bytes);
     TEST( ptr_array[i] != NULL, "can allocate multiple pointers");
-    TEST( tFindSpot(ptr_array[i]) >= 0, "find a pointer that is in the list");
+    TEST( tHasPtr(ptr_array[i]), "Pointer list has pointer that was just allocated");
   }
   
   TEST( tMalloc(alloc_bytes) == NULL, "can't allocate another pointer");
@@ -115,7 +113,7 @@ int main() {
 
   for(size_t i = 0; i < ptr_array_size; i++) {
     tFree(ptr_array[i]);
-    TEST( tFindSpot(ptr_array[i]) == -1, "free'd pointer is no longer in the list");
+    TEST( tHasPtr(ptr_array[i]) == 0, "Pointer list doesn't have pointer that was just freed");
   }
 
   TEST( tGetTotalAllocs() == 0, "Pointer list is empty at end of test");
@@ -132,7 +130,7 @@ int main() {
   for(size_t i = 0; i < ptr_array_size; i++) {
     ptr_array[i] = tMalloc(alloc_bytes);
     TEST( ptr_array[i] != NULL, "can allocate multiple pointers");
-    TEST( tFindSpot(ptr_array[i]) >= 0, "find a pointer that is in the list");
+    TEST( tHasPtr(ptr_array[i]), "Pointer list has pointer that was just allocated");
   }
 
   int freed = 0;
@@ -140,7 +138,7 @@ int main() {
   
   for(size_t i = 0; i < ptr_array_size; i += spread) {
     tFree(ptr_array[i]);
-    TEST( tFindSpot(ptr_array[i]) == -1, "free'd pointer is no longer in the list");
+    TEST( tHasPtr(ptr_array[i]) == 0, "Pointer list doesn't have pointer that was just freed");
 
     ++freed;
   }
@@ -153,7 +151,7 @@ int main() {
   for(size_t i = 0; i < ptr_array_size; i++) {
     if(i % spread == 0) continue;
     tFree(ptr_array[i]);
-    TEST( tFindSpot(ptr_array[i]) == -1, "free'd pointer is no longer in the list");
+    TEST( tHasPtr(ptr_array[i]) == 0, "Pointer list doesn't have pointer that was just freed");
   }
 
 

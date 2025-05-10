@@ -14,13 +14,11 @@ void tPrintStatus();
 
 int tFreePointerList();
 
-long int tFindSpot(void* ptr);
 size_t tGetSize(void* ptr);
+int tHasPtr(void* ptr);
 
 void tCondense();
 int tResize(long int len);
-
-int tAdd(void* ptr, unsigned long int len);
 
 void* tMalloc(unsigned long int len);
 void* tRealloc(void* ptr, unsigned long int len);
