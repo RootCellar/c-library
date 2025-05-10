@@ -24,6 +24,6 @@ int tAdd(void* ptr, unsigned long int len);
 
 void* tMalloc(unsigned long int len);
 void* tRealloc(void* ptr, unsigned long int len);
-int tFree(void* ptr);
+void tFree(void* ptr);
 
 #endif

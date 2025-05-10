@@ -305,8 +305,12 @@ void* tRealloc(void* ptr, unsigned long int len) {
 
 // Free the given pointer and remove it from the list,
 // if it is in the list and is a valid pointer
-int tFree(void* ptr) {
-  if(!is_valid_ptr(ptr)) return 1; // invalid pointer
+void tFree(void* ptr) {
+  if(!is_valid_ptr(ptr)) {
+    // invalid pointer
+    memory_debug_print("Not freeing an invalid pointer");
+    return;
+  }
 
   memory_debug_print("Attempting to free a pointer");
 
@@ -315,7 +319,7 @@ int tFree(void* ptr) {
   long int spot = tFindSpot(ptr);
   if(spot < 0) {
     memory_debug_print("Could not find pointer in list!");
-    return 1;
+    return;
   }
 
   struct ptr_data* ptrData = &POINTER_LIST[spot];
@@ -326,5 +330,5 @@ int tFree(void* ptr) {
   memory_debug_printf("Freed %zu bytes", ptrData->size);
   ptrData->size = 0;
   tPrintStatus();
-  return 0;
+  return;
 }
