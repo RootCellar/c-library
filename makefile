@@ -54,7 +54,7 @@ run_benchmark: all
 benchmark: memory.o time.o terminal_color.o
 	$(CC) $(CFLAGS) -o $@ benchmark.c -lm $^
 
-benchmark_threads: time.o
+benchmark_threads: vector.o time.o
 	$(CC) $(CFLAGS) -o $@ benchmark_threads.c -lpthread -lm $^
 
 test_memory: memory.o unit_testing.o terminal_color.o
@@ -63,7 +63,7 @@ test_memory: memory.o unit_testing.o terminal_color.o
 test_statistics: memory.o unit_testing.o terminal_color.o
 	$(CC) $(CFLAGS) -o $@ test_statistics.c -lm $^
 
-test_math: memory.o unit_testing.o time.o terminal_color.o
+test_math: memory.o vector.o unit_testing.o time.o terminal_color.o
 	$(CC) $(CFLAGS) -o $@ test_math.c -lm $^
 
 test_matrix: memory.o unit_testing.o time.o terminal_color.o
