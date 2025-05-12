@@ -4,7 +4,7 @@
 
 double timespec_to_double(struct timespec time) {
   double nanoseconds_in_seconds = (double) time.tv_nsec / 1000000000.0;
-  double seconds = time.tv_sec;
+  double seconds = (double) time.tv_sec;
   double timespec_in_seconds = seconds + nanoseconds_in_seconds;
   return timespec_in_seconds;
 }
