@@ -66,7 +66,7 @@ test_statistics: memory.o unit_testing.o terminal_color.o
 test_math: memory.o vector.o unit_testing.o time.o terminal_color.o
 	$(CC) $(CFLAGS) -o $@ test_math.c -lm $^
 
-test_matrix: memory.o unit_testing.o time.o terminal_color.o
+test_matrix: memory.o matrix.o unit_testing.o time.o terminal_color.o
 	$(CC) $(CFLAGS) -o $@ test_matrix.c -lm $^
 
 test_prime: unit_testing.o time.o terminal_color.o
