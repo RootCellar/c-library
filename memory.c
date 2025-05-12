@@ -101,7 +101,7 @@ unsigned long int tGetTotalAllocSize() {
 void tPrintStatus() {
   memory_debug_printf("There are %lu bytes allocated, amongst %ld pointers.", tGetTotalAllocSize(), tGetTotalAllocs());
   memory_debug_printf("The pointer list is %zu bytes, to hold %ld pointers.",
-                      POINTER_LIST_SIZE * sizeof(struct ptr_data), POINTER_LIST_SIZE);
+                      POINTER_LIST_SIZE * ((long int) sizeof(struct ptr_data)), POINTER_LIST_SIZE);
 }
 
 int tFreePointerList() {
@@ -207,19 +207,19 @@ int tResize(long int len) {
     return 0;
   }
 
-  void* new_pointer_list = malloc(len * sizeof(struct ptr_data));
+  void* new_pointer_list = malloc((size_t) len * sizeof(struct ptr_data));
   if(!is_valid_ptr(new_pointer_list)) {
     memory_debug_print("Could not allocate new pointer list!");
     return 1;
   }
 
-  memset(new_pointer_list, 0, len * sizeof(struct ptr_data));
+  memset(new_pointer_list, 0, (size_t) len * sizeof(struct ptr_data));
 
   if(is_valid_ptr(POINTER_LIST)) {
     memory_debug_print("Replacing old pointer list...");
     tCondense();
     long int copy_length = len < POINTER_LIST_SIZE ? len : POINTER_LIST_SIZE;
-    memcpy(new_pointer_list, POINTER_LIST, copy_length * sizeof(struct ptr_data));
+    memcpy(new_pointer_list, POINTER_LIST, (size_t) copy_length * sizeof(struct ptr_data));
     free(POINTER_LIST);
   }
 
