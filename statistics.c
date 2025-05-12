@@ -4,7 +4,7 @@
 #include "statistics.h"
 
 float statistics_float_abs(float value) {
-  if(value < 0.0) return value * -1.0;
+  if(value < 0.0) return value * -1.0f;
   return value;
 }
 
