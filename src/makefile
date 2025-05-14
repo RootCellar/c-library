@@ -36,16 +36,16 @@ objects: $(OBJECTS)
 executables: $(EXECUTABLES)
 
 build/lib: build
-	mkdir build/lib
+	mkdir -p build/lib
 
 build/programs: build
-	mkdir build/programs
+	mkdir -p build/programs
 
 build/asm: build
-	mkdir build/asm
+	mkdir -p build/asm
 
 build:
-	mkdir build
+	mkdir -p build
 
 build/lib/%.o: lib/%.c build/lib
 	$(CC) $(CFLAGS) -c $< -o $@
