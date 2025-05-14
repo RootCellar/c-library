@@ -56,6 +56,9 @@ build/programs/%: programs/%.c $(OBJECTS) build/programs
 build/asm/%.asm: lib/%.c build/asm
 	$(CC) $(CFLAGS) -S -o $@ $<
 
+run_%: build/programs/%
+	./$<
+
 test: executables
 	for i in $(TEST_PROGRAMS); do \
   		echo; \
