@@ -4,9 +4,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "sthread.h"
-#include "benchmark.h"
-#include "vector.h"
+#include "../lib/sthread.h"
+#include "../lib/benchmark.h"
+#include "../lib/vector.h"
 
 #define NUM_LOOPS_TRIG 100000
 #define NUM_LOOPS_VECTOR 100000

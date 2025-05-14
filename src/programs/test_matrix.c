@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "unit_testing.h"
-#include "debug.h"
-#include "benchmark.h"
-#include "memory.h"
-#include "matrix.h"
+#include "../lib/unit_testing.h"
+#include "../lib/debug.h"
+#include "../lib/benchmark.h"
+#include "../lib/memory.h"
+#include "../lib/matrix.h"
 
 #define BENCHMARK_ITERATIONS 5000000
 

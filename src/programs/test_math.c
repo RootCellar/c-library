@@ -1,10 +1,10 @@
 
 #include <time.h>
 
-#include "unit_testing.h"
-#include "benchmark.h"
-#include "debug.h"
-#include "vector.h"
+#include "../lib/unit_testing.h"
+#include "../lib/benchmark.h"
+#include "../lib/debug.h"
+#include "../lib/vector.h"
 
 int main() {
 

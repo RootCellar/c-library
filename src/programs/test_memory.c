@@ -1,5 +1,5 @@
-#include "unit_testing.h"
-#include "memory.h"
+#include "../lib/unit_testing.h"
+#include "../lib/memory.h"
 
 int main() {
 

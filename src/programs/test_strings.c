@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-#include "unit_testing.h"
-#include "strings.h"
+#include "../lib/unit_testing.h"
+#include "../lib/strings.h"
 
 void main() {
 

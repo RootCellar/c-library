@@ -1,15 +1,4 @@
-/benchmark
-/benchmark_threads
-/test_memory
-/test_statistics
-/test_math
-/test_matrix
-/test_prime
-/test_inet
-/test_sthread
-/test_strings
-/neural
-/dice
+/build/
 
 # Assembly Files
 *.asm

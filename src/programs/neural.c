@@ -6,9 +6,9 @@
 #include <time.h>
 #include <signal.h>
 
-#include "neural.h"
-#include "statistics.h"
-#include "time.h"
+#include "../lib/neural.h"
+#include "../lib/statistics.h"
+#include "../lib/time.h"
 
 static bool should_run = true;
 

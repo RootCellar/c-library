@@ -1,10 +1,10 @@
 #include <signal.h>
 #include <unistd.h>
 
-#include "unit_testing.h"
-#include "debug.h"
-#include "time.h"
-#include "inet.h"
+#include "../lib/unit_testing.h"
+#include "../lib/debug.h"
+#include "../lib/time.h"
+#include "../lib/inet.h"
 
 #define BUFFER_SIZE 128
 

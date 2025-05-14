@@ -1,6 +1,6 @@
 
-#include "unit_testing.h"
-#include "statistics.h"
+#include "../lib/unit_testing.h"
+#include "../lib/statistics.h"
 
 void main() {
 

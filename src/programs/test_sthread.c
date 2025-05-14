@@ -1,10 +1,10 @@
 
 #include <time.h>
 
-#include "sthread.h"
-#include "unit_testing.h"
-#include "benchmark.h"
-#include "debug.h"
+#include "../lib/sthread.h"
+#include "../lib/unit_testing.h"
+#include "../lib/benchmark.h"
+#include "../lib/debug.h"
 
 #define NUM_LOOPS_SIMPLE 10000000
 

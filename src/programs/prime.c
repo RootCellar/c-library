@@ -1,9 +1,9 @@
 #include <math.h>
 #include <time.h>
 
-#include "benchmark.h"
-#include "unit_testing.h"
-#include "statistics.h"
+#include "../lib/benchmark.h"
+#include "../lib/unit_testing.h"
+#include "../lib/statistics.h"
 
 int isPrime(int num) {
   if(num <= 1) return 0;

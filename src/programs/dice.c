@@ -2,8 +2,8 @@
 #include <unistd.h>
 #include <time.h>
 
-#include "time.h"
-#include "random.h"
+#include "../lib/time.h"
+#include "../lib/random.h"
 
 void show_usage(void) {
   printf("Usage: dice [[s[s]]count] <sides>\n");

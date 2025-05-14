@@ -3,10 +3,10 @@
 #include <math.h>
 #include <time.h>
 
-#include "debug.h"
-#include "benchmark.h"
-#include "memory.h"
-#include "random.h"
+#include "../lib/debug.h"
+#include "../lib/benchmark.h"
+#include "../lib/memory.h"
+#include "../lib/random.h"
 
 #define BENCHMARK_TIMES (3)
 

@@ -5,18 +5,21 @@ LDFLAGS =
 VALGRIND=valgrind -s --log-fd=1 --time-stamp=yes --error-exitcode=1 --leak-check=full --show-leak-kinds=all --track-origins=yes --read-var-info=yes --tool=memcheck
 LINTER=cppcheck --enable=all --suppress=missingIncludeSystem --inconclusive --check-level=exhaustive --library=posix
 
-SOURCE=$(wildcard *.c)
-HEADERS=$(wildcard *.h)
+LIB_SOURCE=$(wildcard lib/*.c)
+LIB_HEADERS=$(wildcard lib/*.h)
 
-ASSEMBLIES=$(SOURCE:%.c=%.asm)
-OBJECTS=$(SOURCE:%.c=%.o)
+ASSEMBLIES=$(LIB_SOURCE:lib/%.c=build/asm/%.asm)
+OBJECTS=$(LIB_SOURCE:%.c=build/%.o)
 
-EXECUTABLES=benchmark benchmark_threads test_memory test_statistics test_math test_matrix test_prime test_inet test_sthread test_strings neural dice
+EXEC_SOURCE=$(wildcard programs/*.c)
+EXECUTABLES=$(EXEC_SOURCE:%.c=build/%)
+TEST_PROGRAMS=$(wildcard build/programs/test_*)
 
 all: executables
 everything: assemblies objects executables
 
 .PHONY: all everything assemblies objects executables clean run_benchmark check test
+.SILENT: test
 
 clean:
 	rm -f $(ASSEMBLIES)
@@ -32,57 +35,39 @@ assemblies: $(ASSEMBLIES)
 objects: $(OBJECTS)
 executables: $(EXECUTABLES)
 
-%.o: %.c
+build/lib: build
+	mkdir build/lib
+
+build/programs: build
+	mkdir build/programs
+
+build/asm: build
+	mkdir build/asm
+
+build:
+	mkdir build
+
+build/lib/%.o: lib/%.c build/lib
 	$(CC) $(CFLAGS) -c $< -o $@
 
-%.asm: %.c
+build/programs/%: programs/%.c $(OBJECTS) build/programs
+	$(CC) $(CFLAGS) $< -o $@ $(OBJECTS) -lm -lpthread
+
+build/asm/%.asm: lib/%.c build/asm
 	$(CC) $(CFLAGS) -S -o $@ $<
 
-test: all
-	time $(VALGRIND) ./test_memory
-	time $(VALGRIND) ./test_statistics
-	time $(VALGRIND) ./test_math
-	time $(VALGRIND) ./test_matrix
-	time $(VALGRIND) ./test_inet
-	time $(VALGRIND) ./test_sthread
-	time $(VALGRIND) ./test_strings
+test: executables
+	for i in $(TEST_PROGRAMS); do \
+  		echo; \
+  		echo $$i; \
+  		echo; \
+		./$$i || exit 1; \
+	done \
 
-run_benchmark: all
-	./benchmark
-	./benchmark_threads
-
-benchmark: memory.o time.o terminal_color.o
-	$(CC) $(CFLAGS) -o $@ benchmark.c -lm $^
-
-benchmark_threads: vector.o time.o
-	$(CC) $(CFLAGS) -o $@ benchmark_threads.c -lpthread -lm $^
-
-test_memory: memory.o unit_testing.o terminal_color.o
-	$(CC) $(CFLAGS) -o $@ test_memory.c $^
-
-test_statistics: memory.o statistics.o unit_testing.o terminal_color.o
-	$(CC) $(CFLAGS) -o $@ test_statistics.c -lm $^
-
-test_math: memory.o vector.o unit_testing.o time.o terminal_color.o
-	$(CC) $(CFLAGS) -o $@ test_math.c -lm $^
-
-test_matrix: memory.o matrix.o unit_testing.o time.o terminal_color.o
-	$(CC) $(CFLAGS) -o $@ test_matrix.c -lm $^
-
-test_prime: unit_testing.o statistics.o time.o terminal_color.o
-	$(CC) $(CFLAGS) -o $@ prime.c -lm $^
-
-test_inet: memory.o unit_testing.o time.o terminal_color.o
-	$(CC) $(CFLAGS) -o $@ test_inet.c $^
-
-test_sthread: unit_testing.o terminal_color.o
-	$(CC) $(CFLAGS) -o $@ test_sthread.c -lpthread $^
-
-test_strings: unit_testing.o terminal_color.o
-	$(CC) $(CFLAGS) -o $@ test_strings.c $^
-
-neural: memory.o time.o terminal_color.o
-	$(CC) $(CFLAGS) -o $@ neural.c -lm -lpthread $^
-
-dice: time.o
-	$(CC) $(CFLAGS) -o $@ dice.c $^
+valgrind: executables
+	for i in $(TEST_PROGRAMS); do \
+  		echo; \
+  		echo $$i; \
+  		echo; \
+		time $(VALGRIND) ./$$i || exit 1; \
+	done \
