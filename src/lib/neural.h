@@ -441,7 +441,7 @@ int neural_train_threaded(struct NeuralNet* net, struct Net_Training_Settings se
     }
   }
 
-  copy_neural_net(&thread_args[which_has_min].net, net);
+  if(min_error < error) copy_neural_net(&thread_args[which_has_min].net, net);
 
   for(int i = 0; i < num_threads; i++) {
     free_neural_net(&thread_args[i].net);
