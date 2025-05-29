@@ -69,7 +69,7 @@ void undo_weight_adjustments(struct NeuralNet_Weight_Adjustment* adjustments, in
   }
 }
 
-struct NeuralNet_Weight_Adjustment generate_weight_adjustment(struct Neuron* neuron, int weight, int amount) {
+struct NeuralNet_Weight_Adjustment generate_weight_adjustment(struct Neuron* neuron, int weight, float amount) {
   return (struct NeuralNet_Weight_Adjustment) { .neuron = neuron, .amount = amount, .weight = weight, .applied = 0};
 }
 
