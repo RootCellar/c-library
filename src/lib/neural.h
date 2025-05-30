@@ -3,6 +3,7 @@
 #define NEURAL_H
 
 #include <math.h>
+#include <string.h>
 
 #include "memory.h"
 #include "debug.h"
