@@ -72,7 +72,13 @@ void main() {
 
     settings.learning_rate = sinf((float) rounds / 100.0) * 10.0;
 
-    neural_train_threaded(&neural_net, settings, items, num_inputs);
+    int ret = neural_train_threaded(&neural_net, settings, items, num_inputs);
+
+    if(ret < 0) {
+      printf("Failure training neural net!\n");
+      exit(1);
+    }
+
     rounds++;
 
     overall_error = neural_overall_error(&neural_net, items, num_inputs);
