@@ -421,7 +421,7 @@ int neural_train_threaded(struct NeuralNet* net, struct Net_Training_Settings se
   }
 
   int num_threads = settings.num_threads;
-  if(num_threads < 1) return 1;
+  if(num_threads < 1) return -1;
 
   struct neural_train_thread_data thread_args[num_threads];
   for(int i = 0; i < num_threads; i++) {
