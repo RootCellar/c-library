@@ -76,7 +76,7 @@ struct NeuralNet_Weight_Adjustment generate_weight_adjustment(struct Neuron* neu
 
 void free_neuron(struct Neuron* neuron) {
   if(neuron->input_weights != NULL) {
-    tFree(neuron->input_weights);
+    free(neuron->input_weights);
     neuron->input_weights = NULL;
   }
 }
@@ -103,13 +103,13 @@ void free_neural_net(struct NeuralNet* neural_net) {
 
   for(int i = 0; i < neural_net->layers; i++) {
     if(neural_net->neurons[i] != NULL) {
-      tFree(neural_net->neurons[i]);
+      free(neural_net->neurons[i]);
       neural_net->neurons[i] = NULL;
     }
   }
 
   debug_print("Freeing neuron layer list");
-  tFree(neural_net->neurons);
+  free(neural_net->neurons);
   neural_net->neurons = NULL;
 
   if(neural_net->output_neuron.input_weights != NULL) {
@@ -126,7 +126,7 @@ struct Neuron create_neuron(int input_count) {
 
   unsigned long weights_list_bytes = sizeof(float) * input_count;
 
-  neuron.input_weights = tMalloc(weights_list_bytes);
+  neuron.input_weights = malloc(weights_list_bytes);
   if(neuron.input_weights == NULL) {
     debug_printf("Failed to allocate memory for a neuron with %d inputs!", input_count);
     return neuron;
@@ -172,7 +172,7 @@ struct NeuralNet create_neural_net(int layers, int neurons_per_layer) {
   unsigned long layers_list_bytes = sizeof(struct Neuron*) * layers;
   unsigned long neuron_list_bytes = sizeof(struct Neuron) * neurons_per_layer;
 
-  neural_net.neurons = tMalloc(layers_list_bytes);
+  neural_net.neurons = malloc(layers_list_bytes);
   if(neural_net.neurons == NULL) {
     debug_print("Failed to create neural layers!");
     return neural_net;
@@ -182,7 +182,7 @@ struct NeuralNet create_neural_net(int layers, int neurons_per_layer) {
   debug_print("Created neural layer list");
 
   for(int i = 0; i < layers; i++) {
-    neural_net.neurons[i] = tMalloc(neuron_list_bytes);
+    neural_net.neurons[i] = malloc(neuron_list_bytes);
     if(neural_net.neurons[i] == NULL) {
       debug_printf("Failed to allocate layer %d!", i);
       free_neural_net(&neural_net);
