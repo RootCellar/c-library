@@ -413,10 +413,10 @@ void __neural_train_thread(int id, int thread_count, int count, void* data) {
 
 int neural_train_threaded(struct NeuralNet* net, struct Net_Training_Settings settings, struct Net_Training_Item* items,
                           int item_count) {
-  float error = neural_overall_error(net, items, item_count);
+  float original_error = neural_overall_error(net, items, item_count);
 
   // Output seems good
-  if(fabs(error) < settings.acceptable_error) {
+  if(fabs(original_error) < settings.acceptable_error) {
     return 0;
   }
 
@@ -433,17 +433,18 @@ int neural_train_threaded(struct NeuralNet* net, struct Net_Training_Settings se
 
   run_in_threads(__neural_train_thread, thread_args, num_threads, num_threads);
 
-  float min_error = thread_args[0].error;
+  float thread_min_error = thread_args[0].error;
+  float thread_error;
   int which_has_min = 0;
   for(int i = 1; i < num_threads; i++) {
-    error = thread_args[i].error;
-    if(error < min_error) {
-      min_error = error;
+    thread_error = thread_args[i].error;
+    if(thread_error < thread_min_error) {
+      thread_min_error = thread_error;
       which_has_min = i;
     }
   }
 
-  if(min_error < error) copy_neural_net(&thread_args[which_has_min].net, net);
+  if(thread_min_error < original_error) copy_neural_net(&thread_args[which_has_min].net, net);
 
   for(int i = 0; i < num_threads; i++) {
     free_neural_net(&thread_args[i].net);
