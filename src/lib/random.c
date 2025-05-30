@@ -1,8 +1,5 @@
 
 #include <stdlib.h>
-#include <limits.h>
-
-#include "debug.h"
 
 #define INT_SIZE (sizeof(int))
 #define INTS_IN_BUFFER (2048)
