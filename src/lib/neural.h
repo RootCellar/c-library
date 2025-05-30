@@ -2,6 +2,7 @@
 #ifndef NEURAL_H
 #define NEURAL_H
 
+#include <unistd.h>
 #include <math.h>
 #include <string.h>
 
