@@ -7,6 +7,7 @@
 #include <signal.h>
 
 #include "../lib/neural.h"
+#include "../lib/memory.h"
 #include "../lib/statistics.h"
 #include "../lib/time.h"
 
