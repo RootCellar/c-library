@@ -362,7 +362,7 @@ int neural_train(struct NeuralNet* net, struct Net_Training_Settings settings, s
 }
 
 static
-void __neural_train_thread(int id, int thread_count, int count, void* data) {
+void __neural_train_thread(size_t id, size_t thread_count, size_t count, void* data) {
   struct neural_train_thread_data* thread_data_pointer = (struct neural_train_thread_data*) data;
   struct neural_train_thread_data* thread_data = &thread_data_pointer[id];
 

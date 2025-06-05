@@ -1,11 +1,11 @@
 #include <pthread.h>
 
 struct thread_args {
-  int id;
-  int thread_count;
+  size_t id;
+  size_t count;
+  size_t thread_count;
   void* items;
-  int count;
-  void (*function)(int, int, int, void*);
+  void (*function)(size_t, size_t, size_t, void*);
 };
 
 void* start_thread(void* args) {
@@ -14,11 +14,11 @@ void* start_thread(void* args) {
   pthread_exit(0);
 }
 
-void run_in_threads(void* function, void* items, int count, int thread_count) {
+void run_in_threads(void (*function)(size_t, size_t, size_t, void*), void* items, size_t count, size_t thread_count) {
   pthread_t threads[thread_count];
   struct thread_args args[thread_count];
 
-  for(int i = 0; i < thread_count; i++) {
+  for(size_t i = 0; i < thread_count; i++) {
     args[i].id = i;
     args[i].thread_count = thread_count;
     args[i].items = items;
@@ -28,7 +28,7 @@ void run_in_threads(void* function, void* items, int count, int thread_count) {
     pthread_create(&threads[i], NULL, start_thread, (void*) &(args[i]));
   }
 
-  for(int i = 0; i < thread_count; i++) {
+  for(size_t i = 0; i < thread_count; i++) {
     pthread_join(threads[i], NULL);
   }
 }
