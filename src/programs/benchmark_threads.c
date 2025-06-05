@@ -14,7 +14,7 @@
 #define BENCHMARK_TIMES 3
 #define THREAD_COUNT 4
 
-void modify_values(int id, int thread_count, int count, void* data) {
+void modify_values(size_t id, size_t thread_count, size_t count, void* data) {
   float* actual_data = (float*) data;
   for(int i = 0; i < NUM_LOOPS_TRIG; i++) {
     actual_data[id] += cosf(i);
@@ -22,7 +22,7 @@ void modify_values(int id, int thread_count, int count, void* data) {
   }
 }
 
-void vector_operations(int id, int thread_count, int count, void* data) {
+void vector_operations(size_t id, size_t thread_count, size_t count, void* data) {
   float* actual_data = (float*) data;
   struct Vector3 one = vector3_create(1,1,1);
   struct Vector3 two = vector3_create(2,2,2);
