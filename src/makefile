@@ -18,7 +18,7 @@ TEST_PROGRAMS=$(wildcard build/programs/test_*)
 all: executables
 everything: assemblies objects executables
 
-.PHONY: all everything assemblies objects executables clean run_benchmark check test
+.PHONY: all everything assemblies objects executables clean check test valgrind lint
 .SILENT: test
 
 clean:
