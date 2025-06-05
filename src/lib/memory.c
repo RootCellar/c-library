@@ -148,7 +148,7 @@ int tHasPtr(void* ptr) {
 
 // Get the size of the given pointer.
 // Must be kept tracked of in the list.
-// Returns -1 if the pointer is not found.
+// Returns 0 if the pointer is not found.
 size_t tGetSize(void* ptr) {
   long int spot = tFindSpot(ptr);
   if(spot < 0) { return 0; }
