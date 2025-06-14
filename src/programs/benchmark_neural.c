@@ -27,7 +27,12 @@ int main() {
 
   if(num_inputs != num_outputs) {
     printf("mismatch between number of inputs and outputs!\n");
-    return 1;
+    exit(1);
+  }
+
+  if(neural_net.neurons == NULL) {
+    printf("Could not create neural net!\n");
+    exit(1);
   }
 
   struct Net_Training_Item* items;
