@@ -29,11 +29,11 @@ struct receiving_buffer {
   // Used by user and implementation
 
   char* buffer;
-  int buffer_size;
+  size_t buffer_size;
 
   // Used by implementation
   char* actual_buffer;
-  int actual_size;
+  size_t actual_size;
 
   int message_size;
   int message_size_received;
@@ -57,7 +57,7 @@ int has_flag(short value, short flag);
  * Allocates memory for the given buffer and fills in the struct if it is successful.
  * If it is not successful, the function leaves the given buffer unchanged.
 */
-void allocate_receiving_buffer(struct receiving_buffer* buffer, int size);
+void allocate_receiving_buffer(struct receiving_buffer* buffer, size_t size);
 
 
 /*
@@ -67,7 +67,7 @@ void allocate_receiving_buffer(struct receiving_buffer* buffer, int size);
  * If the buffer pointer is a null pointer or the buffer_size is 0,
  * the function failed to create the buffer. Otherwise, it succeeded.
 */
-struct receiving_buffer make_receive_buffer(int size);
+struct receiving_buffer make_receive_buffer(size_t size);
 
 /*
  * Frees the memory of the given receiving_buffer.

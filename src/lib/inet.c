@@ -37,13 +37,13 @@ int has_flag(short value, short flag) {
   return value & flag;
 }
 
-void allocate_receiving_buffer(struct receiving_buffer* buffer, int size) {
+void allocate_receiving_buffer(struct receiving_buffer* buffer, size_t size) {
   if(size < 8) {
-    debug_printf("Refusing to make buffer with size %d: too small!", size);
+    debug_printf("Refusing to make buffer with size %zu: too small!", size);
     return;
   }
 
-  int actual_size = size + MESSAGE_SIZE_BYTES;
+  size_t actual_size = size + MESSAGE_SIZE_BYTES;
 
   void* ptr = tMalloc(actual_size);
   if(ptr == NULL) {
@@ -64,17 +64,17 @@ void allocate_receiving_buffer(struct receiving_buffer* buffer, int size) {
 
   buffer->last_received = time(NULL);
 
-  debug_printf("Allocated buffer with size %d (Actual: %d, %d for size)", size, actual_size, MESSAGE_SIZE_BYTES);
+  debug_printf("Allocated buffer with size %zu (Actual: %zu, %d for size)", size, actual_size, MESSAGE_SIZE_BYTES);
 }
 
-struct receiving_buffer make_receive_buffer(int size) {
+struct receiving_buffer make_receive_buffer(size_t size) {
   struct receiving_buffer buffer;
   buffer.buffer = NULL;
   buffer.buffer_size = 0;
 
   allocate_receiving_buffer(&buffer, size);
 
-  debug_printf("Created buffer with size %d", size);
+  debug_printf("Created buffer with size %zu", size);
 
   return buffer;
 }
