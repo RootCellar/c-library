@@ -45,7 +45,7 @@ void allocate_receiving_buffer(struct receiving_buffer* buffer, size_t size) {
 
   size_t actual_size = size + MESSAGE_SIZE_BYTES;
 
-  void* ptr = tMalloc(actual_size);
+  void* ptr = malloc(actual_size);
   if(ptr == NULL) {
     debug_print("Could not allocate space for buffer!");
     return;
@@ -80,7 +80,7 @@ struct receiving_buffer make_receive_buffer(size_t size) {
 }
 
 void free_receiving_buffer(struct receiving_buffer* buffer) {
-  tFree(buffer->actual_buffer);
+  free(buffer->actual_buffer);
 }
 
 int send_buffer(int fd, char* data, int count) {
