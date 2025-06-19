@@ -1,5 +1,7 @@
+#include <errno.h>
 #include <signal.h>
 #include <unistd.h>
+#include <string.h>
 
 #include "../lib/unit_testing.h"
 #include "../lib/debug.h"
