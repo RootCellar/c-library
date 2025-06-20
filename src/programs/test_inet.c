@@ -6,6 +6,7 @@
 #include "../lib/unit_testing.h"
 #include "../lib/debug.h"
 #include "../lib/time.h"
+#include "../lib/memory.h"
 #include "../lib/inet.h"
 
 #define BUFFER_SIZE 128
