@@ -24,6 +24,7 @@
 
 // Undefine malloc and free macros so we use the real functions
 #undef malloc
+#undef realloc
 #undef free
 
 struct ptr_data {
