@@ -53,7 +53,7 @@ struct async_exec_data run_asynchronous(void (*function)(void*), void* input) {
   toRet.thread_args = malloc(sizeof(struct async_thread_args));
 
   // TODO: malloc error handling
-  
+
   toRet.thread_args->function = function;
   toRet.thread_args->input = input;
 
