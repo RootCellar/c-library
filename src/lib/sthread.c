@@ -102,9 +102,9 @@ struct async_exec_data run_asynchronous(void (*function)(void*), void* input) {
   toRet.thread_args->function = function;
   toRet.thread_args->input = input;
 
-  pthread_create(&toRet.thread, NULL, execute_async, (void*) toRet.thread_args);
+  int errorCode = pthread_create(&toRet.thread, NULL, execute_async, (void*) toRet.thread_args);
 
-  // TODO: pthread error handling?
+  toRet.errorCode = errorCode;
 
   return toRet;
 }

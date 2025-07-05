@@ -11,6 +11,8 @@ struct async_thread_args {
 struct async_exec_data {
     pthread_t thread;
     struct async_thread_args* thread_args;
+
+    int errorCode = 0;
 };
 
 void* start_thread(void* args);
