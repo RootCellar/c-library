@@ -1,5 +1,6 @@
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "../lib/sthread.h"
 
@@ -24,6 +25,10 @@ int main() {
 
     printf("Spinning off asynchronous task...\n");
     struct async_exec_data async_data = run_asynchronous(my_await_function, &data);
+    if(async_data.errorCode != 0) {
+        printf("Failed to create asynchronous thread!\n");
+        exit(1);
+    }
 
     // Do other stuff...
     printf("Doing some other stuff in the mean time while the other thread runs...\n");
@@ -34,4 +39,5 @@ int main() {
 
     printf("Output: %d \n", result);
 
+    exit(0);
 }
