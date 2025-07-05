@@ -43,7 +43,10 @@ int run_in_threads(void (*function)(size_t, size_t, size_t, void*), void* items,
 
     // Lock the thread argument mutex
     pthread_mutex_init(&args[i].mutex, NULL);
+    // TODO: pthread_mutex_init error handling
+
     pthread_mutex_lock(&args[i].mutex);
+    // TODO: pthread_mutex_lock error handling?
 
     // Assume there will be an error, tell threads not to actually run
     args[i].goAhead = 0;
