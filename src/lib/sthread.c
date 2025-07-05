@@ -62,4 +62,5 @@ struct async_exec_data run_asynchronous(void (*function)(void*), void* input) {
 
 void await_async_function(struct async_exec_data data) {
   pthread_join(data.thread, NULL);
+  free(data.thread_args);
 }
