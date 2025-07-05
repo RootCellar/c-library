@@ -14,7 +14,7 @@ struct async_exec_data {
 };
 
 void* start_thread(void* args);
-void run_in_threads(void (*function)(size_t, size_t, size_t, void*), void* items, size_t count, size_t thread_count);
+int run_in_threads(void (*function)(size_t, size_t, size_t, void*), void* items, size_t count, size_t thread_count);
 
 struct async_exec_data run_asynchronous(void (*)(void*), void*);
 void await_async_function(struct async_exec_data);

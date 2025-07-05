@@ -28,7 +28,7 @@ void* start_thread(void* args) {
   pthread_exit(0);
 }
 
-void run_in_threads(void (*function)(size_t, size_t, size_t, void*), void* items, size_t count, size_t thread_count) {
+int run_in_threads(void (*function)(size_t, size_t, size_t, void*), void* items, size_t count, size_t thread_count) {
   pthread_t threads[thread_count];
   struct thread_args args[thread_count];
 
@@ -78,6 +78,9 @@ void run_in_threads(void (*function)(size_t, size_t, size_t, void*), void* items
   for(size_t i = 0; i < thread_count; i++) {
     pthread_mutex_destroy(&args[i].mutex);
   }
+
+  if(pthread_create_error) return 1;
+  return 0;
 }
 
 static
