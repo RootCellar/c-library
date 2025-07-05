@@ -94,17 +94,25 @@ void* execute_async(void* input) {
 
 struct async_exec_data run_asynchronous(void (*function)(void*), void* input) {
   struct async_exec_data toRet;
+  toRet.errorCode = 0;
 
   toRet.thread_args = malloc(sizeof(struct async_thread_args));
 
-  // TODO: malloc error handling
+  // Couldn't allocate thread_args
+  if(toRet.thread_args == NULL) {
+    toRet.errorCode = 1;
+    return toRet;
+  }
 
   toRet.thread_args->function = function;
   toRet.thread_args->input = input;
 
   int errorCode = pthread_create(&toRet.thread, NULL, execute_async, (void*) toRet.thread_args);
 
-  toRet.errorCode = errorCode;
+  // Couldn't create the thread
+  if(errorCode != 0) {
+    toRet.errorCode = 2;
+  }
 
   return toRet;
 }

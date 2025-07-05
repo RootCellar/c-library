@@ -12,7 +12,7 @@ struct async_exec_data {
     pthread_t thread;
     struct async_thread_args* thread_args;
 
-    int errorCode = 0;
+    int errorCode;
 };
 
 void* start_thread(void* args);
