@@ -29,6 +29,8 @@ void run_in_threads(void (*function)(size_t, size_t, size_t, void*), void* items
     args[i].function = function;
 
     pthread_create(&threads[i], NULL, start_thread, (void*) &(args[i]));
+
+    // TODO: pthread error handling?
   }
 
   for(size_t i = 0; i < thread_count; i++) {
@@ -56,6 +58,8 @@ struct async_exec_data run_asynchronous(void (*function)(void*), void* input) {
   toRet.thread_args->input = input;
 
   pthread_create(&toRet.thread, NULL, execute_async, (void*) toRet.thread_args);
+
+  // TODO: pthread error handling?
 
   return toRet;
 }
