@@ -19,7 +19,6 @@ void main() {
   debug_printf("Port: %d", port);
 
   int result = 0;
-  debug_printf("CLOCKS_PER_SEC: %ld", CLOCKS_PER_SEC);
 
   int client_socket = create_connection("127.0.0.1", port);
   TEST( client_socket >= 0 || errno == ECONNREFUSED, "client socket can be created" );
