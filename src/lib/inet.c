@@ -197,6 +197,7 @@ int can_write_non_blocking(int fd) {
   return 1;
 }
 
+static
 int read_bytes(int fd, char* buf, int nbytes) {
   int status = has_data(fd);
   if(status < 1) {
