@@ -216,13 +216,12 @@ int read_bytes(int fd, char* buf, int nbytes) {
 int read_buffer(int fd, struct receiving_buffer* buffer) {
   errno = 0;
 
+  if(connection_keepalive(fd, buffer) < 0) {
+    return -1;
+  }
+
   if(buffer->message_size_received < MESSAGE_SIZE_BYTES) {
     // Work on getting the size of the message
-
-    if(connection_keepalive(fd, buffer) < 0) {
-      return -1;
-    }
-
     int amount_read = read_bytes(fd, buffer->actual_buffer + buffer->message_size_received,
                                   MESSAGE_SIZE_BYTES - buffer->message_size_received);
 
@@ -248,10 +247,6 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
 
   if(buffer->message_size > 0) {
     // Work on reading the message
-    if(connection_keepalive(fd, buffer) < 0) {
-      return -1;
-    }
-
     int amount_read = read_bytes(fd, buffer->buffer + buffer->received,
                                   buffer->message_size - buffer->received);
 
