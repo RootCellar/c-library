@@ -83,40 +83,37 @@ void free_receiving_buffer(struct receiving_buffer* buffer) {
   free(buffer->actual_buffer);
 }
 
-int send_buffer(int fd, char* data, int count) {
+static
+int send_bytes(int fd, void* data, int count) {
   errno = 0;
 
-  int sent;
   int total_sent = 0;
+
+  while(total_sent < count) {
+    int sent = write(fd, data + total_sent, count - total_sent);
+
+    if(sent >= 0) total_sent += sent;
+
+    if(sent < 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
+      perror("send_buffer");
+      return 1;
+    }
+  }
+
+  return 0;
+}
+
+int send_buffer(int fd, char* data, int count) {
 
   // Send message size
 
-  while(total_sent < MESSAGE_SIZE_BYTES) {
-    sent = write(fd, ((char*) &count) + total_sent, MESSAGE_SIZE_BYTES - total_sent);
-
-    if(sent >= 0) total_sent += sent;
-
-    if(sent < 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
-      perror("send_buffer");
-      return 1;
-    }
-  }
+  if(send_bytes(fd, &count, MESSAGE_SIZE_BYTES)) return 1;
 
   // Send buffer
 
-  total_sent = 0;
   if(data == NULL) return 0;
 
-  while(total_sent < count) {
-    sent = write(fd, data + total_sent, count - total_sent);
-
-    if(sent >= 0) total_sent += sent;
-
-    if(sent < 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
-      perror("send_buffer");
-      return 1;
-    }
-  }
+  if (send_bytes(fd, data, count)) return 1;
 
   return 0;
 }
