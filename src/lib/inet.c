@@ -197,43 +197,52 @@ int can_write_non_blocking(int fd) {
   return 1;
 }
 
+int read_bytes(int fd, char* buf, int nbytes) {
+  int status = has_data(fd);
+  if(status < 1) {
+    return -1;
+  }
+
+  int amount_read = read(fd, buf, nbytes);
+
+  if (errno != 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
+    perror("read_buffer");
+    return -1;
+  }
+
+  return amount_read;
+}
+
 int read_buffer(int fd, struct receiving_buffer* buffer) {
   errno = 0;
 
   if(buffer->message_size_received < MESSAGE_SIZE_BYTES) {
     // Work on getting the size of the message
+
     if(connection_keepalive(fd, buffer) < 0) {
       return -1;
     }
-    int status = has_data(fd);
-    if(status < 1) {
-      return status;
-    }
 
-    int amount_read = read(fd, buffer->actual_buffer + buffer->message_size_received,
-                           MESSAGE_SIZE_BYTES - buffer->message_size_received);
-
-    if(errno != 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
-      perror("read_buffer");
-      return -1;
-    }
+    int amount_read = read_bytes(fd, buffer->actual_buffer + buffer->message_size_received,
+                                  MESSAGE_SIZE_BYTES - buffer->message_size_received);
 
     if(amount_read > 0) buffer->message_size_received += amount_read;
+    else if(amount_read < 0) return -1;
+  }
 
-    if(buffer->message_size_received == MESSAGE_SIZE_BYTES) {
-      for(int i = MESSAGE_SIZE_BYTES - 1; i >= 0; i--) {
-        buffer->message_size <<= 8;
-        buffer->message_size |= buffer->actual_buffer[i] & 0xFF;
-      }
+  if(buffer->message_size_received == MESSAGE_SIZE_BYTES) {
+    for(int i = MESSAGE_SIZE_BYTES - 1; i >= 0; i--) {
+      buffer->message_size <<= 8;
+      buffer->message_size |= buffer->actual_buffer[i] & 0xFF;
+    }
 
-      if(buffer->message_size < 1) {
-        buffer->message_size_received = 0;
-      }
+    if(buffer->message_size < 1) {
+      buffer->message_size_received = 0;
+    }
 
-      if(buffer->message_size > buffer->buffer_size) {
-        debug_printf("Message of size %d is too large for buffer (%zu)!", buffer->message_size, buffer->buffer_size);
-        return -1;
-      }
+    if(buffer->message_size > buffer->buffer_size) {
+      debug_printf("Message of size %d is too large for buffer (%zu)!", buffer->message_size, buffer->buffer_size);
+      return -1;
     }
   }
 
@@ -242,32 +251,25 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
     if(connection_keepalive(fd, buffer) < 0) {
       return -1;
     }
-    int status = has_data(fd);
-    if(status < 1) {
-      return status;
-    }
 
-    int amount_left = buffer->message_size - buffer->received;
-    int amount_read = read(fd, buffer->buffer + buffer->received, amount_left);
-
-    if(errno != 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
-      perror("read_buffer");
-      return -1;
-    }
+    int amount_read = read_bytes(fd, buffer->buffer + buffer->received,
+                                  buffer->message_size - buffer->received);
 
     if(amount_read > 0) buffer->received += amount_read;
+    else if(amount_read < 0) return -1;
 
-    if(buffer->received == buffer->message_size) {
-      // We have the full message
-      int size = buffer->message_size;
+  }
 
-      // Clear out buffer read data
-      buffer->received = 0;
-      buffer->message_size = 0;
-      buffer->message_size_received = 0;
+  if(buffer->received == buffer->message_size) {
+    // We have the full message
+    int size = buffer->message_size;
 
-      return size;
-    }
+    // Clear out buffer read data
+    buffer->received = 0;
+    buffer->message_size = 0;
+    buffer->message_size_received = 0;
+
+    return size;
   }
 
   // Don't have a full message yet
