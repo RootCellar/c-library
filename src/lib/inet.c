@@ -230,10 +230,8 @@ int read_buffer(int fd, struct receiving_buffer* buffer) {
   }
 
   if(buffer->message_size_received == MESSAGE_SIZE_BYTES) {
-    for(int i = MESSAGE_SIZE_BYTES - 1; i >= 0; i--) {
-      buffer->message_size <<= 8;
-      buffer->message_size |= buffer->actual_buffer[i] & 0xFF;
-    }
+    int* message_size = (int*) buffer->actual_buffer;
+    buffer->message_size = *message_size;
 
     if(buffer->message_size < 1) {
       buffer->message_size_received = 0;
