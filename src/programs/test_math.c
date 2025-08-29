@@ -56,9 +56,11 @@ int main() {
 
   SHOW_TEST_RESULTS();
 
-  TIMES( BENCHMARK_LOOPS( vector3_to_length(vector, 8.0f), "vector3_to_length", 100000 ), 3);
-  TIMES( BENCHMARK_LOOPS( vector3_dot_product(vector, vector2), "vector3_dot_product", 100000 ), 3);
-  TIMES( BENCHMARK_LOOPS( vector3_cross_product(vector, vector2), "vector3_cross_product", 100000 ), 3);
+  int benchmark_loops = 100000;
+
+  TIMES( BENCHMARK_LOOPS( vector3_to_length(vector, 8.0f), "vector3_to_length", benchmark_loops ), 3);
+  TIMES( BENCHMARK_LOOPS( vector3_dot_product(vector, vector2), "vector3_dot_product", benchmark_loops ), 3);
+  TIMES( BENCHMARK_LOOPS( vector3_cross_product(vector, vector2), "vector3_cross_product", benchmark_loops ), 3);
 
   return 0;
 
