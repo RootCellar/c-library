@@ -59,7 +59,7 @@ void free_neural_net(struct NeuralNet* neural_net) {
                neural_net->neurons_per_layer);
 
   for(size_t i = 0; i < neural_net->layers; i++) {
-    struct Neuron* neuron_layer = neural_net->neurons[i];
+    struct Neuron const * neuron_layer = neural_net->neurons[i];
     if(neuron_layer == NULL) continue;
 
     for(size_t k = 0; k < neural_net->neurons_per_layer; k++) {
@@ -95,7 +95,7 @@ struct Neuron create_neuron(const size_t input_count) {
   struct Neuron neuron;
   neuron.input_count = input_count;
 
-  unsigned long weights_list_bytes = sizeof(float) * input_count;
+  const unsigned long weights_list_bytes = sizeof(float) * input_count;
 
   neuron.input_weights = malloc(weights_list_bytes);
   if(neuron.input_weights == NULL) {
@@ -140,8 +140,8 @@ struct NeuralNet create_neural_net(const size_t layers, const size_t neurons_per
   // Initialize output neuron as blank
   neural_net.output_neuron.input_weights = NULL; neural_net.output_neuron.input_count = 0;
 
-  unsigned long layers_list_bytes = sizeof(struct Neuron*) * layers;
-  unsigned long neuron_list_bytes = sizeof(struct Neuron) * neurons_per_layer;
+  const unsigned long layers_list_bytes = sizeof(struct Neuron*) * layers;
+  const unsigned long neuron_list_bytes = sizeof(struct Neuron) * neurons_per_layer;
 
   neural_net.neurons = malloc(layers_list_bytes);
   if(neural_net.neurons == NULL) {
@@ -283,7 +283,7 @@ float neural_overall_error(struct NeuralNet const * restrict net, struct Net_Tra
   float overall_error = 0.0;
 
   for(int i = 0; i < count; i++) {
-    struct Net_Training_Item net_training_item = items[i];
+    const struct Net_Training_Item net_training_item = items[i];
     overall_error += (float) powf(neural_error(net, net_training_item.inputs, net_training_item.input_count,
                                                net_training_item.correct_output), 2.0f);
   }
@@ -292,7 +292,7 @@ float neural_overall_error(struct NeuralNet const * restrict net, struct Net_Tra
 }
 
 float random_sign() {
-  long int x = get_rand() % 2;
+  const long int x = get_rand() % 2;
   if(x == 0) return -1.0;
   return 1.0;
 }
@@ -312,18 +312,18 @@ struct NeuralNet_Weight_Adjustment generate_random_weight_adjustment(struct Neur
                                                                      const struct Net_Training_Settings settings) {
   struct Neuron const * neuron;
 
-  size_t weight = (size_t) get_rand() % net->neurons_per_layer;
+  const size_t weight = (size_t) get_rand() % net->neurons_per_layer;
 
   if(get_rand() % 10 < 1) {
     neuron = &(net->output_neuron);
   }
   else {
-    size_t layer = (size_t) get_rand() % net->layers;
-    size_t neuron_num = (size_t) get_rand() % net->neurons_per_layer;
+    const size_t layer = (size_t) get_rand() % net->layers;
+    const size_t neuron_num = (size_t) get_rand() % net->neurons_per_layer;
     neuron = &(net->neurons[layer][neuron_num]);
   }
 
-  float amount = settings.learning_rate * random_float();
+  const float amount = settings.learning_rate * random_float();
 
   return generate_weight_adjustment(neuron, weight, amount);
 }
@@ -334,7 +334,7 @@ void neural_net_test_random_adjust(struct NeuralNet const * restrict net, struct
 
   apply_weight_adjustments(adjustments, adj_count);
 
-  float new_error = neural_overall_error(net, items, item_count);
+  const float new_error = neural_overall_error(net, items, item_count);
 
   if(!(fabs(new_error) < fabs(error))) {
     undo_weight_adjustments(adjustments, adj_count);
@@ -350,7 +350,7 @@ int neural_train(struct NeuralNet const * restrict net, const struct Net_Trainin
     return 0;
   }
 
-  size_t num_adjust = (size_t) get_rand() % settings.max_changes_at_once + 1;
+  const size_t num_adjust = (size_t) get_rand() % settings.max_changes_at_once + 1;
   struct NeuralNet_Weight_Adjustment adjustments[num_adjust];
   for(size_t i = 0; i < num_adjust; i++) {
     adjustments[i] = generate_random_weight_adjustment(net, settings);
@@ -382,7 +382,7 @@ int neural_train_threaded(struct NeuralNet const * restrict net, const struct Ne
     return 0;
   }
 
-  size_t num_threads = settings.num_threads;
+  const size_t num_threads = settings.num_threads;
   if(num_threads < 1) return -1;
 
   struct neural_train_thread_data thread_args[num_threads];
