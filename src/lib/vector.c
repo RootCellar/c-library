@@ -13,7 +13,7 @@ float vector3_length(const struct Vector3 vector) {
 }
 
 struct Vector3 vector3_normalize(const struct Vector3 vector) {
-  float len = vector3_length(vector);
+  const float len = vector3_length(vector);
   return vector3_create(vector.x / len, vector.y / len, vector.z / len);
 }
 
@@ -34,7 +34,7 @@ struct Vector3 vector3_multiply_scalar(const struct Vector3 vector, const float 
 }
 
 struct Vector3 vector3_to_length(const struct Vector3 vector, const float len) {
-  float factor = len / vector3_length(vector);
+  const float factor = len / vector3_length(vector);
   return vector3_multiply_scalar(vector, factor);
 }
 
