@@ -11,6 +11,8 @@
 
 int main() {
 
+  benchmark_setupLocale();
+
   int wid = 3;
   int ht = 3;
   int dep = 3;
