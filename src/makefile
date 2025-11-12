@@ -22,9 +22,7 @@ everything: assemblies objects executables
 .SILENT: test
 
 clean:
-	rm -f $(ASSEMBLIES)
-	rm -f $(OBJECTS)
-	rm -f $(EXECUTABLES)
+	rm -rf build
 
 check: all test lint
 
