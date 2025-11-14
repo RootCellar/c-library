@@ -7,9 +7,9 @@
 #define DEFAULT_POINTER_LIST_SIZE 1024
 
 #if REPLACE_MALLOC == 1
-#define malloc(len) tMalloc(len)
-#define free(ptr) tFree(ptr)
-#define realloc(ptr, len) tRealloc(ptr, len)
+  #define malloc(len) tMalloc(len)
+  #define free(ptr) tFree(ptr)
+  #define realloc(ptr, len) tRealloc(ptr, len)
 #endif
 
 int is_valid_ptr(void* ptr);
