@@ -5,10 +5,12 @@
  * Compiler Version
 */
 
-#ifdef __GNUC__
-  #define COMPILER_SUPPORTS_GNU_C 1
-#else
-  #define COMPILER_SUPPORTS_GNU_C 0
+#ifndef COMPILER_SUPPORTS_GNU_C
+  #ifdef __GNUC__
+    #define COMPILER_SUPPORTS_GNU_C 1
+  #else
+    #define COMPILER_SUPPORTS_GNU_C 0
+  #endif
 #endif
 
 #if COMPILER_SUPPORTS_GNU_C
