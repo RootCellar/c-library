@@ -5,42 +5,53 @@
  * Compiler Version
 */
 
-#define GCC_VERSION_IS_ATLEAST(major, minor, patch) \
-    __GNUC__ > major || \
-    (__GNUC__ == major && (__GNUC_MINOR__ > minor || \
-                          (__GNUC_MINOR__ == minor && \
-                           __GNUC_PATCHLEVEL__ >= patch)))
+#ifdef __GNUC__
+  #define COMPILER_SUPPORTS_GNU_C 1
+#else
+  #define COMPILER_SUPPORTS_GNU_C 0
+#endif
 
-#define GCC_VERSION_IS_EARLIER_THAN(major, minor, patch) \
-    __GNUC__ < major || \
-    (__GNUC__ == major && (__GNUC_MINOR__ < minor || \
-                          (__GNUC_MINOR__ == minor && \
-                           __GNUC_PATCHLEVEL__ < patch)))
+#if COMPILER_SUPPORTS_GNU_C
+
+  #define GNU_C_VERSION_IS_ATLEAST(major, minor, patch) \
+      __GNUC__ > major || \
+      (__GNUC__ == major && (__GNUC_MINOR__ > minor || \
+                            (__GNUC_MINOR__ == minor && \
+                             __GNUC_PATCHLEVEL__ >= patch)))
+
+#else
+  /* Some other compiler... */
+ #define GNU_C_VERSION_IS_ATLEAST(major, minor, patch) (0)
+#endif
 
 /*
  * Inlining
 */
 
-#define COMPILER_ATTRIBUTE_ALWAYS_INLINE inline __attribute__ ((always_inline))
-#define COMPILER_ATTRIBUTE_NEVER_INLINE __attribute__ ((__noinline__))
-#define COMPILER_ATTRIBUTE_FLATTEN __attribute__ ((flatten))
+#if COMPILER_SUPPORTS_GNU_C
+  #define COMPILER_ATTRIBUTE_ALWAYS_INLINE inline __attribute__ ((always_inline))
+  #define COMPILER_ATTRIBUTE_NEVER_INLINE __attribute__ ((__noinline__))
+  #define COMPILER_ATTRIBUTE_FLATTEN __attribute__ ((flatten))
+#else
+  #define COMPILER_ATTRIBUTE_ALWAYS_INLINE
+  #define COMPILER_ATTRIBUTE_NEVER_INLINE
+  #define COMPILER_ATTRIBUTE_FLATTEN
+#endif
 
 /*
  * Side affects
 */
 
-#if GCC_VERSION_IS_ATLEAST(2, 96, 0)
+#if GNU_C_VERSION_IS_ATLEAST(2, 96, 0)
   #define COMPILER_ATTRIBUTE_PURE __attribute__ ((pure))
 #else
   #define COMPILER_ATTRIBUTE_PURE
-  #warning "PURE function attribute not supported."
 #endif
 
-#if GCC_VERSION_IS_ATLEAST(2, 5, 0)
+#if GNU_C_VERSION_IS_ATLEAST(2, 5, 0)
   #define COMPILER_ATTRIBUTE_CONST __attribute__ ((const))
 #else
   #define COMPILER_ATTRIBUTE_CONST
-  #warning "CONST function attribute not supported."
 #endif
 
 #endif
