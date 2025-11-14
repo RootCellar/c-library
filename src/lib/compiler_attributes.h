@@ -29,7 +29,18 @@
  * Side affects
 */
 
-#define COMPILER_ATTRIBUTE_PURE __attribute__ ((pure))
-#define COMPILER_ATTRIBUTE_CONST __attribute__ ((const))
+#if GCC_VERSION_IS_ATLEAST(2, 96, 0)
+  #define COMPILER_ATTRIBUTE_PURE __attribute__ ((pure))
+#else
+  #define COMPILER_ATTRIBUTE_PURE
+  #warning "PURE function attribute not supported."
+#endif
+
+#if GCC_VERSION_IS_ATLEAST(2, 5, 0)
+  #define COMPILER_ATTRIBUTE_CONST __attribute__ ((const))
+#else
+  #define COMPILER_ATTRIBUTE_CONST
+  #warning "CONST function attribute not supported."
+#endif
 
 #endif
