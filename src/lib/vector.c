@@ -9,7 +9,7 @@ struct Vector3 vector3_create(const float x, const float y, const float z) {
 }
 
 float vector3_length(const struct Vector3 vector) {
-  return sqrtf(powf(vector.x, 2) + powf(vector.y, 2) + powf(vector.z, 2));
+  return sqrtf( vector.x * vector.x + vector.y * vector.y + vector.z * vector.z );
 }
 
 struct Vector3 vector3_normalize(const struct Vector3 vector) {
