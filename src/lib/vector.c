@@ -1,47 +1,59 @@
 #include <math.h>
 
 #include "vector.h"
+#include "compiler_attributes.h"
 
 // 3D Vector
 
+COMPILER_ATTRIBUTE_ALWAYS_INLINE
+COMPILER_ATTRIBUTE_CONST
 struct Vector3 vector3_create(const float x, const float y, const float z) {
   return (struct Vector3) {.x = x, .y = y, .z = z};
 }
 
+COMPILER_ATTRIBUTE_CONST
 float vector3_length(const struct Vector3 vector) {
   return sqrtf( vector.x * vector.x + vector.y * vector.y + vector.z * vector.z );
 }
 
+COMPILER_ATTRIBUTE_CONST
 struct Vector3 vector3_normalize(const struct Vector3 vector) {
   const float len = vector3_length(vector);
   return vector3_create(vector.x / len, vector.y / len, vector.z / len);
 }
 
+COMPILER_ATTRIBUTE_CONST
 struct Vector3 vector3_negate(const struct Vector3 vector) {
   return vector3_create(vector.x * -1, vector.y * -1, vector.z * -1);
 }
 
+COMPILER_ATTRIBUTE_CONST
 struct Vector3 vector3_add(const struct Vector3 one, const struct Vector3 two) {
   return vector3_create(one.x + two.x, one.y + two.y, one.z + two.z);
 }
 
+COMPILER_ATTRIBUTE_CONST
 struct Vector3 vector3_subtract(const struct Vector3 one, const struct Vector3 two) {
   return vector3_create(one.x - two.x, one.y - two.y, one.z - two.z);
 }
 
+COMPILER_ATTRIBUTE_CONST
 struct Vector3 vector3_multiply_scalar(const struct Vector3 vector, const float mult) {
   return vector3_create(vector.x * mult, vector.y * mult, vector.z * mult);
 }
 
+COMPILER_ATTRIBUTE_CONST
 struct Vector3 vector3_to_length(const struct Vector3 vector, const float len) {
   const float factor = len / vector3_length(vector);
   return vector3_multiply_scalar(vector, factor);
 }
 
+COMPILER_ATTRIBUTE_CONST
 float vector3_dot_product(const struct Vector3 one, const struct Vector3 two) {
   return one.x * two.x + one.y * two.y + one.z * two.z;
 }
 
+COMPILER_ATTRIBUTE_CONST
 struct Vector3 vector3_cross_product(const struct Vector3 one, const struct Vector3 two) {
   return vector3_create(
     one.y * two.z - one.z * two.y,
@@ -50,6 +62,7 @@ struct Vector3 vector3_cross_product(const struct Vector3 one, const struct Vect
   );
 }
 
+COMPILER_ATTRIBUTE_CONST
 struct Vector3 vector3_facing(const struct Vector3 one, const struct Vector3 two) {
   return vector3_normalize(vector3_subtract(two, one));
 }
