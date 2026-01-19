@@ -12,12 +12,17 @@
 unsigned char die_buffer[DIE_BUFFER_SIZE];
 size_t die_loc = DIE_BUFFER_SIZE;
 
+static
+int get_random() {
+  return arc4random();
+}
+
 int roll_die(int sides) {
 
   if(sides < MAX_BUFFER_ROLL) {
     if(die_loc >= DIE_BUFFER_SIZE) {
         for(size_t k = 0; k < DIE_BUFFER_SIZE; k += ROLLS_PER_INT) {
-          int num = rand();
+          int num = get_random();
           for(size_t i = 0; i < ROLLS_PER_INT; i++) {
             die_buffer[k + i] = num & MAX_BUFFER_ROLL;
             num >>= BITS_PER_ROLL;
@@ -28,7 +33,7 @@ int roll_die(int sides) {
     return ((int)die_buffer[die_loc++] % sides) + 1;
   }
 
-  return (rand() % sides) + 1;
+  return (get_random() % sides) + 1;
 }
 
 int roll_dice(int count, int sides) {
