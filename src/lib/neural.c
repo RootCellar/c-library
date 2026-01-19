@@ -1,4 +1,5 @@
 
+#include <stdlib.h>
 #include <unistd.h>
 #include <math.h>
 #include <string.h>
@@ -18,7 +19,7 @@ struct neural_train_thread_data {
 };
 
 long int get_rand() {
-  return random();
+  return arc4random();
 }
 
 void apply_weight_adjustments(struct NeuralNet_Weight_Adjustment* adjustments, const size_t count) {
