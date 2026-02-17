@@ -31,13 +31,17 @@
 */
 
 #if COMPILER_SUPPORTS_GNU_C
-  #define COMPILER_ATTRIBUTE_ALWAYS_INLINE inline __attribute__ ((always_inline))
-  #define COMPILER_ATTRIBUTE_NEVER_INLINE __attribute__ ((__noinline__))
-  #define COMPILER_ATTRIBUTE_FLATTEN __attribute__ ((flatten))
+  #define COMPILER_ATTRIBUTE_ALWAYS_INLINE  inline __attribute__ ((always_inline))
+  #define COMPILER_ATTRIBUTE_NEVER_INLINE   __attribute__ ((__noinline__))
+  #define COMPILER_ATTRIBUTE_FLATTEN        __attribute__ ((flatten))
+  #define COMPILER_ATTRIBUTE_HOT            __attribute__ ((hot))
+  #define COMPILER_ATTRIBUTE_COLD           __attribute__ ((cold))
 #else
   #define COMPILER_ATTRIBUTE_ALWAYS_INLINE
   #define COMPILER_ATTRIBUTE_NEVER_INLINE
   #define COMPILER_ATTRIBUTE_FLATTEN
+  #define COMPILER_ATTRIBUTE_HOT
+  #define COMPILER_ATTRIBUTE_COLD
 #endif
 
 /*
