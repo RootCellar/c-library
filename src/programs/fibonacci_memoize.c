@@ -50,16 +50,30 @@ ANSWER_TYPE fibonacci_loop(const size_t index) {
     return answer;
 }
 
+ANSWER_TYPE fibonacci_memoized(const size_t index, ANSWER_TYPE* memory, size_t memory_length) {
+    return 0; // Not finished!
+}
+
 
 // Main
 
 
 int main(int argc, char** argv) {
 
+    const size_t memoize_memory_length = 4096;
+    ANSWER_TYPE* memoize_memory = malloc(memoize_memory_length * sizeof(ANSWER_TYPE));
+    if(memoize_memory == NULL) {
+        printf("Could not initialize memoization memory!");
+        EXIT_FAIL();
+    }
+
     for(size_t i = 1; i <= 10; i++) {
         printf("fibonacci_recursive(%zu) = %llu\n", i, fibonacci_recursive(i));
         printf("fibonacci_loop(%zu) = %llu\n", i, fibonacci_loop(i));
+        printf("fibonacci_memoize(%zu) = %llu\n", i, fibonacci_memoized(i, memoize_memory, memoize_memory_length));
     }
+
+    free(memoize_memory);
 
     exit(0);
 }
