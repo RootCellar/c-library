@@ -77,6 +77,10 @@ ANSWER_TYPE fibonacci_memoized(const size_t index, ANSWER_TYPE* memory, const si
 
 int main(int argc, char** argv) {
 
+    //
+    // Setup
+    //
+
     const size_t memoize_memory_length = 4096;
     ANSWER_TYPE* memoize_memory = malloc(memoize_memory_length * sizeof(ANSWER_TYPE));
     if(memoize_memory == NULL) {
@@ -84,6 +88,10 @@ int main(int argc, char** argv) {
         EXIT_FAIL();
     }
     memset(memoize_memory, 0, memoize_memory_length);
+
+    //
+    // Show output from each method
+    //
 
     for(size_t i = 0; i <= 9; i++) {
         printf("fibonacci_recursive(%zu) = %llu\n", i, fibonacci_recursive(i));
@@ -93,6 +101,10 @@ int main(int argc, char** argv) {
 
         printf("\n");
     }
+
+    //
+    // Tests
+    //
 
     // Tests to make sure fibonacci_recursive returns the correct output
 
@@ -121,6 +133,10 @@ int main(int argc, char** argv) {
 
     show_test_results();
     printf("\n\n");
+
+    //
+    // Benchmarking
+    //
 
     const size_t indexes_to_test[] = { 16, 20, 22 };
     const size_t num_tests = sizeof(indexes_to_test) / sizeof(size_t);
