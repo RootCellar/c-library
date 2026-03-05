@@ -50,8 +50,22 @@ ANSWER_TYPE fibonacci_loop(const size_t index) {
     return answer;
 }
 
-ANSWER_TYPE fibonacci_memoized(const size_t index, ANSWER_TYPE* memory, size_t memory_length) {
-    return 0; // Not finished!
+ANSWER_TYPE fibonacci_memoized(const size_t index, ANSWER_TYPE* memory, const size_t memory_length) {
+    const size_t memory_index = index - 1;
+    if(index <= memory_length && memory[memory_index] > 0) return memory[memory_index];
+
+    ANSWER_TYPE answer;
+
+    if(index == 1 || index == 2) {
+        answer = 1;
+    }
+    else {
+        answer = fibonacci_memoized(index - 1, memory, memory_length) + fibonacci_memoized(index - 2, memory, memory_length);
+    }
+
+    memory[memory_index] = answer;
+
+    return answer;
 }
 
 
@@ -71,6 +85,7 @@ int main(int argc, char** argv) {
         printf("fibonacci_recursive(%zu) = %llu\n", i, fibonacci_recursive(i));
         printf("fibonacci_loop(%zu) = %llu\n", i, fibonacci_loop(i));
         printf("fibonacci_memoize(%zu) = %llu\n", i, fibonacci_memoized(i, memoize_memory, memoize_memory_length));
+        printf("(again) fibonacci_memoize(%zu) = %llu\n", i, fibonacci_memoized(i, memoize_memory, memoize_memory_length));
     }
 
     free(memoize_memory);
