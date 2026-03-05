@@ -158,7 +158,7 @@ int main(int argc, char** argv) {
     {
         const size_t indexes_to_test[] = { 30, 40, 55 };
         const size_t num_tests = sizeof(indexes_to_test) / sizeof(size_t);
-        const int num_benchmark_loops = 50000;
+        const int num_benchmark_loops = 5000000;
 
         for(size_t i = 0; i < num_tests; i++) {
             index_to_test = indexes_to_test[i];
