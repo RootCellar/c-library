@@ -90,6 +90,8 @@ int main(int argc, char** argv) {
         printf("fibonacci_loop(%zu) = %llu\n", i, fibonacci_loop(i));
         printf("fibonacci_memoize(%zu) = %llu\n", i, fibonacci_memoized(i, memoize_memory, memoize_memory_length));
         printf("(again) fibonacci_memoize(%zu) = %llu\n", i, fibonacci_memoized(i, memoize_memory, memoize_memory_length));
+
+        printf("\n");
     }
 
     free(memoize_memory);
