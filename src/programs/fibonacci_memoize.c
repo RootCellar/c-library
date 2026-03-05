@@ -120,6 +120,20 @@ int main(int argc, char** argv) {
     TEST(fibonacci_memoized(index_to_test, NULL, 0) == correct_answer, "fibonacci_memoized() still works with no memory for memoization");
 
     show_test_results();
+    printf("\n\n");
+
+    const size_t indexes_to_test[] = { 16, 20, 22 };
+    const size_t num_tests = sizeof(indexes_to_test) / sizeof(size_t);
+    const int num_benchmark_loops = 50000;
+
+    for(size_t i = 0; i < num_tests; i++) {
+        index_to_test = indexes_to_test[i];
+        printf("Index: %zu\n", index_to_test);
+        BENCHMARK_LOOPS(fibonacci_recursive(index_to_test), "fibonacci_recursive()", num_benchmark_loops);
+        BENCHMARK_LOOPS(fibonacci_loop(index_to_test), "fibonacci_loop()", num_benchmark_loops);
+        BENCHMARK_LOOPS(fibonacci_memoized(index_to_test, memoize_memory, memoize_memory_length), "fibonacci_memoized()", num_benchmark_loops);
+        printf("\n");
+    }
 
     free(memoize_memory);
 
