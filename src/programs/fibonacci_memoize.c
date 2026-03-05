@@ -94,6 +94,33 @@ int main(int argc, char** argv) {
         printf("\n");
     }
 
+    // Tests to make sure fibonacci_recursive returns the correct output
+
+    SECTION("fibonacci_recursive");
+
+    TEST( fibonacci_recursive(0) == 1, "fibonacci_recursive(0) = 1");
+    TEST( fibonacci_recursive(1) == 1, "fibonacci_recursive(1) = 1");
+    TEST( fibonacci_recursive(2) == 2, "fibonacci_recursive(2) = 2");
+    TEST( fibonacci_recursive(5) == 8, "fibonacci_recursive(5) = 8");
+
+    // Tests to make sure fibonacci_memoized returns the correct output
+    // (uses fibonacci_recursive() as the "source of truth")
+
+    SECTION("fibonacci_memoized");
+
+    ANSWER_TYPE correct_answer;
+
+    for(size_t i = 0; i < 15; i++) {
+        correct_answer = fibonacci_recursive(i);
+        TEST(fibonacci_memoized(i, memoize_memory, memoize_memory_length) == correct_answer, "fibonacci_memoized() matches fibonacci_recursive()");
+    }
+
+    size_t index_to_test = 16;
+    correct_answer = fibonacci_recursive(index_to_test);
+    TEST(fibonacci_memoized(index_to_test, NULL, 0) == correct_answer, "fibonacci_memoized() still works with no memory for memoization");
+
+    show_test_results();
+
     free(memoize_memory);
 
     exit(0);
