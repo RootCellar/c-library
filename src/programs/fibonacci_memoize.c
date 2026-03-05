@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
 
 
 // Local Library
@@ -80,6 +81,7 @@ int main(int argc, char** argv) {
         printf("Could not initialize memoization memory!");
         EXIT_FAIL();
     }
+    memset(memoize_memory, 0, memoize_memory_length);
 
     for(size_t i = 0; i <= 9; i++) {
         printf("fibonacci_recursive(%zu) = %llu\n", i, fibonacci_recursive(i));
