@@ -53,7 +53,7 @@ ANSWER_TYPE fibonacci_loop(const size_t index) {
 
 ANSWER_TYPE fibonacci_memoized(const size_t index, ANSWER_TYPE* memory, const size_t memory_length) {
     const size_t memory_index = index;
-    if(index <= memory_length && memory[memory_index] > 0) return memory[memory_index];
+    if(memory_index < memory_length && memory[memory_index] > 0) return memory[memory_index];
 
     ANSWER_TYPE answer;
 
@@ -64,7 +64,9 @@ ANSWER_TYPE fibonacci_memoized(const size_t index, ANSWER_TYPE* memory, const si
         answer = fibonacci_memoized(index - 1, memory, memory_length) + fibonacci_memoized(index - 2, memory, memory_length);
     }
 
-    memory[memory_index] = answer;
+    if(memory_index < memory_length) {
+        memory[memory_index] = answer;
+    }
 
     return answer;
 }
