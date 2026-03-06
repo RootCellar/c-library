@@ -82,12 +82,13 @@ int main(int argc, char** argv) {
     //
 
     const size_t memoize_memory_length = 4096;
-    ANSWER_TYPE* memoize_memory = malloc(memoize_memory_length * sizeof(ANSWER_TYPE));
+    const size_t memoize_memory_bytes = memoize_memory_length * sizeof(ANSWER_TYPE);
+    ANSWER_TYPE* memoize_memory = malloc(memoize_memory_bytes);
     if(memoize_memory == NULL) {
         printf("Could not initialize memoization memory!");
         EXIT_FAIL();
     }
-    memset(memoize_memory, 0, memoize_memory_length);
+    memset(memoize_memory, 0, memoize_memory_bytes);
 
     //
     // Show output from each method
