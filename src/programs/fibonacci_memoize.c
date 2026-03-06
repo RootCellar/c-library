@@ -140,6 +140,8 @@ int main(int argc, char** argv) {
     // Benchmarking
     //
 
+    benchmark_setupLocale();
+
     // Benchmark all three
     {
         const size_t indexes_to_test[] = { 16, 20, 22 };
