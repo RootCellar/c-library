@@ -89,6 +89,7 @@ int main(int argc, char** argv) {
         EXIT_FAIL();
     }
     memset(memoize_memory, 0, memoize_memory_bytes);
+    printf("Allocated %zu bytes for memoization\n\n", memoize_memory_bytes);
 
     //
     // Show output from each method
